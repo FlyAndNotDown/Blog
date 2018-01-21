@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # kindem's blog main site
+    'main'
 ]
 
 MIDDLEWARE = [
@@ -75,10 +77,29 @@ WSGI_APPLICATION = 'Blog.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
+    # 原默认数据库
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
+    # MySQL开发时数据库
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'site',
+        'USER': 'kindem',
+        'PASSWORD': 'hwq@3764611#',
+        'HOST': '118.89.108.107',
+        'PORT': 3306
     }
+    # MySQL运行时数据库
+    # 'running': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'site',
+    #     'USER': 'site',
+    #     'PASSWORD': 'hack_is_sb',
+    #     'HOST': '127.0.0.1',
+    #     'PORT': 3306
+    # }
 }
 
 
@@ -104,9 +125,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
