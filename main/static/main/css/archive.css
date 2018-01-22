@@ -1,0 +1,11 @@
+.parallax-container {
+    height: 400px;
+}
+
+body {
+    font-family: "Microsoft YaHei UI Light", monospace;
+}
+
+.dark-text {
+    color: #000;
+}
