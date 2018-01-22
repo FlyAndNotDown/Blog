@@ -45,79 +45,58 @@
             <div class="container">
                 <br>
                 <div class="row">
-                    <div class="col s12 m12 l6 xl6">
-                        <div class="card medium z-depth-3 hoverable">
-                            <div class="card-image">
-                                <img src="{% static 'main/img/test1.png' %}">
-                                <span class="card-title">Facker被Bang演了!!</span>
-                            </div>
-                            <div class="card-content">
-                                <p>比赛结束后，Facker趴在桌子上久久不能释怀，我曹，怎么会被一起战斗了那么久的队友演呢?
-                                    比赛结束后，Facker趴在桌子上久久不能释怀，我曹，怎么会被一起战斗了那么久的队友演呢?</p>
-                            </div>
-                            <div class="card-action">
-                                <a href="#" class="read-all-post-link">阅读全文</a>
-                                <a href="#" class="share-link">分享</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col s12 m12 l6 xl6">
-                        <div class="card medium z-depth-3 hoverable">
-                            <div class="card-image">
-                                <img src="{% static 'main/img/test1.png' %}">
-                                <span class="card-title">Facker被Bang演了!!</span>
-                            </div>
-                            <div class="card-content">
-                                <p>比赛结束后，Facker趴在桌子上久久不能释怀，我曹，怎么会被一起战斗了那么久的队友演呢?
-                                    比赛结束后，Facker趴在桌子上久久不能释怀，我曹，怎么会被一起战斗了那么久的队友演呢?</p>
-                            </div>
-                            <div class="card-action">
-                                <a href="#">阅读全文</a>
-                                <a href="#">分享</a>
+                    {% for post in posts1 %}
+                        <div class="col s12 m12 l6 xl6">
+                            <div class="card medium z-depth-3 hoverable">
+                                <div class="card-image">
+                                    <img src="{{ post.images.0.location }}">
+                                    <span class="card-title">{{ post.title }}</span>
+                                </div>
+                                <div class="card-content">
+                                    <p>{{ post.body | truncatewords:"60" }} -- {{ post.created_time }}</p>
+                                </div>
+                                <div class="card-action">
+                                    <a href="#" class="read-all-post-link">阅读全文</a>
+                                    <a href="#" class="share-link">分享</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    {% endfor %}
                 </div>
                 <div class="row">
-                    <div class="col s12 m12 l6 xl6">
-                        <div class="card medium z-depth-3 hoverable">
-                            <div class="card-image">
-                                <img src="{% static 'main/img/test1.png' %}">
-                                <span class="card-title">Facker被Bang演了!!</span>
-                            </div>
-                            <div class="card-content">
-                                <p>比赛结束后，Facker趴在桌子上久久不能释怀，我曹，怎么会被一起战斗了那么久的队友演呢?
-                                    比赛结束后，Facker趴在桌子上久久不能释怀，我曹，怎么会被一起战斗了那么久的队友演呢?</p>
-                            </div>
-                            <div class="card-action">
-                                <a href="#" class="read-all-post-link">阅读全文</a>
-                                <a href="#" class="share-link">分享</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col s12 m12 l6 xl6">
-                        <div class="card medium z-depth-3 hoverable">
-                            <div class="card-image">
-                                <img src="{% static 'main/img/test1.png' %}">
-                                <span class="card-title">Facker被Bang演了!!</span>
-                            </div>
-                            <div class="card-content">
-                                <p>比赛结束后，Facker趴在桌子上久久不能释怀，我曹，怎么会被一起战斗了那么久的队友演呢?
-                                    比赛结束后，Facker趴在桌子上久久不能释怀，我曹，怎么会被一起战斗了那么久的队友演呢?</p>
-                            </div>
-                            <div class="card-action">
-                                <a href="#">阅读全文</a>
-                                <a href="#">分享</a>
+                    {% for post in posts2 %}
+                        <div class="col s12 m12 l6 xl6">
+                            <div class="card medium z-depth-3 hoverable">
+                                <div class="card-image">
+                                    <img src="{{ post.images.0.location }}">
+                                    <span class="card-title">{{ post.title }}</span>
+                                </div>
+                                <div class="card-content">
+                                    <p>{{ post.body | truncatewords:"60" }} -- {{ post.created_time }}</p>
+                                </div>
+                                <div class="card-action">
+                                    <a href="#" class="read-all-post-link">阅读全文</a>
+                                    <a href="#" class="share-link">分享</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
             <div class="col s12 m12 l12 xl12">
                 <div class="row center">
                     <ul class="pagination">
-                        <li class="disabled"><a href="#"><i class="material-icons">chevron_left</i></a></li>
-                        <li class="waves-effect"><a href="#"><i class="material-icons">chevron_right</i></a></li>
+                        {% if is_first_page %}
+                            <li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>
+                        {% else %}
+                            <li class="waves-effect"><a href="index.html?page={{ pre_page }}"><i class="material-icons">chevron_left</i></a></li>
+                        {% endif %}
+
+                        {% if is_last_page %}
+                            <li class="disabled"><a><i class="material-icons">chevron_right</i></a></li>
+                        {% else %}
+                            <li class="waves-effect"><a href="index.html?page={{ next_page }}"><i class="material-icons">chevron_right</i></a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
