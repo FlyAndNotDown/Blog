@@ -2,47 +2,47 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>标签-Kindem的博客</title>
+    <title>主页-Kindem的博客</title>
 
     <!--Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <!--Materialize-->
-    <link href="lib/materialize/css/materialize.min.css" rel="stylesheet">
+    <link href="lib/materialize/css/materialize.min.css" rel="stylesheet" media="screen,projection">
 
-    <!--Tag Css-->
-    <link href="css/tag.css" rel="stylesheet">
+    <!--Index Css-->
+    <link href="css/index.css" rel="stylesheet">
 </head>
 <body>
     <!--导航栏-->
     <nav class="nav-extended cyan">
-    <div class="nav-wrapper container">
-        <a href="#" class="brand-logo">Kindem</a>
-        <ul class="right">
-            <li><a href="#"><i class="material-icons">search</i></a></li>
-            <li><a href="#"><i class="material-icons hide-on-med-and-down">person</i></a></li>
-        </ul>
-        <ul class="left hide-on-large-only">
-            <li><a href="#"><i class="material-icons">person</i></a></li>
-        </ul>
-    </div>
-    <div class="nav-content container">
+        <div class="nav-wrapper container">
+            <a href="#" class="brand-logo">Kindem</a>
+            <ul class="right">
+                <li><a href="#"><i class="material-icons">search</i></a></li>
+                <li><a href="#"><i class="material-icons hide-on-med-and-down">person</i></a></li>
+            </ul>
+            <ul class="left hide-on-large-only">
+                <li><a href="#"><i class="material-icons">person</i></a></li>
+            </ul>
+        </div>
+        <div class="nav-content container">
 
-        <ul class="tabs tabs-transparent">
-            <li class="tab"><a target="_blank" href="index.html">首页</a></li>
-            <li class="tab"><a href="#">标签</a></li>
-            <li class="tab"><a target="_blank" href="#">归档</a></li>
-            <li class="tab"><a target="_blank" href="about.html">关于</a></li>
-        </ul>
-    </div>
-</nav>
+            <ul class="tabs tabs-transparent">
+                <li class="tab"><a href="#" class="active">首页</a></li>
+                <li class="tab"><a target="_blank" href="tag_old.html">标签</a></li>
+                <li class="tab"><a target="_blank" href="#">归档</a></li>
+                <li class="tab"><a target="_blank" href="about_old.html">关于</a></li>
+            </ul>
+        </div>
+    </nav>
 
-    <!--Parallax-->
+    <!--parallax-->
     <div class="parallax-container">
         <div class="parallax"><img src="img/index_bg.jpg"></div>
         <div class="center white-text">
             <br><br><br><br><br><br><br>
-            <h2>Find something you like</h2>
+            <h2>一生想做烂漫 Coder</h2>
         </div>
     </div>
 
@@ -51,35 +51,8 @@
         <div class="row">
             <div class="container">
                 <br>
-                <!--标签放置行-->
                 <div class="row">
-                    <br>
-                    <div class="col s12 m12 l12 xl12">
-                        <a class="chip hoverable z-depth-1">Python</a>
-                        <a class="chip hoverable z-depth-1">C</a>
-                        <a class="chip hoverable z-depth-1">C++</a>
-                        <a class="chip hoverable z-depth-1">Kotlin</a>
-                        <a class="chip hoverable z-depth-1">ASM</a>
-                        <a class="chip hoverable z-depth-1">Java</a>
-                        <a class="chip hoverable z-depth-1">C</a>
-                        <a class="chip hoverable z-depth-1">日志</a>
-                        <a class="chip hoverable z-depth-1">感悟</a>
-                        <a class="chip hoverable z-depth-1">教程</a>
-                        <a class="chip hoverable z-depth-1">Django</a>
-                        <a class="chip hoverable z-depth-1">jQuery</a>
-                        <a class="chip hoverable z-depth-1">Bootstrap</a>
-
-                    </div>
-                    <br>
-                </div>
-
-                <div class="progress">
-                    <div class="indeterminate"></div>
-                </div>
-
-                <!--文章列表-->
-                <div class="row">
-                    <div class="col s12 m12 l6">
+                    <div class="col s12 m12 l6 xl6">
                         <div class="card medium z-depth-3 hoverable">
                             <div class="card-image">
                                 <img src="img/test1.png">
@@ -90,13 +63,12 @@
                                     比赛结束后，Facker趴在桌子上久久不能释怀，我曹，怎么会被一起战斗了那么久的队友演呢?</p>
                             </div>
                             <div class="card-action">
-                                <a href="#">阅读全文</a>
-                                <a href="#">分享</a>
+                                <a href="#" class="read-all-post-link">阅读全文</a>
+                                <a href="#" class="share-link">分享</a>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col s12 m12 l6">
+                    <div class="col s12 m12 l6 xl6">
                         <div class="card medium z-depth-3 hoverable">
                             <div class="card-image">
                                 <img src="img/test1.png">
@@ -114,7 +86,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col s12 m12 l6">
+                    <div class="col s12 m12 l6 xl6">
                         <div class="card medium z-depth-3 hoverable">
                             <div class="card-image">
                                 <img src="img/test1.png">
@@ -125,48 +97,12 @@
                                     比赛结束后，Facker趴在桌子上久久不能释怀，我曹，怎么会被一起战斗了那么久的队友演呢?</p>
                             </div>
                             <div class="card-action">
-                                <a href="#">阅读全文</a>
-                                <a href="#">分享</a>
+                                <a href="#" class="read-all-post-link">阅读全文</a>
+                                <a href="#" class="share-link">分享</a>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col s12 m12 l6">
-                        <div class="card medium z-depth-3 hoverable">
-                            <div class="card-image">
-                                <img src="img/test1.png">
-                                <span class="card-title">Facker被Bang演了!!</span>
-                            </div>
-                            <div class="card-content">
-                                <p>比赛结束后，Facker趴在桌子上久久不能释怀，我曹，怎么会被一起战斗了那么久的队友演呢?
-                                    比赛结束后，Facker趴在桌子上久久不能释怀，我曹，怎么会被一起战斗了那么久的队友演呢?</p>
-                            </div>
-                            <div class="card-action">
-                                <a href="#">阅读全文</a>
-                                <a href="#">分享</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col s12 m12 l6">
-                        <div class="card medium z-depth-3 hoverable">
-                            <div class="card-image">
-                                <img src="img/test1.png">
-                                <span class="card-title">Facker被Bang演了!!</span>
-                            </div>
-                            <div class="card-content">
-                                <p>比赛结束后，Facker趴在桌子上久久不能释怀，我曹，怎么会被一起战斗了那么久的队友演呢?
-                                    比赛结束后，Facker趴在桌子上久久不能释怀，我曹，怎么会被一起战斗了那么久的队友演呢?</p>
-                            </div>
-                            <div class="card-action">
-                                <a href="#">阅读全文</a>
-                                <a href="#">分享</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col s12 m12 l6">
+                    <div class="col s12 m12 l6 xl6">
                         <div class="card medium z-depth-3 hoverable">
                             <div class="card-image">
                                 <img src="img/test1.png">
@@ -183,17 +119,13 @@
                         </div>
                     </div>
                 </div>
-
-                <!--翻页-->
-                <div class="row">
-                    <div class="col s12 m12 l12 xl12">
-                        <div class="row center">
-                            <ul class="pagination">
-                                <li class="disabled"><a href="#"><i class="material-icons">chevron_left</i></a></li>
-                                <li class="waves-effect"><a href="#"><i class="material-icons">chevron_right</i></a></li>
-                            </ul>
-                        </div>
-                    </div>
+            </div>
+            <div class="col s12 m12 l12 xl12">
+                <div class="row center">
+                    <ul class="pagination">
+                        <li class="disabled"><a href="#"><i class="material-icons">chevron_left</i></a></li>
+                        <li class="waves-effect"><a href="#"><i class="material-icons">chevron_right</i></a></li>
+                    </ul>
                 </div>
             </div>
         </div>

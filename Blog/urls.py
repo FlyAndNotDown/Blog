@@ -20,5 +20,5 @@ urlpatterns = [
     # 管理员页面
     url(r'^admin/', admin.site.urls),
     # 主站的页面
-    url(r'', include('main.urls'))
+    url(r'', include('main.urls')),
 ]
