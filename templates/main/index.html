@@ -89,13 +89,13 @@
                         {% if is_first_page %}
                             <li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>
                         {% else %}
-                            <li class="waves-effect"><a href="/page={{ pre_page }}"><i class="material-icons">chevron_left</i></a></li>
+                            <li class="waves-effect"><a href="/{{ pre_page }}"><i class="material-icons">chevron_left</i></a></li>
                         {% endif %}
 
                         {% if is_last_page %}
                             <li class="disabled"><a><i class="material-icons">chevron_right</i></a></li>
                         {% else %}
-                            <li class="waves-effect"><a href="/page={{ next_page }}"><i class="material-icons">chevron_right</i></a></li>
+                            <li class="waves-effect"><a href="/{{ next_page }}"><i class="material-icons">chevron_right</i></a></li>
                         {% endif %}
                     </ul>
                 </div>
