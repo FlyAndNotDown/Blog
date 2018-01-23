@@ -8,7 +8,7 @@
 {% block navbar %}
     <nav class="nav-extended cyan">
         <div class="nav-wrapper container">
-            <a href="#" class="brand-logo">Kindem</a>
+            <a href="/" class="brand-logo">Kindem</a>
             <ul class="right">
                 <li><a href="#"><i class="material-icons">search</i></a></li>
                 <li><a href="#"><i class="material-icons hide-on-med-and-down">person</i></a></li>
@@ -20,10 +20,10 @@
         <div class="nav-content container">
 
             <ul class="tabs tabs-transparent">
-                <li class="tab"><a href="#" class="active">首页</a></li>
+                <li class="tab"><a href="/" class="active">首页</a></li>
                 <li class="tab"><a target="_blank" href="tag_old.html">标签</a></li>
                 <li class="tab"><a target="_blank" href="#">归档</a></li>
-                <li class="tab"><a target="_blank" href="about_old.html">关于</a></li>
+                <li class="tab"><a target="_blank" href="/about">关于</a></li>
             </ul>
         </div>
     </nav>
@@ -86,17 +86,17 @@
             <div class="col s12 m12 l12 xl12">
                 <div class="row center">
                     <ul class="pagination">
-{#                        {% if is_first_page %}#}
-{#                            <li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>#}
-{#                        {% else %}#}
-{#                            <li class="waves-effect"><a href="index.html?page={{ pre_page }}"><i class="material-icons">chevron_left</i></a></li>#}
-{#                        {% endif %}#}
-{##}
-{#                        {% if is_last_page %}#}
-{#                            <li class="disabled"><a><i class="material-icons">chevron_right</i></a></li>#}
-{#                        {% else %}#}
-{#                            <li class="waves-effect"><a href="index.html?page={{ next_page }}"><i class="material-icons">chevron_right</i></a></li>#}
-{#                        {% endif %}#}
+                        {% if is_first_page %}
+                            <li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>
+                        {% else %}
+                            <li class="waves-effect"><a href="/page={{ pre_page }}"><i class="material-icons">chevron_left</i></a></li>
+                        {% endif %}
+
+                        {% if is_last_page %}
+                            <li class="disabled"><a><i class="material-icons">chevron_right</i></a></li>
+                        {% else %}
+                            <li class="waves-effect"><a href="/page={{ next_page }}"><i class="material-icons">chevron_right</i></a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

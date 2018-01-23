@@ -42,3 +42,9 @@ def index(request):
         'pre_page': page - 1,
         'next_page': page + 1
     })
+
+
+def about(request):
+    return render(request, 'main/about.html', context={
+        'title': '关于Kindem-Kindem的博客'
+    })
