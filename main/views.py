@@ -5,7 +5,7 @@ from .models import Post, Tag
 
 
 # 首页每一页的文章数量
-INDEX_POST_PER_PAGE = 4
+INDEX_POST_PER_PAGE = 8
 
 
 def index(request):
@@ -24,14 +24,22 @@ def index(request):
     # 判断是否为第一页或最后一页
     is_first_page = page == 1
     is_last_page = page == page_num
+    # 文章排序
+    posts_left = list()
+    posts_right = list()
+    for i in range(0, len(posts_this_page)):
+        if i % 2 == 0:
+            posts_left.append(posts_this_page[i])
+        else:
+            posts_right.append(posts_this_page[i])
 
     # 渲染
     return render(request, 'main/index.html', context={
         'title': '首页-Kindem的博客',
         'is_first_page': is_first_page,
         'is_last_page': is_last_page,
-        'posts1': posts_this_page[0:2],
-        'posts2': posts_this_page[2:],
+        'posts_left': posts_left,
+        'posts_right': posts_right,
         'page': page,
         'pre_page': page - 1,
         'next_page': page + 1
@@ -52,14 +60,22 @@ def index2(request, page):
     # 判断是否为第一页或最后一页
     is_first_page = page == 1
     is_last_page = page == page_num
+    # 文章排序
+    posts_left = list()
+    posts_right = list()
+    for i in range(0, len(posts_this_page)):
+        if i % 2 == 0:
+            posts_left.append(posts_this_page[i])
+        else:
+            posts_right.append(posts_this_page[i])
 
     # 渲染
     return render(request, 'main/index.html', context={
         'title': '首页-Kindem的博客',
         'is_first_page': is_first_page,
         'is_last_page': is_last_page,
-        'posts1': posts_this_page[0:2],
-        'posts2': posts_this_page[2:],
+        'posts_left': posts_left,
+        'posts_right': posts_right,
         'page': int(page),
         'pre_page': int(page) - 1,
         'next_page': int(page) + 1

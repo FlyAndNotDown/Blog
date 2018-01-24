@@ -45,58 +45,43 @@
             <div class="container">
                 <br>
                 <div class="row">
-                    {% for post in posts1 %}
-                        <div class="col s12 m12 l6 xl6">
-                            <div class="card medium z-depth-3 hoverable">
-                                <div class="card-image">
-                                    <img src="{{ post.images.0.location }}">
-                                    <span class="card-title">{{ post.title }}</span>
-                                </div>
+                    <div class="col s12 m12 l6 xl6">
+                        {% for post in posts_left %}
+                            <div class="card white">
                                 <div class="card-content">
-                                    <p>{{ post.body | truncatewords:"60" }} -- {{ post.created_time }}</p>
+                                    <span class="card-title">{{ post.title }}</span>
+                                    <p>{{ post.excerpt }}</p>
                                 </div>
                                 <div class="card-action">
-                                    <a href="#" class="read-all-post-link">阅读全文</a>
-                                    <a href="#" class="share-link">分享</a>
+                                    <a href="/post/{{ post.pk }}">阅读全文</a>
+                                    <a href="#">分享文章</a>
+                                    <span class="right">{{ post.created_time }}</span>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
-                </div>
-                <div class="row">
-                    {% for post in posts2 %}
-                        <div class="col s12 m12 l6 xl6">
-                            <div class="card medium z-depth-3 hoverable">
-                                <div class="card-image">
-                                    <img src="{{ post.images.0.location }}">
-                                    <span class="card-title">{{ post.title }}</span>
-                                </div>
+                        {% endfor %}
+                    </div>
+                    <div class="col s12 m12 l6 xl6">
+                        {% for post in posts_right %}
+                            <div class="card white">
                                 <div class="card-content">
-                                    <p>{{ post.body | truncatewords:"60" }} -- {{ post.created_time }}</p>
+                                    <span class="card-title">{{ post.title }}</span>
+                                    <p>{{ post.excerpt }}</p>
                                 </div>
                                 <div class="card-action">
-                                    <a href="#" class="read-all-post-link">阅读全文</a>
-                                    <a href="#" class="share-link">分享</a>
+                                    <a href="/post/{{ post.pk }}">阅读全文</a>
+                                    <a href="#">分享文章</a>
+                                    <span class="right">{{ post.created_time }}</span>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
             <div class="col s12 m12 l12 xl12">
                 <div class="row center">
                     <ul class="pagination">
-                        {% if is_first_page %}
-                            <li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>
-                        {% else %}
-                            <li class="waves-effect"><a href="/{{ pre_page }}"><i class="material-icons">chevron_left</i></a></li>
-                        {% endif %}
-
-                        {% if is_last_page %}
-                            <li class="disabled"><a><i class="material-icons">chevron_right</i></a></li>
-                        {% else %}
-                            <li class="waves-effect"><a href="/{{ next_page }}"><i class="material-icons">chevron_right</i></a></li>
-                        {% endif %}
+                        <li class="disabled"><a href="#"><i class="material-icons">chevron_left</i></a></li>
+                        <li class="waves-effect"><a href="#"><i class="material-icons">chevron_right</i></a></li>
                     </ul>
                 </div>
             </div>
