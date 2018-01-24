@@ -77,19 +77,19 @@ WSGI_APPLICATION = 'Blog.wsgi.application'
 
 DATABASES = {
     # 原默认数据库
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    # }
-    # MySQL开发时数据库
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'site',
-        'USER': 'kindem',
-        'PASSWORD': 'hwq@3764611#',
-        'HOST': '118.89.108.107',
-        'PORT': 3306
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
+    # MySQL开发时数据库
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'site',
+    #     'USER': 'kindem',
+    #     'PASSWORD': 'hwq@3764611#',
+    #     'HOST': '118.89.108.107',
+    #     'PORT': 3306
+    # }
     # MySQL运行时数据库
     # 'running': {
     #     'ENGINE': 'django.db.backends.mysql',
