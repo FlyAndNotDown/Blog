@@ -11,6 +11,9 @@ class Tag(models.Model):
     # 标签名
     name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.name
+
 
 class Post(models.Model):
     """
@@ -34,6 +37,9 @@ class Post(models.Model):
     modified_time = models.DateTimeField()
     # 标签
     tags = models.ManyToManyField(Tag, blank=True)
+
+    def __str__(self):
+        return self.title
 
     def get_absolute_url(self):
         return reverse('main:post', kwargs={'pk': self.pk})
