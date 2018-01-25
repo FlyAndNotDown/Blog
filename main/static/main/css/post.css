@@ -7,21 +7,25 @@ h1 {
 }
 
 h2 {
-    font-size: 45px;
-}
-
-h3 {
     font-size: 40px;
 }
 
-h4, h5, h6 {
-    font-size: 35px;
+h3 {
+    font-size: 30px;
 }
 
-.display-none {
-    display: none;
+h4, h5, h6 {
+    font-size: 25px;
+}
+
+p {
+    font-size: 20px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
 }
 
 body {
-    font-family: "Microsoft YaHei UI Light";
+    font-family: "Microsoft YaHei UI Light", monospace;
 }

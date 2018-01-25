@@ -4,10 +4,10 @@ $(document).ready(function () {
         delay: 50
     });
 
-    // 为 p 标签添加 flow-text 类
-    $('p').addClass('flow-text');
-    $('#post-container').show();
-    $('#footer').show();
+    // // 为 p 标签添加 flow-text 类
+    // $('p').addClass('flow-text');
+    // $('#post-container').show();
+    // $('#footer').show();
 
     // donate modal 初始化
     $('.modal').modal();
