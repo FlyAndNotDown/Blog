@@ -14,7 +14,7 @@ def index(request):
     # 页数为 1
     page = 1
     # 获取总页数
-    page_num = len(posts) / INDEX_POST_PER_PAGE + 1
+    page_num = int(len(posts) / INDEX_POST_PER_PAGE + 1)
     # 错误检测
     if not 0 < page <= page_num:
         return Http404()
@@ -50,7 +50,7 @@ def index2(request, page):
     # 获取所有文章，按照时间顺序排序
     posts = Post.objects.all().order_by('-created_time')
     # 获取总页数
-    page_num = len(posts) / INDEX_POST_PER_PAGE + 1
+    page_num = int(len(posts) / INDEX_POST_PER_PAGE + 1)
     # 错误检测
     if not 0 < int(page) <= page_num:
         return Http404()
