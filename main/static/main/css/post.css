@@ -18,7 +18,7 @@ h4, h5, h6 {
     font-size: 25px;
 }
 
-p {
+p, a, li {
     font-size: 20px;
 }
 
