@@ -9,6 +9,11 @@ $(document).ready(function () {
     // $('#post-container').show();
     // $('#footer').show();
 
+    // 为返回按键添加响应
+    $('.go-back').click(function () {
+        window.history.back();
+    });
+
     // donate modal 初始化
     $('.modal').modal();
     // 绑定捐赠按钮事件

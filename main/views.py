@@ -140,6 +140,7 @@ def post(request, pk):
     phase_modified = __get_phase_days_and_hours(datetime.utcnow(), p.modified_time)
 
     return render(request, 'main/post.html', context={
+        'title': p.title + '-Kindem的博客',
         'post': p,
         'phase_days_created': phase_created['days'],
         'phase_hours_created': phase_created['hours'],
