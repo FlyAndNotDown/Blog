@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # sitemap
+    'django.contrib.sitemaps',
     # kindem's blog main site
     'main'
 ]
