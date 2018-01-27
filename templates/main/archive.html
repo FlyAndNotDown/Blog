@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
-{% block additional-js %}
+{% block additional-css %}
     <link href="{% static 'main/css/archive.css' %}" rel="stylesheet">
 {% endblock %}
 
@@ -65,6 +65,6 @@
     </div>
 {% endblock %}
 
-{% block additional-css %}
+{% block additional-js %}
     <script src="{% static 'main/js/archive.js' %}"></script>
 {% endblock %}
