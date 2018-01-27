@@ -34,23 +34,23 @@
                         {% if phase_days_created == 0 %}
                             &nbsp;&nbsp;&nbsp;
                             <a href="#" class="grey-text lighten-3 tooltipped" data-position="bottom"data-delay="50"
-                               data-tooltip="{{ post.created_time }}">{{ phase_hours_created }} 小时前</a>
+                               data-tooltip="{{ post.created_time }}">{{ phase_hours_created }}小时前</a>
                         {% else %}
                             &nbsp;&nbsp;&nbsp;
                             <a href="#" class="grey-text lighten-3 tooltipped" data-position="bottom" data-delay="50"
                                data-tooltip="{{ post.created_time }}">
-                                {{ phase_days_created }} 天{{ phase_hours_created }} 小时前</a>
+                                {{ phase_days_created }}天{{ phase_hours_created }}小时前</a>
                         {% endif %}
                         &nbsp;&nbsp;
                         {% if phase_days_modified == 0 %}
                             &nbsp;&nbsp;&nbsp;
                             <a href="#" class="grey-text lighten-3 tooltipped" data-position="bottom" data-delay="50"
-                               data-tooltip="{{ post.modified_time }}">{{ phase_hours_modified }} 小时前</a>
+                               data-tooltip="{{ post.modified_time }}">{{ phase_hours_modified }}小时前</a>
                         {% else %}
                             &nbsp;&nbsp;&nbsp;
                             <a href="#" class="grey-text lighten-3 tooltipped" data-position="bottom" data-delay="50"
                                data-tooltip="{{ post.modified_time }}">
-                                {{ phase_days_modified }} 天{{ phase_hours_modified }} 小时前</a>
+                                {{ phase_days_modified }}天{{ phase_hours_modified }}小时前</a>
                         {% endif %}
                     </div>
                     <div class="row center">
