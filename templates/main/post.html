@@ -31,23 +31,26 @@
                 <div class="col s12 m12 l10 offset-l1 xl10 offset-xl1 main">
                     <h2 class="center">{{ post.title }}</h2>
                     <div class="row center">
-                        {% if phase_days_created == 0 %}
+                        <div>
+                            {% if phase_days_created == 0 %}
                             <a href="#" class="grey-text lighten-3 tooltipped" data-position="bottom"data-delay="50"
-                               data-tooltip="{{ post.created_time }}">{{ phase_hours_created }}小时前</a>
+                               data-tooltip="{{ post.created_time }}">发表时间:{{ phase_hours_created }}小时前</a>
                         {% else %}
                             <a href="#" class="grey-text lighten-3 tooltipped" data-position="bottom" data-delay="50"
                                data-tooltip="{{ post.created_time }}">
-                                {{ phase_days_created }}天{{ phase_hours_created }}小时前</a>
+                                发表时间:{{ phase_days_created }}天{{ phase_hours_created }}小时前</a>
                         {% endif %}
-                        &nbsp;&nbsp;
-                        {% if phase_days_modified == 0 %}
-                            <a href="#" class="grey-text lighten-3 tooltipped" data-position="bottom" data-delay="50"
-                               data-tooltip="{{ post.modified_time }}">{{ phase_hours_modified }}小时前</a>
-                        {% else %}
-                            <a href="#" class="grey-text lighten-3 tooltipped" data-position="bottom" data-delay="50"
-                               data-tooltip="{{ post.modified_time }}">
-                                {{ phase_days_modified }}天{{ phase_hours_modified }}小时前</a>
-                        {% endif %}
+                        </div>
+                        <div>
+                            {% if phase_days_modified == 0 %}
+                                <a href="#" class="grey-text lighten-3 tooltipped" data-position="bottom" data-delay="50"
+                                   data-tooltip="{{ post.modified_time }}">最后修改:{{ phase_hours_modified }}小时前</a>
+                            {% else %}
+                                <a href="#" class="grey-text lighten-3 tooltipped" data-position="bottom" data-delay="50"
+                                   data-tooltip="{{ post.modified_time }}">
+                                    最后修改:{{ phase_days_modified }}天{{ phase_hours_modified }}小时前</a>
+                            {% endif %}
+                        </div>
                     </div>
                     <div class="row center">
                         &nbsp;
