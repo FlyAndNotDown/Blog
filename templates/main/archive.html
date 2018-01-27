@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block additional-js %}
+    <link href="{% static 'main/css/archive.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block navbar %}
+    <nav class="nav-extended cyan">
+        <div class="nav-wrapper container">
+            <a href="#" class="brand-logo">Kindem</a>
+            <ul class="right">
+                <li><a href="#"><i class="material-icons">search</i></a></li>
+                <li><a href="#"><i class="material-icons hide-on-med-and-down">person</i></a></li>
+            </ul>
+            <ul class="left hide-on-large-only">
+                <li><a href="#"><i class="material-icons">person</i></a></li>
+            </ul>
+        </div>
+        <div class="nav-content container">
+
+            <ul class="tabs tabs-transparent">
+                <li class="tab"><a target="_blank" href="/">首页</a></li>
+                <li class="tab"><a href="#" class="active">归档</a></li>
+                <li class="tab"><a target="_blank" href="/about">关于</a></li>
+            </ul>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block parallax %}
+    <div class="parallax-container">
+        <div class="parallax"><img src="{% static 'main/img/index_bg.jpg' %}"></div>
+        <div class="center white-text">
+            <br><br><br><br><br><br><br>
+            <h2>History is always interesting</h2>
+        </div>
+    </div>
+{% endblock %}
+
+{% block main %}
+    <div class="section teal lighten-5">
+        <div class="row">
+            <div class="container">
+                <br>
+                <!--按照时间顺序存放的文章Collection-->
+                <div class="col s12 m12 l12 xl12">
+                    <div class="row">
+                        {% for dict in posts_evert_year %}
+                            <h2>{{ dict.year }}</h2>
+                            <ul class="collection z-depth-1">
+                                {% for p in dict.posts %}
+                                    <a href="/post/{{ p.pk }}" class="collection-item black-text">
+                                        {{ p.created_time.month }}.{{ p.created_time.day }}&nbsp;{{ p.title }}
+                                    </a>
+                                {% endfor %}
+                            </ul>
+                        {% endfor %}
+                    </div>
+                    <div class="divider"></div>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block additional-css %}
+    <script src="{% static 'main/js/archive.js' %}"></script>
+{% endblock %}

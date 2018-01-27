@@ -11,5 +11,7 @@ urlpatterns = [
     # 关于页面
     url(r'^about$', views.about, name='about'),
     # 文章页面
-    url(r'^post/(?P<pk>[1-9][0-9]*)$', views.post, name='post')
+    url(r'^post/(?P<pk>[1-9][0-9]*)$', views.post, name='post'),
+    # 归档页面
+    url(r'^archive$', views.archive, name='archive')
 ]

@@ -8,6 +8,8 @@ import markdown
 
 # 首页每一页的文章数量
 INDEX_POST_PER_PAGE = 8
+# 博客诞生年份
+BLOG_START_YEAR = 2018
 
 
 # 求两段时间相差的日数和小时数
@@ -42,6 +44,7 @@ def __get_phase_days_and_hours(now, old):
     }
 
 
+# 首页请求
 def index(request):
     # 获取所有文章，按照时间顺序排序
     posts = Post.objects.all().order_by('-created_time')
@@ -80,6 +83,7 @@ def index(request):
     })
 
 
+# 首页请求2
 def index2(request, page):
     # 获取所有文章，按照时间顺序排序
     posts = Post.objects.all().order_by('-created_time')
@@ -116,12 +120,14 @@ def index2(request, page):
     })
 
 
+# 关于页面请求
 def about(request):
     return render(request, 'main/about.html', context={
         'title': '关于Kindem-Kindem的博客'
     })
 
 
+# 文章页面
 def post(request, pk):
     # 获取对象
     p = get_object_or_404(Post, pk=pk)
@@ -146,4 +152,27 @@ def post(request, pk):
         'phase_hours_created': phase_created['hours'],
         'phase_days_modified': phase_modified['days'],
         'phase_hours_modified': phase_modified['hours']
+    })
+
+
+# 归档页面
+def archive(request):
+    # 获取所有文章
+    posts = Post.objects.all().order_by('-created_time')
+    # 获取当前年份
+    year_now = datetime.now().year
+
+    # 按照年份分类的文章聊表
+    posts_every_year = list()
+    # 获取每一年里发表的文章
+    for i in range(0, year_now + 1 - BLOG_START_YEAR):
+        posts_every_year.append({})
+        posts_every_year[i]['year'] = BLOG_START_YEAR + i
+        posts_every_year[i]['posts'] = list()
+        for p in posts.filter(created_time__year=BLOG_START_YEAR + i):
+            posts_every_year[i]['posts'].append(p)
+
+    return render(request, 'main/archive.html', context={
+        'title': '归档-Kindem的博客',
+        'posts_evert_year': posts_every_year
     })
