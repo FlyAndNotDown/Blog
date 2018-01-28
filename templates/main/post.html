@@ -3,6 +3,7 @@
 
 {% block additional-css %}
     <link href="{% static 'main/css/post.css' %}" rel="stylesheet">
+    <link href="{% static 'main/lib/markdown/highlights/github.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block navbar %}
@@ -28,8 +29,8 @@
         <div class="container" id="post-container">
             <br>
             <div class="row">
-                <div class="col s12 m12 l10 offset-l1 xl10 offset-xl1 main">
-                    <h2 class="center">{{ post.title }}</h2>
+                <div class="col s12 m12 l10 offset-l1 xl10 offset-xl1">
+                    <h1 class="center">{{ post.title }}</h1>
                     <div class="row center">
                         <div>
                             {% if phase_days_created == 0 %}
@@ -58,11 +59,9 @@
                             <a><div class="chip hoverable z-depth-1">&nbsp;&nbsp;{{ tag_obj.name }}&nbsp;&nbsp;</div></a>
                         {% endfor %}
                     </div>
-                    <div class="row">
+                    <div class="row main">
                         <div class="col s12 m12 l12 xl12">
-                            {% autoescape off %}
-                                {{ post.body }}
-                            {% endautoescape %}
+                            {{ post.body | safe }}
                         </div>
                     </div>
                     <br>
