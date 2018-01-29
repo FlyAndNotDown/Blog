@@ -32,7 +32,7 @@ class Post(models.Model):
     # 摘要
     excerpt = models.CharField(max_length=200, blank=True)
     # 创建时间
-    created_time = models.DateTimeField()
+    created_time = models.DateTimeField(auto_now_add=True)
     # 修改时间
     modified_time = models.DateTimeField(auto_now=True)
     # 标签
