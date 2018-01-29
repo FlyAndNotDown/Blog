@@ -55,5 +55,7 @@ urlpatterns = [
     # 归档页面
     url(r'^archive$', views.archive, name='archive'),
     # sitemap
-    url(r'^sitemap.xml$', sitemap, {'sitemaps': sitemaps}, name='sitemap')
+    url(r'^sitemap.xml$', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
+    # robots.txt
+    url(r'^robots.txt$', robots, name='robots')
 ]

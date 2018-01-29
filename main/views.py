@@ -186,3 +186,8 @@ def archive(request):
         'title': '归档-Kindem的博客',
         'posts_evert_year': posts_every_year
     })
+
+
+# robots.txt
+def robots(request):
+    return HttpResponse(r'User-agent: *\nAllow: /')
