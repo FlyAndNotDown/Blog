@@ -57,5 +57,5 @@ urlpatterns = [
     # sitemap
     url(r'^sitemap.xml$', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
     # robots.txt
-    url(r'^robots.txt$', robots, name='robots')
+    url(r'^robots.txt$', views.robots, name='robots')
 ]
