@@ -34,7 +34,7 @@ class Post(models.Model):
     # 创建时间
     created_time = models.DateTimeField()
     # 修改时间
-    modified_time = models.DateTimeField()
+    modified_time = models.DateTimeField(auto_now=True)
     # 标签
     tags = models.ManyToManyField(Tag, blank=True)
 
