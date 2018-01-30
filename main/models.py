@@ -43,3 +43,18 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('main:post', kwargs={'pk': self.pk})
+
+
+class KUser(models.Model):
+    """
+    自定义用户 Model
+    1. username char(20) 用户名
+    2. password char(64) 密码
+    3. salt char(16) 盐
+    """
+    # 用户名
+    username = models.CharField(max_length=20)
+    # SHA-256密码加盐哈希值
+    password = models.CharField(max_length=64)
+    # 盐
+    salt = models.CharField(max_length=16)
