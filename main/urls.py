@@ -57,5 +57,9 @@ urlpatterns = [
     # sitemap
     url(r'^sitemap.xml$', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
     # robots.txt
-    url(r'^robots.txt$', views.robots, name='robots')
+    url(r'^robots.txt$', views.robots, name='robots'),
+    # 通知页面
+    url(r'^message$', views.message, name='message'),
+    # github登录
+    url(r'^login/github$', views.login_github, name='login_github')
 ]

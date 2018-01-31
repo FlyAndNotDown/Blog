@@ -44,3 +44,20 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('main:post', kwargs={'pk': self.pk})
 
+
+class KUser(models.Model):
+    """
+    用户 Model
+    # 1. user_type char(10) 用户类型
+    # 2. nickname char(20) 昵称
+    # 3. uid integer 用户唯一ID
+    # 4. avatar char(100) 用户头像
+    """
+    # 用户类型
+    user_type = models.CharField(max_length=10)
+    # 昵称
+    nickname = models.CharField(max_length=20)
+    # 用户唯一ID
+    uid = models.integer = models.IntegerField()
+    # 用户头像
+    avatar = models.CharField(max_length=100)

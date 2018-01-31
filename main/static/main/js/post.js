@@ -10,7 +10,7 @@ $(document).ready(function () {
     // $('#footer').show();
 
     // 为返回按键添加响应
-    $('.go-back').click(function () {
+    $('#go-back').click(function () {
         window.history.back();
     });
 

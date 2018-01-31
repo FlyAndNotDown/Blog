@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block additional-css %}
+    <link href="{% static 'main/css/message.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block parallax %}
+{% endblock %}
+
+{% block navbar %}
+    <nav class="nav-extended cyan">
+        <div class="nav-wrapper container">
+            <a class="brand-logo center">通知</a>
+            <ul class="left">
+                <li><a id="go-back"><i class="material-icons">arrow_back</i></a></li>
+            </ul>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block main %}
+    <div class="section teal lighten-5">
+        <div class="row">
+            <div class="container">
+                <br>
+                <div class="row">
+                    <div class="col s12 m12 l6 xl6">
+                        {% for card in left_cards %}
+                            <div class="card white">
+                                <div class="card-content">
+                                    <span class="card-title">{{ card.title }}</span>
+                                    <p>{{ card.text }}</p>
+                                </div>
+                                <div class="card-action">
+                                    {% for link in card.links %}
+                                        <a href="{{ link.href }}">{{ link.name }}</a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="col s12 m12 l6 xl6">
+                        {% for card in right_cards %}
+                            <div class="card white">
+                                <div class="card-content">
+                                    <span class="card-title">{{ card.title }}</span>
+                                    <p>{{ card.text }}</p>
+                                </div>
+                                <div class="card-action">
+                                    {% for link in card.links %}
+                                        <a href="{{ link.href }}">{{ link.name }}</a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block additional-js %}
+    <script src="{% static 'main/js/message.js' %}" rel="stylesheet"></script>
+{% endblock %}

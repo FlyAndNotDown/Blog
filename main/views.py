@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.paginator import Paginator
 from .models import Post, Tag
 from datetime import datetime
+import urllib.parse
+import urllib.request
 import markdown
 
 
@@ -10,6 +12,10 @@ import markdown
 INDEX_POST_PER_PAGE = 8
 # 博客诞生年份
 BLOG_START_YEAR = 2018
+
+# GitHub登录API参数
+github_client_id = '2b18fc8f7305f2e73416'
+github_client_secret = 'eee6029f6f6f5873cc3fc8fcf9ebdb86ef375349'
 
 
 # 求两段时间相差的日数和小时数
@@ -191,3 +197,64 @@ def archive(request):
 # robots.txt
 def robots(request):
     return HttpResponse(r'User-agent: *\nAllow: /')
+
+
+class MessageCard:
+    """
+    通知卡片类
+    """
+    def __init__(self, title, text, links):
+        """
+        构造
+        :param title: 标题
+        :param text: 内容
+        :param links: 链接字典列表
+        """
+        self.title = title
+        self.text = text
+        self.links = list()
+        for link in links:
+            self.links.append(link)
+
+
+# 通知页面
+def message(request):
+    # 左右两侧的通知卡片
+    left_cards = list()
+    right_cards = list()
+    # 如果用户已经登录了
+    if request.session.get('login_state'):
+        # TODO
+        pass
+    else:
+        # 保存登录之前的页面
+        request.session['login_from'] = request.META.get('HTTP_REFERER', '/')
+
+        left_cards.append(MessageCard(
+            '你还没登录哦!',
+            '使用下面给出的第三方认证登录本站来参与评论', [{
+                'name': 'GitHub',
+                'href': 'https://github.com/login/oauth/authorize?client_id=' + github_client_id +
+                            '&redirect_uri=' + 'http://www.kindemh.cn/login/github'
+            }]
+        ))
+        return render(request, 'main/message.html', context={
+            'title': '通知-Kindem的博客',
+            'left_cards': left_cards,
+            'right_cards': right_cards
+        })
+
+
+# github登录回调
+def login_github(request):
+    # 获取 code
+    code = request.GET.get('code')
+    # 准备POST参数用于交换 access_token
+    data = bytes(urllib.parse.urlencode({
+        'client_id': github_client_id,
+        'client_secret': github_client_secret,
+        'code': code
+    }), encoding='utf8')
+    # 发送Http请求用于交换 access_token
+    response = urllib.request.urlopen('https://github.com/login/oauth/access_token', data=data)
+    print(response.read())
