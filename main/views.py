@@ -6,6 +6,7 @@ from datetime import datetime
 import urllib.parse
 import urllib.request
 import markdown
+import json
 
 
 # 首页每一页的文章数量
@@ -258,4 +259,9 @@ def login_github(request):
     response = urllib.request.urlopen('https://github.com/login/oauth/access_token', data=data)
     # 提取 access_token
     access_token = str(response.read(), encoding='utf-8').split('&')[0].split('=')[1]
-    return HttpResponse(access_token)
+    # 使用 access_token 获取用户信息
+    response = urllib.request.urlopen('https://api.github.com/user?access_token=' + access_token)
+    # 解码成Python对象
+    user_info = json.loads(response.read().decode('utf-8'))
+
+    # TODO 准备进行数据库的相关操作
