@@ -257,5 +257,5 @@ def login_github(request):
     # 发送Http请求用于交换 access_token
     response = urllib.request.urlopen('https://github.com/login/oauth/access_token', data=data)
     # 提取 access_token
-    access_token = response.read().split('&')[0].split('=')[1]
-    return HttpResponse(response)
+    access_token = response.read().split('&')[0]
+    return HttpResponse(access_token)
