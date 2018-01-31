@@ -234,8 +234,7 @@ def message(request):
             '你还没登录哦!',
             '使用下面给出的第三方认证登录本站来参与评论', [{
                 'name': 'GitHub',
-                'href': 'https://github.com/login/oauth/authorize?client_id=' + github_client_id +
-                            '&redirect_uri=' + 'http://www.kindemh.cn/login/github'
+                'href': 'https://github.com/login/oauth/authorize?client_id=' + github_client_id
             }]
         ))
         return render(request, 'main/message.html', context={
@@ -257,4 +256,4 @@ def login_github(request):
     }), encoding='utf8')
     # 发送Http请求用于交换 access_token
     response = urllib.request.urlopen('https://github.com/login/oauth/access_token', data=data)
-    print(response.read())
+    return HttpResponse(response.read())
