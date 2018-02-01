@@ -44,3 +44,7 @@ body {
     list-style: decimal outside;
     padding-left: 0;
 }
+
+.pre {
+    background-color: lightgray;
+}
