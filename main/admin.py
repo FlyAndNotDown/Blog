@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Tag
+from .models import Post, Tag, KUser
 
 
 class PostAdmin(admin.ModelAdmin):
@@ -9,6 +9,10 @@ class PostAdmin(admin.ModelAdmin):
 class TagAdmin(admin.ModelAdmin):
     list_display = ['name']
 
+class KUserAdmin(admin.ModelAdmin):
+    list_display = ['user_type', 'nickname', 'uid', 'avatar']
+
 
 admin.site.register(Post, PostAdmin)
 admin.site.register(Tag, TagAdmin)
+admin.site.register(KUser, KUserAdmin)

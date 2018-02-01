@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.paginator import Paginator
-from .models import Post, Tag
+from .models import Post, Tag, KUser
 from datetime import datetime
 import urllib.parse
 import urllib.request
@@ -263,5 +263,29 @@ def login_github(request):
     response = urllib.request.urlopen('https://api.github.com/user?access_token=' + access_token)
     # 解码成Python对象
     user_info = json.loads(response.read().decode('utf-8'))
+    # 查询数据库，看用户是否已经在数据库中
+    # 如果已经有了
+    if KUser.objects.filter(user_type='github', uid=user_info['id']).exists():
+        # 将登陆信息存入 session
+        request.session['login_state'] = True
+        request.session['user_type'] = 'github'
+        request.session['uid'] = user_info['id']
+        request.session['nickname'] = user_info['login']
+        request.session['avatar'] = user_info['avatar_url']
+    # 如果没有
+    else:
+        # 将信息存入 session 和数据库
+        request.session['login_state'] = True
+        request.session['user_type'] = 'github'
+        request.session['uid'] = user_info['id']
+        request.session['nickname'] = user_info['login']
+        request.session['avatar'] = user_info['avatar_url']
+        k_user = KUser(
+            user_type='github',
+            uid=user_info['id'],
+            nickname=user_info['login'],
+            avatar=user_info['avatar_url'])
+        k_user.save()
 
-    # TODO 准备进行数据库的相关操作
+    # 返回，并且重定向到登录前的网站
+    return HttpResponseRedirect(request.session['login_from'])
