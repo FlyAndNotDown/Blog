@@ -19,38 +19,6 @@ github_client_id = '2b18fc8f7305f2e73416'
 github_client_secret = 'eee6029f6f6f5873cc3fc8fcf9ebdb86ef375349'
 
 
-# 求两段时间相差的日数和小时数
-def __get_phase_days_and_hours(now, old):
-    years = now.year - old.year
-    days = now.day - old.day
-    hours = now.hour - old.hour
-
-    # 日数基数
-    days += years * 365
-    # 往年闰年补差
-    for i in range(old.year, now.year):
-        if int(i % 100) == 0:
-            if int(i % 400) == 0:
-                days += 1
-        else:
-            if int(i % 4) == 0:
-                days += 1
-    # 今年闰年补差
-    if now.month > 2:
-        days += 1
-
-    # 如果小时差为负数，则小时数+24，日数-1
-    if hours < 0:
-        hours += 24
-        days -= 1
-
-    # 返回字典
-    return {
-        'days': days,
-        'hours': hours
-    }
-
-
 # 首页请求
 def index(request):
     # 获取所有文章，按照时间顺序排序
@@ -159,16 +127,16 @@ def post(request, pk):
     )
 
     # 求时间差
-    phase_created = __get_phase_days_and_hours(datetime.utcnow(), p.created_time)
-    phase_modified = __get_phase_days_and_hours(datetime.utcnow(), p.modified_time)
+    phase_created = datetime.utcnow() - p.created_time
+    phase_modified = datetime.utcnow() - p.modified_time
 
     return render(request, 'main/post.html', context={
         'title': p.title + '-Kindem的博客',
         'post': p,
-        'phase_days_created': phase_created['days'],
-        'phase_hours_created': phase_created['hours'],
-        'phase_days_modified': phase_modified['days'],
-        'phase_hours_modified': phase_modified['hours']
+        'phase_days_created': phase_created.days,
+        'phase_hours_created': int(phase_created.seconds / 60),
+        'phase_days_modified': phase_modified.days,
+        'phase_hours_modified': int(phase_modified.seconds / 60)
     })
 
 
