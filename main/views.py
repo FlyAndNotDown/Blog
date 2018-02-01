@@ -7,6 +7,7 @@ import urllib.parse
 import urllib.request
 import markdown
 import json
+import pytz
 
 
 # 首页每一页的文章数量
@@ -127,16 +128,16 @@ def post(request, pk):
     )
 
     # 求时间差
-    phase_created = datetime.utcnow() - p.created_time
-    phase_modified = datetime.utcnow() - p.modified_time
+    phase_created = datetime.utcnow().replace(tzinfo=pytz.timezone('UTC')) - p.created_time
+    phase_modified = datetime.utcnow().replace(tzinfo=pytz.timezone('UTC')) - p.modified_time
 
     return render(request, 'main/post.html', context={
         'title': p.title + '-Kindem的博客',
         'post': p,
         'phase_days_created': phase_created.days,
-        'phase_hours_created': int(phase_created.seconds / 60),
+        'phase_hours_created': int(phase_created.seconds / 3600),
         'phase_days_modified': phase_modified.days,
-        'phase_hours_modified': int(phase_modified.seconds / 60)
+        'phase_hours_modified': int(phase_modified.seconds / 3600)
     })
 
 
