@@ -46,7 +46,12 @@ body {
 }
 
 pre {
-    background-color: lightgray;
-    padding: 15px;
-    height: 100%;
-}
+    background-color: #f7f7f7;
+    padding: 10px 15px;
+    width: 100%;
+    /*自动换行*/
+    white-space: pre-wrap;
+    word-break: break-all;
+} span {
+    font-size: 16px;
+  }
