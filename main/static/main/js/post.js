@@ -13,7 +13,4 @@ $(document).ready(function () {
     $('#go-back').click(function () {
         window.history.back();
     });
-
-    // 评论字数统计
-    $('textarea#comment-input').characterCounter();
 });
