@@ -66,5 +66,5 @@ urlpatterns = [
     # RSS
     url(r'^rss$', AllPostRssFeed(), name='rss'),
     # 注销
-    url(r'^logout$', views.logout, name='logout')
+    url(r'^/login/logout$', views.logout, name='logout')
 ]
