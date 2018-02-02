@@ -1,5 +1,6 @@
 from django.contrib.syndication.views import Feed
 from .models import Post
+import markdown
 
 
 # RSS 订阅
@@ -24,4 +25,22 @@ class AllPostRssFeed(Feed):
 
     # RSS阅读器中内容条目的描述
     def item_description(self, item):
+        item.body = markdown.markdown(
+            item.body,
+            extensions=[
+                'markdown.extensions.sane_lists',
+                'markdown.extensions.extra',
+                'markdown.extensions.codehilite',
+                'markdown.extensions.toc',
+                'markdown.extensions.abbr',
+                'markdown.extensions.attr_list',
+                'markdown.extensions.def_list',
+                'markdown.extensions.fenced_code',
+                'markdown.extensions.footnotes',
+                'markdown.extensions.smart_strong',
+                'markdown.extensions.meta',
+                'markdown.extensions.nl2br',
+                'markdown.extensions.tables'
+            ]
+        )
         return item.body
