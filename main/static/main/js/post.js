@@ -14,10 +14,6 @@ $(document).ready(function () {
         window.history.back();
     });
 
-    // donate modal 初始化
-    $('.modal').modal();
-    // 绑定捐赠按钮事件
-    $('.donate-modal-trigger').click(function () {
-        $('#donate-modal').modal('open')
-    });
+    // 评论字数统计
+    $('textarea#comment-input').characterCounter();
 });

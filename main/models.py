@@ -87,4 +87,4 @@ class Comment(models.Model):
     # 评论发表时间
     time = models.DateTimeField()
     # 评论内容
-    context = models.TextField()
+    context = models.CharField(max_length=500)

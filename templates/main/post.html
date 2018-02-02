@@ -67,11 +67,50 @@
                             {{ post.body | safe }}
                         </div>
                     </div>
-                    <!--打赏-->
-                    <div class="row">
-                        <!--TODO-->
+
+                    <!--扩展-->
+                    <div class="row extend">
+                        <div class="col s12 m12 l12 xl12">
+                            <!--赞赏-->
+                            <div class="row">
+                                <a class="btn cyan lighten-3">¥ 觉得文章有帮助?请随意打赏</a>
+                                <br>
+                                <br>
+                            </div>
+                            <div class="divider"></div>
+                            <br>
+                            <!--发表评论以及登录-->
+                            {% if login_state %}
+                                <!--发表评论-->
+                                <div class="row">
+                                    <div class="chip">
+                                        <img src="{{ avatar }}">
+                                        {{ nickname }}({{ user_type }})
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <div class="input-field">
+                                        <i class="material-icons prefix">mode_edit</i>
+                                        <textarea class="materialize-textarea" id="comment-input" data-length="500"></textarea>
+                                        <label for="comment-input">发表你的评论</label>
+                                    </div>
+                                </div>
+                                <div class="divider"></div>
+                            {% else %}
+                                <!--登录-->
+                                <div class="row">
+                                    <a class="btn cyan lighten-3 disabled">请登录后参与评论:</a>
+                                    <a class="btn cyan lighten-3" href="{{ github_login_link }}">GitHub</a>
+                                </div>
+                            {% endif %}
+                            <!--所有评论-->
+                            <div class="row">
+                                <div class="col s12 m12 l12 xl12">
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <br>
                 </div>
             </div>
             <br>

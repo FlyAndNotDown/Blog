@@ -45,11 +45,15 @@ body {
     padding-left: 0;
 }
 
-body .main{
+body .main {
     /*自动换行*/
     white-space: pre-wrap;
     word-break: break-all;
     word-wrap: break-word;
+    font-family: Consolas, "Courier New", "Microsoft YaHei UI Light", monospace;
+}
+
+body .extend {
     font-family: Consolas, "Courier New", "Microsoft YaHei UI Light", monospace;
 }
 

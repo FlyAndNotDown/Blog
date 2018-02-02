@@ -131,9 +131,29 @@ def post(request, pk):
     phase_created = datetime.utcnow().replace(tzinfo=pytz.timezone('UTC')) - p.created_time
     phase_modified = datetime.utcnow().replace(tzinfo=pytz.timezone('UTC')) - p.modified_time
 
+    # 获取用户登录状态
+    if request.session.get('login_state'):
+        login_state = True
+        user_type = request.session.get('user_type')
+        uid = request.session.get('uid')
+        nickname = request.session.get('nickname')
+        avatar = request.session.get('avatar')
+    else:
+        login_state = False
+        user_type = ''
+        uid = ''
+        nickname = ''
+        avatar = ''
+
     return render(request, 'main/post.html', context={
         'title': p.title + '-Kindem的博客',
         'post': p,
+        'login_state': login_state,
+        'user_type': user_type,
+        'uid': uid,
+        'nickname': nickname,
+        'avatar': avatar,
+        'github_login_link': 'https://github.com/login/oauth/authorize?client_id=' + github_client_id,
         'phase_days_created': phase_created.days,
         'phase_hours_created': int(phase_created.seconds / 3600),
         'phase_days_modified': phase_modified.days,
