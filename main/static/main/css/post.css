@@ -49,6 +49,7 @@ body {
     /*自动换行*/
     white-space: pre-wrap;
     word-break: break-all;
+    word-wrap: break-word;
 }
 
 pre {
