@@ -27,7 +27,7 @@
 }
 
 body {
-    font-family: Consolas, "Courier New", "Microsoft YaHei UI Light", monospace;
+    font-family: "Microsoft YaHei UI Light", monospace;
 }
 
 .section .codehilite pre {
@@ -50,6 +50,7 @@ body .main{
     white-space: pre-wrap;
     word-break: break-all;
     word-wrap: break-word;
+    font-family: Consolas, "Courier New", "Microsoft YaHei UI Light", monospace;
 }
 
 pre {
