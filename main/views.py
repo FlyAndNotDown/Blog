@@ -131,6 +131,9 @@ def post(request, pk):
     phase_created = datetime.utcnow().replace(tzinfo=pytz.timezone('UTC')) - p.created_time
     phase_modified = datetime.utcnow().replace(tzinfo=pytz.timezone('UTC')) - p.modified_time
 
+    # 保存登录之前的页面
+    request.session['login_from'] = request.META.get('HTTP_REFERER', '/')
+
     # 获取用户登录状态
     if request.session.get('login_state'):
         login_state = True
@@ -282,3 +285,12 @@ def login_github(request):
 
     # 返回，并且重定向到登录前的网站
     return HttpResponseRedirect(request.session['login_from'])
+
+
+# 注销
+def logout(request):
+    request.session['login_state'] = False
+    request.session['user_type'] = None
+    request.session['uid'] = None
+    request.session['nickname'] = None
+    request.session['avatar'] = None
