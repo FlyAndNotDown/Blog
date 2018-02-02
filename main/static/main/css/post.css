@@ -45,6 +45,12 @@ body {
     padding-left: 0;
 }
 
+body {
+    /*自动换行*/
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
 pre {
     background-color: #f7f7f7;
     padding: 10px 15px;
