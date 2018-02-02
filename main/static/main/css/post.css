@@ -45,7 +45,7 @@ body {
     padding-left: 0;
 }
 
-body {
+body .main{
     /*自动换行*/
     white-space: pre-wrap;
     word-break: break-all;
