@@ -194,8 +194,8 @@ def message(request):
     right_cards = list()
     # 如果用户已经登录了
     if request.session.get('login_state'):
-        # TODO
         pass
+
     else:
         # 保存登录之前的页面
         request.session['login_from'] = request.META.get('HTTP_REFERER', '/')

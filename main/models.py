@@ -61,3 +61,30 @@ class KUser(models.Model):
     uid = models.integer = models.IntegerField()
     # 用户头像
     avatar = models.CharField(max_length=100)
+
+
+class Comment(models.Model):
+    """
+    评论 Model
+    # 1. sender Integer发送者PK
+    # 2. receiver Integer 接受者PK
+    # 3. post Post外键 所在文章
+    # 4. level integer 评论继承等级
+    # 5. parent integer 父级评论PK
+    # 5. time datetime 评论发表时间
+    # 6. context text 评论内容
+    """
+    # 发送者PK
+    sender = models.IntegerField()
+    # 接受者PK
+    receiver = models.IntegerField()
+    # 所在文章
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    # 评论继承等级
+    level = models.IntegerField()
+    # 父级评论PK
+    parent = models.IntegerField()
+    # 评论发表时间
+    time = models.DateTimeField()
+    # 评论内容
+    context = models.TextField()
