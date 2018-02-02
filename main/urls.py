@@ -4,6 +4,7 @@ from django.contrib.sitemaps import Sitemap
 from django.contrib.sitemaps.views import sitemap
 from .models import Post
 from datetime import datetime
+from .feeds import AllPostRssFeed
 
 
 # 定制的 Sitemap
@@ -61,5 +62,7 @@ urlpatterns = [
     # 通知页面
     url(r'^message$', views.message, name='message'),
     # github登录
-    url(r'^login/github$', views.login_github, name='login_github')
+    url(r'^login/github$', views.login_github, name='login_github'),
+    # RSS
+    url(r'^rss$', AllPostRssFeed(), name='rss')
 ]
