@@ -10,7 +10,7 @@
     <nav class="nav-extended cyan">
         <div class="nav-wrapper container">
             <ul class="right hide-on-med-and-down">
-                <li><a href="/message"><i class="material-icons hide-on-med-and-down">person</i></a></li>
+                <li><a href="http://www.kindemh.cn/message"><i class="material-icons hide-on-med-and-down">person</i></a></li>
                 <li><a href="#"><i class="material-icons">search</i></a></li>
             </ul>
             <ul class="left">
@@ -29,7 +29,9 @@
             <br>
             <div class="row">
                 <div class="col s12 m12 l10 offset-l1 xl10 offset-xl1">
+                    <!--标题-->
                     <h1 class="center">{{ post.title }}</h1>
+                    <!--发表时间与最后修改时间-->
                     <div class="row center">
                         <div>
                             {% if phase_days_created == 0 %}
@@ -52,16 +54,22 @@
                             {% endif %}
                         </div>
                     </div>
+                    <!--标签-->
                     <div class="row center">
                         &nbsp;
                         {% for tag_obj in post.tags.all %}
                             <a><div class="chip hoverable z-depth-1">&nbsp;&nbsp;{{ tag_obj.name }}&nbsp;&nbsp;</div></a>
                         {% endfor %}
                     </div>
+                    <!--文章内容-->
                     <div class="row main">
                         <div class="col s12 m12 l12 xl12">
                             {{ post.body | safe }}
                         </div>
+                    </div>
+                    <!--打赏-->
+                    <div class="row">
+                        <!--TODO-->
                     </div>
                     <br>
                 </div>
