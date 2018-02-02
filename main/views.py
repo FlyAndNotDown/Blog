@@ -194,7 +194,11 @@ def message(request):
     right_cards = list()
     # 如果用户已经登录了
     if request.session.get('login_state'):
-        pass
+        return render(request, 'main/message.html', context={
+            'title': '通知-Kindem的博客',
+            'left_cards': left_cards,
+            'right_cards': right_cards
+        })
 
     else:
         # 保存登录之前的页面
