@@ -27,7 +27,7 @@
 }
 
 body {
-    font-family: "Microsoft YaHei UI Light", monospace;
+    font-family: "Microsoft YaHei UI Light", Consolas, "Courier New", monospace;
 }
 
 .section .codehilite pre {
