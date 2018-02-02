@@ -132,7 +132,7 @@ def post(request, pk):
     phase_modified = datetime.utcnow().replace(tzinfo=pytz.timezone('UTC')) - p.modified_time
 
     # 保存登录之前的页面
-    request.session['login_from'] = '/post/' + p.pk
+    request.session['login_from'] = '/post/' + str(p.pk)
 
     # 获取用户登录状态
     if request.session.get('login_state'):
