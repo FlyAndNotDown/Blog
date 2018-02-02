@@ -294,3 +294,6 @@ def logout(request):
     request.session['uid'] = None
     request.session['nickname'] = None
     request.session['avatar'] = None
+    return HttpResponse(json.dumps({
+        'state': True
+    }))
