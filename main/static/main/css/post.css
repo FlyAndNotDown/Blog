@@ -50,11 +50,11 @@ body .main {
     white-space: pre-wrap;
     word-break: break-all;
     word-wrap: break-word;
-    font-family: Consolas, "Courier New", "Microsoft YaHei UI Light", monospace;
+    font-family: Consolas, Roboto, "Microsoft YaHei UI Light", monospace;
 }
 
 body .extend {
-    font-family: Consolas, "Courier New", "Microsoft YaHei UI Light", monospace;
+    font-family: Consolas, Roboto, "Microsoft YaHei UI Light", monospace;
 } a.re-comment-link {
     font-size: 16px;
   }
