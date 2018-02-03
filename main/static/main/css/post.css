@@ -55,7 +55,9 @@ body .main {
 
 body .extend {
     font-family: Consolas, "Courier New", "Microsoft YaHei UI Light", monospace;
-}
+} a.re-comment-link {
+    font-size: 16px;
+  }
 
 pre {
     background-color: #f7f7f7;

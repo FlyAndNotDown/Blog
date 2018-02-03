@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.paginator import Paginator
-from .models import Post, Tag, KUser
+from .models import Post, KUser, Comment
 from datetime import datetime
 import urllib.parse
 import urllib.request
@@ -134,6 +134,30 @@ def post(request, pk):
     # 保存登录之前的页面
     request.session['login_from'] = '/post/' + str(p.pk)
 
+    # 获取一篇文章中的所有评论
+    comments_all = Comment.objects.filter(post=p.pk)
+    # 将所有用户的PK替换成实际的用户
+    for comment in comments_all:
+        comment.sender = KUser.objects.get(pk=comment.sender)
+        comment.receiver = KUser.objects.get(pk=comment.receiver)
+    # 取得这些评论中的所有父级评论
+    comments_level_1 = comments_all.filter(level=1)
+    # 新建一个list(dict())表用于存放所有的评论
+    comments = list()
+    i = 0
+    # 遍历所有父级评论
+    for parent in comments_level_1:
+        comments.append(dict())
+        # 为孩子评论预分配空间
+        comments[i]['children'] = list()
+        # 存入父级评论
+        comments[i]['parent'] = parent
+        # 存入孩子评论
+        for child in comments_all.filter(level=2, parent=parent.pk):
+            comments[i]['children'].append(child)
+        # 迭代
+        i += 1
+
     # 获取用户登录状态
     if request.session.get('login_state'):
         login_state = True
@@ -156,6 +180,8 @@ def post(request, pk):
         'uid': uid,
         'nickname': nickname,
         'avatar': avatar,
+        'comments': comments,
+        'comments_num': len(comments_all),
         'github_login_link': 'https://github.com/login/oauth/authorize?client_id=' + github_client_id,
         'phase_days_created': phase_created.days,
         'phase_hours_created': int(phase_created.seconds / 3600),

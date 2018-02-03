@@ -68,8 +68,8 @@ class Comment(models.Model):
     评论 Model
     # 1. sender Integer发送者PK
     # 2. receiver Integer 接受者PK
-    # 3. post Post外键 所在文章
-    # 4. level integer 评论继承等级
+    # 3. post integer 所在文章PK
+    # 4. level integer 评论继承等级(1为父级，2位子级)
     # 5. parent integer 父级评论PK
     # 5. time datetime 评论发表时间
     # 6. context text 评论内容
@@ -78,8 +78,8 @@ class Comment(models.Model):
     sender = models.IntegerField()
     # 接受者PK
     receiver = models.IntegerField()
-    # 所在文章
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    # 所在文章PK
+    post = models.IntegerField()
     # 评论继承等级
     level = models.IntegerField()
     # 父级评论PK
