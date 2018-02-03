@@ -102,7 +102,7 @@ def index2(request, page):
 def about(request):
     return render(request, 'main/about.html', context={
         'title': '关于Kindem-Kindem的博客',
-        'description': 'Kindem:一位想做全栈开发者的野生程序猿-Kindem的博客'
+        'description': 'Kindem:一只想做全栈开发者的野生程序猿-Kindem的博客'
     })
 
 
