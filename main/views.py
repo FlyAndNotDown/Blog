@@ -49,6 +49,7 @@ def index(request):
     # 渲染
     return render(request, 'main/index.html', context={
         'title': '首页-Kindem的博客',
+        'description': '专注技术的小博客，这里有你想学的技术，有众多干货分享-Kindem的博客',
         'is_first_page': is_first_page,
         'is_last_page': is_last_page,
         'posts_left': posts_left,
@@ -86,6 +87,7 @@ def index2(request, page):
     # 渲染
     return render(request, 'main/index.html', context={
         'title': '首页-Kindem的博客',
+        'description': '专注技术的小博客，这里有你想学的技术，有众多干货分享-Kindem的博客',
         'is_first_page': is_first_page,
         'is_last_page': is_last_page,
         'posts_left': posts_left,
@@ -99,7 +101,8 @@ def index2(request, page):
 # 关于页面请求
 def about(request):
     return render(request, 'main/about.html', context={
-        'title': '关于Kindem-Kindem的博客'
+        'title': '关于Kindem-Kindem的博客',
+        'description': 'Kindem:一位想做全栈开发者的野生程序猿-Kindem的博客'
     })
 
 
@@ -174,6 +177,7 @@ def post(request, pk):
 
     return render(request, 'main/post.html', context={
         'title': p.title + '-Kindem的博客',
+        'description': p.title + ':' + p.excerpt + '-Kindem的博客',
         'post': p,
         'login_state': login_state,
         'user_type': user_type,
@@ -209,6 +213,7 @@ def archive(request):
 
     return render(request, 'main/archive.html', context={
         'title': '归档-Kindem的博客',
+        'description': '归档-Kindem的博客',
         'posts_evert_year': posts_every_year
     })
 
@@ -245,6 +250,7 @@ def message(request):
     if request.session.get('login_state'):
         return render(request, 'main/message.html', context={
             'title': '通知-Kindem的博客',
+            'description': '通知-Kindem的博客',
             'left_cards': left_cards,
             'right_cards': right_cards
         })
@@ -262,6 +268,7 @@ def message(request):
         ))
         return render(request, 'main/message.html', context={
             'title': '通知-Kindem的博客',
+            'description': '通知-Kindem的博客',
             'left_cards': left_cards,
             'right_cards': right_cards
         })
