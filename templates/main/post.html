@@ -87,7 +87,7 @@
                                     <div class="col s12 m12 l12 xl12">
                                         <div class="row">
                                             <div class="chip">
-                                                <img src="{{ avatar }}">
+                                                <img src="{{ avatar }}" alt="{{ nickname }}的{{ user_type }}头像-Kindem的博客">
                                                 {{ nickname }}
                                             </div>
                                         </div>
@@ -145,7 +145,8 @@
                                                 <!--头像和评论时间-->
                                                 <div class="row">
                                                     <div class="chip">
-                                                        <img src="{{ comment.parent.sender.avatar }}">
+                                                        <img src="{{ comment.parent.sender.avatar }}"
+                                                             alt="{{ comment.parent.sender.nickname }}的{{ comment.parent.sender.user_type }}头像-Kindem的博客">
                                                         {{ comment.parent.sender.nickname }}
                                                     </div>
                                                     <span class="grey-text lighten-3 right hide-on-small-only">
@@ -184,7 +185,8 @@
                                                             <!--头像和评论时间-->
                                                             <div class="row">
                                                                 <div class="chip">
-                                                                    <img src="{{ child.sender.avatar }}">
+                                                                    <img src="{{ child.sender.avatar }}"
+                                                                         alt="{{ child.sender.nickname }}的{{ child.sender.user_type }}头像-Kindem的博客">
                                                                     {{ child.sender.nickname }}
                                                                 </div>
                                                                 <span class="grey-text lighten-3 right hide-on-small-only">
