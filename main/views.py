@@ -387,9 +387,8 @@ def login_qq(request):
             avatar=user_info['figureurl_qq_1'])
         k_user.save()
 
-        # 返回，并重定向到登录前的网站
-        return HttpResponse(str(request.session['login_from']))
-        # return HttpResponseRedirect(request.session['login_from'])
+    # 返回，并重定向到登录前的网站
+    return HttpResponseRedirect(request.session['login_from'])
 
 
 # 注销
