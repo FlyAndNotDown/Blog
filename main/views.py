@@ -183,7 +183,7 @@ def post(request, pk):
     return render(request, 'main/post.html', context={
         'title': p.title + '_IT小站_专注技术的小博客',
         'description': p.excerpt,
-        'keywords': 'it,it小站,' + p.keywords,
+        'keywords': p.keywords,
         'post': p,
         'login_state': login_state,
         'user_type': user_type,
