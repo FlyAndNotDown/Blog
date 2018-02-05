@@ -388,6 +388,7 @@ def login_qq(request):
         k_user.save()
 
         # 返回，并重定向到登录前的网站
+        return HttpResponse(request.session['login_from'])
         return HttpResponseRedirect(request.session['login_from'])
 
 
