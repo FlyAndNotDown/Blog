@@ -343,7 +343,7 @@ def login_qq(request):
             '&code=' + code +
             '&redirect_uri=' + 'http://www.kindemh.cn/login/qq')
     # 提取 access_token
-    access_token = response.read().decode('utf-8').split('&')[0].split('=')[1]
+    # access_token = response.read().decode('utf-8').split('&')[0].split('=')[1]
     return HttpResponse(response)
     # # 使用 access_token 获取用户的 openid
     # response = urllib.request.urlopen(
