@@ -352,6 +352,8 @@ def login_qq(request):
     # 解码成Python对象
     json_obj = json.loads(response.read().decode('utf-8'))
     openid = json_obj['openid']
+    return HttpResponse(openid)
+
     # 使用 openid 用户的信息
     response = urllib.request.urlopen(
         'https://graph.qq.com/user/get_user_info?' +
