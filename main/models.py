@@ -20,6 +20,7 @@ class Post(models.Model):
     文章 Model
     # 1. title char(70) 标题
     # 2. body text 正文
+    # new. keywords char(100) 关键词
     # 3. created_time datetime 创建时间
     # 4. modified_time datetime 最后修改时间
     # 5. tags many2many 标签
@@ -27,6 +28,8 @@ class Post(models.Model):
     """
     # 标题
     title = models.CharField(max_length=70)
+    # 关键词
+    keywords = models.CharField(max_length=100)
     # 正文
     body = models.TextField()
     # 摘要
