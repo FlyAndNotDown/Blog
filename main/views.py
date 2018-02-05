@@ -349,10 +349,11 @@ def login_qq(request):
         'https://graph.qq.com/oauth2.0/me?' +
             'access_token=' + access_token
     )
+    return HttpResponse(response)
+    
     # 解码成Python对象
     json_obj = json.loads(response.read().decode('utf-8'))
     openid = json_obj['openid']
-    return HttpResponse(openid)
 
     # 使用 openid 用户的信息
     response = urllib.request.urlopen(
