@@ -58,7 +58,7 @@ class KUser(models.Model):
     # 昵称
     nickname = models.CharField(max_length=20)
     # 用户唯一ID
-    uid = models.integer = models.IntegerField()
+    uid = models.integer = models.CharField(max_length=20)
     # 用户头像
     avatar = models.CharField(max_length=100)
 

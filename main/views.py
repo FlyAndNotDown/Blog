@@ -18,7 +18,9 @@ BLOG_START_YEAR = 2018
 # GitHub登录API参数
 github_client_id = '2b18fc8f7305f2e73416'
 github_client_secret = 'eee6029f6f6f5873cc3fc8fcf9ebdb86ef375349'
-
+# QQ 登录API参数
+qq_client_id = '101456289'
+qq_client_secret = 'b26af05256f42dce9c81e5fcc4db0195'
 
 # 首页请求
 def index(request):
@@ -187,6 +189,8 @@ def post(request, pk):
         'comments': comments,
         'comments_num': len(comments_all),
         'github_login_link': 'https://github.com/login/oauth/authorize?client_id=' + github_client_id,
+        'qq_login_link': 'https://graph.qq.com/oauth2.0/authorize?response_type=code&' +
+                        'client_id=' + qq_client_id + '&redirect_uri=http://www.kindemh.cn/login/qq',
         'phase_days_created': phase_created.days,
         'phase_hours_created': int(phase_created.seconds / 3600),
         'phase_days_modified': phase_modified.days,
@@ -264,6 +268,10 @@ def message(request):
             '使用下面给出的第三方认证登录本站来参与评论', [{
                 'name': 'GitHub',
                 'href': 'https://github.com/login/oauth/authorize?client_id=' + github_client_id
+            }, {
+                'name': 'QQ',
+                'href': 'https://graph.qq.com/oauth2.0/authorize?response_type=code&' +
+                        'client_id=' + qq_client_id + '&redirect_uri=http://www.kindemh.cn/login/qq'
             }]
         ))
         return render(request, 'main/message.html', context={
@@ -292,6 +300,8 @@ def login_github(request):
     response = urllib.request.urlopen('https://api.github.com/user?access_token=' + access_token)
     # 解码成Python对象
     user_info = json.loads(response.read().decode('utf-8'))
+    user_info['id'] = str(user_info['id'])
+
     # 查询数据库，看用户是否已经在数据库中
     # 如果已经有了
     if KUser.objects.filter(user_type='github', uid=user_info['id']).exists():
@@ -318,6 +328,62 @@ def login_github(request):
 
     # 返回，并且重定向到登录前的网站
     return HttpResponseRedirect(request.session['login_from'])
+
+
+# qq登录回调
+def login_qq(request):
+    # 获取 code
+    code = request.GET.get('code')
+    # 通过 code 获取Access Token
+    response = urllib.request.urlopen(
+        'https://graph.qq.com/oauth2.0/token?' +
+            'grant_type=authorization_code' +
+            '&client_id=' + qq_client_id +
+            '&client-secret=' + qq_client_secret +
+            '&code=' + code +
+            '&redirect_uri=' + 'http://www.kindemh.cn/login/qq')
+    # 提取 access_token
+    access_token = response.read().decode('utf-8').split('&')[0].split('=')[1]
+    # 使用 access_token 获取用户的 openid
+    response = urllib.request.urlopen(
+        'https://graph.qq.com/oauth2.0/me?' +
+            'access_token=' + access_token
+    )
+    # 解码成Python对象
+    json_obj = json.loads(response.read().decode('utf-8'))
+    openid = json_obj['openid']
+    # 使用 openid 用户的信息
+    response = urllib.request.urlopen(
+        'https://graph.qq.com/user/get_user_info?' +
+            'access_token=' + access_token +
+            '&oauth_consumer_key=' + qq_client_id +
+            '&openid=' + openid)
+    # 解析成Python对象
+    user_info = json.loads(response.read().decode('utf-8'))
+
+    # 查询数据库，看用户是否已经在数据库之中了
+    # 如果已经有了
+    if KUser.objects.filter(user_type='qq', uid=openid).exists():
+        # 将登录信息存入 session
+        request.session['login_state'] = True
+        request.session['user_type'] = 'qq'
+        request.session['uid'] = openid
+        request.session['nickname'] = user_info['nickname']
+        request.session['avatar'] = user_info['figureurl_qq_1']
+    # 如果有没
+    else:
+        # 将信息存入 session 和数据库
+        request.session['login_state'] = True
+        request.session['user_type'] = 'qq'
+        request.session['uid'] = openid
+        request.session['nickname'] = user_info['nickname']
+        request.session['avatar'] = user_info['figureurl_qq_1']
+        k_user = KUser(
+            user_type='qq',
+            uid=openid,
+            nickname=user_info['nickname'],
+            avatar=user_info['figureurl_qq_1'])
+        k_user.save()
 
 
 # 注销

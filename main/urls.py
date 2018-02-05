@@ -63,6 +63,8 @@ urlpatterns = [
     url(r'^message$', views.message, name='message'),
     # github登录
     url(r'^login/github$', views.login_github, name='login_github'),
+    # qq登录
+    url(r'^login/qq$', views.login_qq, name='login_qq'),
     # RSS
     url(r'^rss$', AllPostRssFeed(), name='rss'),
     # 注销
