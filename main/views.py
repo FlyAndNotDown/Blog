@@ -339,7 +339,7 @@ def login_qq(request):
         'https://graph.qq.com/oauth2.0/token?' +
             'grant_type=authorization_code' +
             '&client_id=' + qq_client_id +
-            '&client-secret=' + qq_client_secret +
+            '&client_secret=' + qq_client_secret +
             '&code=' + code +
             '&redirect_uri=' + 'http://www.kindemh.cn/login/qq')
     # 提取 access_token
