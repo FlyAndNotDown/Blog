@@ -343,48 +343,50 @@ def login_qq(request):
             '&code=' + code +
             '&redirect_uri=' + 'http://www.kindemh.cn/login/qq')
     # 提取 access_token
-    # access_token = response.read().decode('utf-8').split('&')[0].split('=')[1]
-    return HttpResponse(response)
-    # # 使用 access_token 获取用户的 openid
-    # response = urllib.request.urlopen(
-    #     'https://graph.qq.com/oauth2.0/me?' +
-    #         'access_token=' + access_token
-    # )
-    # # 解码成Python对象
-    # json_obj = json.loads(response.read().decode('utf-8'))
-    # openid = json_obj['openid']
-    # # 使用 openid 用户的信息
-    # response = urllib.request.urlopen(
-    #     'https://graph.qq.com/user/get_user_info?' +
-    #         'access_token=' + access_token +
-    #         '&oauth_consumer_key=' + qq_client_id +
-    #         '&openid=' + openid)
-    # # 解析成Python对象
-    # user_info = json.loads(response.read().decode('utf-8'))
-    #
-    # # 查询数据库，看用户是否已经在数据库之中了
-    # # 如果已经有了
-    # if KUser.objects.filter(user_type='qq', uid=openid).exists():
-    #     # 将登录信息存入 session
-    #     request.session['login_state'] = True
-    #     request.session['user_type'] = 'qq'
-    #     request.session['uid'] = openid
-    #     request.session['nickname'] = user_info['nickname']
-    #     request.session['avatar'] = user_info['figureurl_qq_1']
-    # # 如果有没
-    # else:
-    #     # 将信息存入 session 和数据库
-    #     request.session['login_state'] = True
-    #     request.session['user_type'] = 'qq'
-    #     request.session['uid'] = openid
-    #     request.session['nickname'] = user_info['nickname']
-    #     request.session['avatar'] = user_info['figureurl_qq_1']
-    #     k_user = KUser(
-    #         user_type='qq',
-    #         uid=openid,
-    #         nickname=user_info['nickname'],
-    #         avatar=user_info['figureurl_qq_1'])
-    #     k_user.save()
+    access_token = response.read().decode('utf-8').split('&')[0].split('=')[1]
+    # 使用 access_token 获取用户的 openid
+    response = urllib.request.urlopen(
+        'https://graph.qq.com/oauth2.0/me?' +
+            'access_token=' + access_token
+    )
+    # 解码成Python对象
+    json_obj = json.loads(response.read().decode('utf-8'))
+    openid = json_obj['openid']
+    # 使用 openid 用户的信息
+    response = urllib.request.urlopen(
+        'https://graph.qq.com/user/get_user_info?' +
+            'access_token=' + access_token +
+            '&oauth_consumer_key=' + qq_client_id +
+            '&openid=' + openid)
+    # 解析成Python对象
+    user_info = json.loads(response.read().decode('utf-8'))
+
+    # 查询数据库，看用户是否已经在数据库之中了
+    # 如果已经有了
+    if KUser.objects.filter(user_type='qq', uid=openid).exists():
+        # 将登录信息存入 session
+        request.session['login_state'] = True
+        request.session['user_type'] = 'qq'
+        request.session['uid'] = openid
+        request.session['nickname'] = user_info['nickname']
+        request.session['avatar'] = user_info['figureurl_qq_1']
+    # 如果有没
+    else:
+        # 将信息存入 session 和数据库
+        request.session['login_state'] = True
+        request.session['user_type'] = 'qq'
+        request.session['uid'] = openid
+        request.session['nickname'] = user_info['nickname']
+        request.session['avatar'] = user_info['figureurl_qq_1']
+        k_user = KUser(
+            user_type='qq',
+            uid=openid,
+            nickname=user_info['nickname'],
+            avatar=user_info['figureurl_qq_1'])
+        k_user.save()
+
+        # 返回，并重定向到登录前的网站
+        return HttpResponseRedirect(request.session['login_from'])
 
 
 # 注销
