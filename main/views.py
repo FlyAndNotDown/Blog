@@ -415,13 +415,14 @@ def logout(request):
 
 # 发表评论
 def publish_comment(request):
-    obj = json.loads(request.body)
-    comment = Comment(
-        sender=obj['sender'],
-        post=obj['post'],
-        level=obj['level'],
-        context=obj['context']
-    )
-    # return HttpResponse(str(obj['sender']))
-    comment.save()
-    return HttpResponse(json.dumps({'state': True}))
+    return HttpResponse(request.body)
+    # obj = json.loads(request.body)
+    # comment = Comment(
+    #     sender=obj['sender'],
+    #     post=obj['post'],
+    #     level=obj['level'],
+    #     context=obj['context']
+    # )
+    # # return HttpResponse(str(obj['sender']))
+    # comment.save()
+    # return HttpResponse(json.dumps({'state': True}))
