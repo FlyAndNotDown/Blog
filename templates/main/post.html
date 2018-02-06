@@ -243,7 +243,6 @@
                 obj.post = {{ post.pk }};
                 obj.level = 1;
                 obj.context = $('#comment-input').val();
-                alert(JSON.stringify(obj));
                 $.ajax({
                     url: 'http://www.kindemh.cn/publish_comment',
                     type: 'post',
@@ -251,7 +250,7 @@
                     async: true,
                     data: JSON.stringify(obj),
                     complete: function (jsonObj) {
-                        alert('发表完成');
+                        alert(jsonObj);
                         if (jsonObj.state === true)
                             alert('发表成功');
                     }
