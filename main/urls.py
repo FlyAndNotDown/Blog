@@ -68,5 +68,7 @@ urlpatterns = [
     # RSS
     url(r'^rss$', AllPostRssFeed(), name='rss'),
     # 注销
-    url(r'^login/logout$', views.logout, name='logout')
+    url(r'^login/logout$', views.logout, name='logout'),
+    # 发表评论
+    url(r'^publish_comment$', views.publish_comment, name='publish_comment')
 ]

@@ -80,14 +80,14 @@ class Comment(models.Model):
     # 发送者PK
     sender = models.IntegerField()
     # 接受者PK
-    receiver = models.IntegerField()
+    receiver = models.IntegerField(blank=True)
     # 所在文章PK
     post = models.IntegerField()
     # 评论继承等级
     level = models.IntegerField()
     # 父级评论PK
-    parent = models.IntegerField()
+    parent = models.IntegerField(blank=True)
     # 评论发表时间
-    time = models.DateTimeField()
+    time = models.DateTimeField(auto_now_add=True)
     # 评论内容
     context = models.CharField(max_length=500)

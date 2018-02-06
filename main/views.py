@@ -190,6 +190,7 @@ def post(request, pk):
         'login_state': login_state,
         'user_type': user_type,
         'uid': uid,
+        'user_pk': KUser.objects.get(user_type=user_type, uid=uid).pk,
         'nickname': nickname,
         'avatar': avatar,
         'comments': comments,
@@ -410,3 +411,15 @@ def logout(request):
     return HttpResponse(json.dumps({
         'state': True
     }))
+
+
+# 发表评论
+def publish_comment(request):
+    comment = Comment(
+        sender=request.POST['sender'],
+        post=request.POST['post'],
+        level=request.POST['level'],
+        context=request.POST['context']
+    )
+    comment.save()
+    return HttpResponse(json.dumps({'state': True}))
