@@ -422,8 +422,11 @@ def publish_comment(request):
         obj = json.loads(request.POST['json'])
         comment = Comment(
             sender=int(obj['sender']),
+            receiver=None,
             post=int(obj['post']),
             level=int(obj['level']),
+            parent=None,
+            time=datetime.utcnow(),
             context=str(obj['context'])
         )
         # return HttpResponse(str(obj['sender']))
