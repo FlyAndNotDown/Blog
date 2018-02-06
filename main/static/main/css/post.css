@@ -19,7 +19,7 @@
 }
 
 .section p, .section a, .section li {
-    font-size: 20px;
+    font-size: 17px;
 }
 
 .section h1, .section h2, .section h3 {
@@ -45,12 +45,32 @@ body {
     padding-left: 0;
 }
 
+body .tags {
+    margin: 0;
+    padding: 0;
+}
+
 body .main {
     /*自动换行*/
     white-space: pre-wrap;
     word-break: break-all;
     word-wrap: break-word;
     font-family: Consolas, Roboto, "Microsoft YaHei UI Light", monospace;
+}
+
+body .main p {
+    margin: 0;
+    padding: 0;
+}
+
+body .main h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 0;
+    margin-top: 40px;
+    padding: 0;
+}
+
+body .main ul {
+    margin: 0;
 }
 
 body .extend {

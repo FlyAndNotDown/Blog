@@ -32,7 +32,7 @@
                     <!--标题-->
                     <h1 class="center">{{ post.title }}</h1>
                     <!--发表时间与最后修改时间-->
-                    <div class="row center">
+                    <div class="row center time">
                         <div>
                             {% if phase_days_created == 0 %}
                             <a href="#" class="grey-text lighten-3 tooltipped" data-position="bottom"data-delay="50"
@@ -55,7 +55,7 @@
                         </div>
                     </div>
                     <!--标签-->
-                    <div class="row center">
+                    <div class="row center tags">
                         &nbsp;
                         {% for tag_obj in post.tags.all %}
                             <a><div class="chip hoverable z-depth-1">&nbsp;&nbsp;{{ tag_obj.name }}&nbsp;&nbsp;</div></a>
