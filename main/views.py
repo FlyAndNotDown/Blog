@@ -419,7 +419,7 @@ def logout(request):
 # 发表评论
 def publish_comment(request):
     if request.method == 'POST':
-        obj = json.loads(str(request.body))
+        obj = json.loads(str(request.POST['json']))
         comment = Comment(
             sender=obj['sender'],
             post=obj['post'],
@@ -429,3 +429,5 @@ def publish_comment(request):
         # return HttpResponse(str(obj['sender']))
         comment.save()
         return HttpResponse(json.dumps({'state': True}))
+    else:
+        return Http404()

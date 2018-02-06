@@ -245,10 +245,10 @@
                 obj.context = $('#comment-input').val();
                 $.ajax({
                     url: 'http://www.kindemh.cn/publish_comment',
-                    method: 'POST',
+                    type: 'POST',
                     dataType: 'json',
                     async: true,
-                    data: JSON.stringify(obj),
+                    data: 'json=' + JSON.stringify(obj),
                     success: function (jsonObj) {
                         alert(jsonObj);
                         if (jsonObj.state === true)
