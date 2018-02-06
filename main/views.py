@@ -149,8 +149,10 @@ def post(request, pk):
     comments_all = Comment.objects.filter(post=p.pk)
     # 将所有用户的PK替换成实际的用户
     for comment in comments_all:
-        comment.sender = KUser.objects.get(pk=comment.sender)
-        comment.receiver = KUser.objects.get(pk=comment.receiver)
+        if comment.sender:
+            comment.sender = KUser.objects.get(pk=comment.sender)
+        if comment.receiver:
+            comment.receiver = KUser.objects.get(pk=comment.receiver)
     # 取得这些评论中的所有父级评论
     comments_level_1 = comments_all.filter(level=1)
     # 新建一个list(dict())表用于存放所有的评论
