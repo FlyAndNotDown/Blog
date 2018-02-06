@@ -3,6 +3,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.paginator import Paginator
 from .models import Post, KUser, Comment
 from datetime import datetime
+from django.views.decorators.csrf import csrf_exempt
 import urllib.parse
 import urllib.request
 import markdown
@@ -413,6 +414,8 @@ def logout(request):
     }))
 
 
+
+@csrf_exempt
 # 发表评论
 def publish_comment(request):
     return HttpResponse(request.body)

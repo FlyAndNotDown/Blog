@@ -236,10 +236,6 @@
     <script src="{% static 'main/js/post.js' %}" rel="stylesheet"></script>
     <script>
         $(document).ready(function () {
-            $.ajaxSetup({
-                data: { csrfmiddlewaretoken: '{{ csrf_token }}' }
-            });
-
             // 为发表评论按钮添加响应
             $('#comment-publish-btn').click(function () {
                 var obj = {};
