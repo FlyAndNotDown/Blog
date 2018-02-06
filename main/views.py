@@ -420,7 +420,7 @@ def logout(request):
 def publish_comment(request):
     if request.method == 'POST':
         obj = json.loads(request.POST['json'])
-        return HttpResponse(request.POST['json'])
+        return HttpResponse(obj)
     #     comment = Comment(
     #         sender=obj['sender'],
     #         post=obj['post'],
