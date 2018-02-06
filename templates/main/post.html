@@ -238,7 +238,7 @@
         $(document).ready(function () {
             // 为发表评论按钮添加响应
             $('#comment-publish-btn').click(function () {
-                var obj;
+                var obj = {};
                 obj.sender = {{ user_pk }};
                 obj.post = {{ post.pk }};
                 obj.level = 1;
