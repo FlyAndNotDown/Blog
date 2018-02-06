@@ -238,6 +238,7 @@
         $(document).ready(function () {
             // 为发表评论按钮添加响应
             $('#comment-publish-btn').click(function () {
+                var token = $.cookie('csrftoken');
                 var obj = {};
                 obj.sender = {{ user_pk }};
                 obj.post = {{ post.pk }};
@@ -246,6 +247,7 @@
                 $.ajax({
                     url: 'http://www.kindemh.cn/publish_comment',
                     type: 'post',
+                    headers:{'X-CSRFToken': token},
                     data_type: 'json',
                     async: true,
                     data: JSON.stringify(obj),

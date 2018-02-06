@@ -422,6 +422,6 @@ def publish_comment(request):
         level=obj['level'],
         context=obj['context']
     )
-    return HttpResponse(str(obj['sender']))
-    # comment.save()
-    # return HttpResponse(json.dumps({'state': True}))
+    # return HttpResponse(str(obj['sender']))
+    comment.save()
+    return HttpResponse(json.dumps({'state': True}))
