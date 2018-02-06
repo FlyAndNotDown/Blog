@@ -419,7 +419,7 @@ def logout(request):
 # 发表评论
 def publish_comment(request):
     if request.method == 'POST':
-        obj = json.loads(request.body)
+        obj = json.loads(str(request.body))
         comment = Comment(
             sender=obj['sender'],
             post=obj['post'],
