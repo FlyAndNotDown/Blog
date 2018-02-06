@@ -245,7 +245,7 @@
                 obj.context = $('#comment-input').val();
                 $.ajax({
                     url: 'http://www.kindemh.cn/publish_comment',
-                    type: 'post',
+                    type: 'POST',
                     data_type: 'json',
                     async: true,
                     data: JSON.stringify(obj),
