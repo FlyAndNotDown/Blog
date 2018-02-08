@@ -32,8 +32,8 @@
         <div class="parallax"><img src="{% static 'main/img/about_bg.png' %}" alt="Kindem个人图片-关于Kindem-Kindem的博客"></div>
         <div class="center white-text">
             <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-            <h3>站主:Kindem</h3>
-            <h4>一只想做全栈开发者的野生程序猿</h4>
+            <h3>{{ slogan_box.name }}</h3>
+            <h4>{{ slogan_box.slogan }}</h4>
         </div>
     </div>
 {% endblock %}
@@ -46,9 +46,7 @@
                 <div class="col s12 m12 l12 xl12">
                     <br><br><br><br><br><br><br><br><br><br>
                     <h2>简介</h2>
-                    <p class="flow-text">男，20岁，南京航空航天大学计算机学院在校本科生，目前大三，热爱生活，热爱编程，
-                        热爱ACG。喜欢学习新技术，自己捣鼓项目，学习过很多门编程语言，接触过很多技术。最喜欢的技术是Web
-                        开发和游戏开发。最大的梦想是能够成为一名全栈开发或是一名游戏开发者。审美上对Material Design没有抵抗力。</p>
+                    <p class="flow-text">{{ introduction_box.introduction }}</p>
                     <br><br><br><br><br><br><br><br><br><br>
                 </div>
             </div>
@@ -71,14 +69,16 @@
                                 <th>履历</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <th>2015</th>
-                                <th>4</th>
-                                <th>南京航空航天大学</th>
-                                <th>大学本科</th>
-                            </tr>
-                        </tbody>
+                        {% for experience in experience_box.experiences %}
+                            <tbody>
+                                <tr>
+                                    <th>{{ experience.start_year }}</th>
+                                    <th>{{ experience.long }}</th>
+                                    <th>{{ experience.location }}</th>
+                                    <th>{{ experience.do }}</th>
+                                </tr>
+                            </tbody>
+                        {% endfor %}
                     </table>
                     <br><br><br><br><br><br><br><br><br><br><br><br>
                 </div>
@@ -95,34 +95,19 @@
                     <h2>技能点</h2>
                     <br>
                     <h4>语言</h4>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;C&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;C++&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;C#&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;Java&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;Kotlin&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;Python&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;Html&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;Css&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;JavaScript&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;Markdown&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;SQL&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;Arduino&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;Assembly&nbsp;&nbsp;</div>
+                    {% for language in skill_box.languages %}
+                        <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;{{ language }}&nbsp;&nbsp;</div>
+                    {% endfor %}
+
                     <h4>框架/库</h4>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;jQuery&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;Bootstrap&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;Materialize&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;Django&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;OpenCV&nbsp;&nbsp;</div>
+                    {% for lib in skill_box.libs %}
+                        <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;{{ lib }}&nbsp;&nbsp;</div>
+                    {% endfor %}
+
                     <h4>工具</h4>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;IDEA&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;WebStorm&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;PyCharm&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;Android Studio&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;Visual Studio&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;Visual Studio Code&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;Unity3D&nbsp;&nbsp;</div>
-                    <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;Vim&nbsp;&nbsp;</div>
+                    {% for tool in skill_box.tools %}
+                        <div class="chip z-depth-1 hoverable">&nbsp;&nbsp;{{ tool }}&nbsp;&nbsp;</div>
+                    {% endfor %}
                 </div>
                 &nbsp;
                 <br><br><br><br><br><br><br>

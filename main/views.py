@@ -2,130 +2,60 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.paginator import Paginator
 from .models import Post, KUser, Comment
-from datetime import datetime
+
 from .view.index import *
 from .view.login import *
 from .view.header import *
-from django.views.decorators.csrf import csrf_exempt
-import urllib.parse
-import urllib.request
+from .view.archive import *
+from .view.about import *
+
 import markdown
-import json
 import pytz
 
 
 # ----------------------------------------------------- # check
 # 首页请求
 def index__normal(request):
-    # 获取所有文章，按照时间顺序排序
-    posts = Post.objects.all().order_by('-created_time')
-    # 页数为 1
-    page = 1
-    # 获取总页数
-    page_num = int(len(posts) / INDEX_POST_PER_PAGE + 1)
-    # 错误检测
-    if not 0 < page <= page_num:
-        return Http404()
-    # 分页器
-    paginator = Paginator(posts, INDEX_POST_PER_PAGE)
-    posts_this_page = paginator.page(page)
-    # 判断是否为第一页或最后一页
-    is_first_page = page == 1
-    is_last_page = page == page_num
-    # 文章排序
-    posts_left = list()
-    posts_right = list()
-    for i in range(0, len(posts_this_page)):
-        if i % 2 == 0:
-            posts_left.append(posts_this_page[i])
-        else:
-            posts_right.append(posts_this_page[i])
-
-    # 渲染
+    index_render = IndexRender(1)
     return render(request, 'main/index.html', context={
         'header': Header(
             title='首页_IT小站_专注技术的小博客',
             description='IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。',
             keywords='it,it小站'
         ),
-        'is_first_page': is_first_page,
-        'is_last_page': is_last_page,
-        'posts': posts_this_page,
-        'posts_left': posts_left,
-        'posts_right': posts_right,
-        'page': page,
-        'pre_page': page - 1,
-        'next_page': page + 1
+        'page_info': index_render.get_page_info(),
+        'post_list': index_render.get_post_list(),
+        'slogan_box': IndexSloganBox()
     })
 
 
 # 首页请求2
 def index__param(request, page):
-    # 获取所有文章，按照时间顺序排序
-    posts = Post.objects.all().order_by('-created_time')
-    # 获取总页数
-    page_num = int(len(posts) / INDEX_POST_PER_PAGE + 1)
-    # 错误检测
-    if not 0 < int(page) <= page_num:
-        return Http404()
-    # 分页器
-    paginator = Paginator(posts, INDEX_POST_PER_PAGE)
-    posts_this_page = paginator.page(int(page))
-    # 判断是否为第一页或最后一页
-    is_first_page = page == 1
-    is_last_page = page == page_num
-    # 文章排序
-    posts_left = list()
-    posts_right = list()
-    for i in range(0, len(posts_this_page)):
-        if i % 2 == 0:
-            posts_left.append(posts_this_page[i])
-        else:
-            posts_right.append(posts_this_page[i])
-
-    # 渲染
+    index_render = IndexRender(page)
     return render(request, 'main/index.html', context={
         'header': Header(
             title='首页_IT小站_专注技术的小博客',
-            keywords='it,it小站',
-            description='IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。'
+            description='IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。',
+            keywords='it,it小站'
         ),
-        'is_first_page': is_first_page,
-        'is_last_page': is_last_page,
-        'posts': posts_this_page,
-        'posts_left': posts_left,
-        'posts_right': posts_right,
-        'page': int(page),
-        'pre_page': int(page) - 1,
-        'next_page': int(page) + 1
+        'page_info': index_render.get_page_info(),
+        'post_list': index_render.get_post_list(),
+        'slogan_box': IndexSloganBox()
     })
 
 
 # ----------------------------------------------------- # check
 # 归档页面
 def archive(request):
-    # 获取所有文章
-    posts = Post.objects.all().order_by('-created_time')
-    # 获取当前年份
-    year_now = datetime.now().year
-
-    # 按照年份分类的文章聊表
-    posts_every_year = list()
-    # 获取每一年里发表的文章
-    for i in range(0, year_now + 1 - BLOG_START_YEAR):
-        posts_every_year.append({})
-        posts_every_year[i]['year'] = BLOG_START_YEAR + i
-        posts_every_year[i]['posts'] = list()
-        for p in posts.filter(created_time__year=BLOG_START_YEAR + i):
-            posts_every_year[i]['posts'].append(p)
-
+    archive_render = ArchiveRender()
     return render(request, 'main/archive.html', context={
         'header': Header(
             title='首页_IT小站_专注技术的小博客',
             keywords='it,it小站',
             description='IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。'
         ),
-        'posts_evert_year': posts_every_year
+        'posts_evert_year': archive_render.get_posts_every_year(),
+        'slogan_box': ArchiveSloganBox()
     })
 
 
@@ -137,7 +67,11 @@ def about(request):
             title='首页_IT小站_专注技术的小博客',
             keywords='it,it小站',
             description='IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。'
-        )
+        ),
+        'slogan_box': AboutSloganBox(),
+        'introduction_box': AboutIntroductionBox(),
+        'experience_box': AboutExperienceBox(),
+        'skill_box': AboutSkillBox()
     })
 
 

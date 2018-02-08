@@ -32,7 +32,7 @@
         <div class="parallax"><img src="{% static 'main/img/index_bg.jpg' %}" alt="Parallax背景-Kindem的博客"></div>
         <div class="center white-text">
             <br><br><br><br><br><br>
-            <h2>专注技术的小博客</h2>
+            <h2>{{ slogan_box.slogan }}</h2>
         </div>
     </div>
 {% endblock %}
@@ -44,7 +44,7 @@
                 <br>
                 <div class="row hide-on-med-and-down">
                     <div class="col l6 xl6">
-                        {% for post in posts_left %}
+                        {% for post in post_list.left %}
                             <div class="card white">
                                 <div class="card-content">
                                     <span class="card-title">{{ post.title }}</span>
@@ -59,7 +59,7 @@
                         {% endfor %}
                     </div>
                     <div class="col l6 xl6">
-                        {% for post in posts_right %}
+                        {% for post in post_list.right %}
                             <div class="card white">
                                 <div class="card-content">
                                     <span class="card-title">{{ post.title }}</span>
@@ -76,7 +76,7 @@
                 </div>
                 <div class="row hide-on-large-only">
                     <div class="col s12 m12">
-                        {% for post in posts %}
+                        {% for post in post_list.all %}
                             <div class="card white">
                                 <div class="card-content">
                                     <span class="card-title">{{ post.title }}</span>
@@ -95,16 +95,20 @@
             <div class="col s12 m12 l12 xl12">
                 <div class="row center">
                     <ul class="pagination">
-                        {% if is_first_page %}
+                        {% if page_info.is_first %}
                             <li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>
                         {% else %}
-                            <li class="waves-effect"><a href="/{{ pre_page }}"><i class="material-icons">chevron_left</i></a></li>
+                            <li class="waves-effect"><a href="/{{ page_info.pre }}">
+                                <i class="material-icons">chevron_left</i></a></li>
                         {% endif %}
 
-                        {% if is_last_page %}
+                        <li><a class="waves-effect">{{ page_info.current }}</a></li>
+
+                        {% if page_info.is_last %}
                             <li class="disabled"><a><i class="material-icons">chevron_right</i></a></li>
                         {% else %}
-                            <li class="waves-effect"><a href="/{{ next_page }}"><i class="material-icons">chevron_right</i></a></li>
+                            <li class="waves-effect"><a href="/{{ page_info.next }}">
+                                <i class="material-icons">chevron_right</i></a></li>
                         {% endif %}
                     </ul>
                 </div>
