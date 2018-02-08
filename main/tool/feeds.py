@@ -1,5 +1,5 @@
 from django.contrib.syndication.views import Feed
-from .models import Post
+from main.models import Post
 import markdown
 
 

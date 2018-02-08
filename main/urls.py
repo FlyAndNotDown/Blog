@@ -1,39 +1,8 @@
 from django.conf.urls import url
 from . import views
-from django.contrib.sitemaps import Sitemap
 from django.contrib.sitemaps.views import sitemap
-from .models import Post
-from datetime import datetime
-from .feeds import AllPostRssFeed
-
-
-# 定制的 Sitemap
-class PostSitemap(Sitemap):
-    changeFreq = 'daily'
-    priority = 0.5
-
-    def items(self):
-        return Post.objects.all()
-
-    def lastmod(self, obj):
-        return obj.modified_time
-
-    def location(self, obj):
-        return "/post/" + str(obj.pk)
-
-
-class MainSitemap(Sitemap):
-    changeFreq = 'daily'
-    priority = 0.5
-
-    def items(self):
-        return ['/', '/archive', '/about']
-
-    def lastmod(self, obj):
-        return datetime.now()
-
-    def location(self, obj):
-        return obj
+from main.tool.feeds import AllPostRssFeed
+from main.tool.sitemap import MainSitemap, PostSitemap
 
 
 # sitemap列表
@@ -61,14 +30,6 @@ urlpatterns = [
     url(r'^robots.txt$', views.robots, name='robots'),
     # 通知页面
     url(r'^message$', views.message, name='message'),
-    # github登录
-    # url(r'^login/github$', views.login_github, name='login_github'),
-    # qq登录
-    # url(r'^login/qq$', views.login_qq, name='login_qq'),
     # RSS
     url(r'^rss$', AllPostRssFeed(), name='rss'),
-    # 注销
-    # url(r'^login/logout$', views.logout, name='logout'),
-    # 发表评论
-    # url(r'^publish_comment$', views.publish_comment, name='publish_comment')
 ]
