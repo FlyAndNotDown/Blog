@@ -55,6 +55,7 @@ class KUser(models.Model):
     # 2. nickname char(20) 昵称
     # 3. uid integer 用户唯一ID
     # 4. avatar char(100) 用户头像
+    # 5. is_admin bool 是否为管理员
     """
     # 用户类型
     user_type = models.CharField(max_length=10)
@@ -64,6 +65,8 @@ class KUser(models.Model):
     uid = models.integer = models.CharField(max_length=50)
     # 用户头像
     avatar = models.CharField(max_length=100)
+    # 是否为管理员
+    is_admin = models.BooleanField()
 
 
 class Comment(models.Model):
