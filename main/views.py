@@ -3,6 +3,9 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.core.paginator import Paginator
 from .models import Post, KUser, Comment
 from datetime import datetime
+from .view.index import *
+from .view.login import *
+from .view.header import *
 from django.views.decorators.csrf import csrf_exempt
 import urllib.parse
 import urllib.request
@@ -11,20 +14,9 @@ import json
 import pytz
 
 
-# 首页每一页的文章数量
-INDEX_POST_PER_PAGE = 8
-# 博客诞生年份
-BLOG_START_YEAR = 2018
-
-# GitHub登录API参数
-github_client_id = '2b18fc8f7305f2e73416'
-github_client_secret = 'eee6029f6f6f5873cc3fc8fcf9ebdb86ef375349'
-# QQ 登录API参数
-qq_client_id = '101456289'
-qq_client_secret = 'b26af05256f42dce9c81e5fcc4db0195'
-
+# ----------------------------------------------------- # check
 # 首页请求
-def index(request):
+def index__normal(request):
     # 获取所有文章，按照时间顺序排序
     posts = Post.objects.all().order_by('-created_time')
     # 页数为 1
@@ -51,9 +43,11 @@ def index(request):
 
     # 渲染
     return render(request, 'main/index.html', context={
-        'title': '首页_IT小站_专注技术的小博客',
-        'description': 'IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。',
-        'keywords': 'it,it小站',
+        'header': Header(
+            title='首页_IT小站_专注技术的小博客',
+            description='IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。',
+            keywords='it,it小站'
+        ),
         'is_first_page': is_first_page,
         'is_last_page': is_last_page,
         'posts': posts_this_page,
@@ -66,7 +60,7 @@ def index(request):
 
 
 # 首页请求2
-def index2(request, page):
+def index__param(request, page):
     # 获取所有文章，按照时间顺序排序
     posts = Post.objects.all().order_by('-created_time')
     # 获取总页数
@@ -91,9 +85,11 @@ def index2(request, page):
 
     # 渲染
     return render(request, 'main/index.html', context={
-        'title': '首页_IT小站_专注技术的小博客',
-        'keywords': 'it,it小站',
-        'description': 'IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。',
+        'header': Header(
+            title='首页_IT小站_专注技术的小博客',
+            keywords='it,it小站',
+            description='IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。'
+        ),
         'is_first_page': is_first_page,
         'is_last_page': is_last_page,
         'posts': posts_this_page,
@@ -105,15 +101,47 @@ def index2(request, page):
     })
 
 
-# 关于页面请求
-def about(request):
-    return render(request, 'main/about.html', context={
-        'title': '关于_IT小站_专注技术的小博客',
-        'keywords': 'it,it小站,kindem,关于',
-        'description': 'IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。'
+# ----------------------------------------------------- # check
+# 归档页面
+def archive(request):
+    # 获取所有文章
+    posts = Post.objects.all().order_by('-created_time')
+    # 获取当前年份
+    year_now = datetime.now().year
+
+    # 按照年份分类的文章聊表
+    posts_every_year = list()
+    # 获取每一年里发表的文章
+    for i in range(0, year_now + 1 - BLOG_START_YEAR):
+        posts_every_year.append({})
+        posts_every_year[i]['year'] = BLOG_START_YEAR + i
+        posts_every_year[i]['posts'] = list()
+        for p in posts.filter(created_time__year=BLOG_START_YEAR + i):
+            posts_every_year[i]['posts'].append(p)
+
+    return render(request, 'main/archive.html', context={
+        'header': Header(
+            title='首页_IT小站_专注技术的小博客',
+            keywords='it,it小站',
+            description='IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。'
+        ),
+        'posts_evert_year': posts_every_year
     })
 
 
+# ----------------------------------------------------- #
+# 关于页面请求
+def about(request):
+    return render(request, 'main/about.html', context={
+        'header': Header(
+            title='首页_IT小站_专注技术的小博客',
+            keywords='it,it小站',
+            description='IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。'
+        )
+    })
+
+
+# ----------------------------------------------------- #
 # 文章页面
 def post(request, pk):
     # 获取对象
@@ -186,9 +214,11 @@ def post(request, pk):
         avatar = ''
 
     return render(request, 'main/post.html', context={
-        'title': p.title + '_IT小站_专注技术的小博客',
-        'description': p.excerpt,
-        'keywords': p.keywords,
+        'header': Header(
+            title=p.title + '_IT小站_专注技术的小博客',
+            description=p.excerpt,
+            keywords=p.keywords
+        ),
         'post': p,
         'login_state': login_state,
         'user_type': user_type,
@@ -208,36 +238,13 @@ def post(request, pk):
     })
 
 
-# 归档页面
-def archive(request):
-    # 获取所有文章
-    posts = Post.objects.all().order_by('-created_time')
-    # 获取当前年份
-    year_now = datetime.now().year
-
-    # 按照年份分类的文章聊表
-    posts_every_year = list()
-    # 获取每一年里发表的文章
-    for i in range(0, year_now + 1 - BLOG_START_YEAR):
-        posts_every_year.append({})
-        posts_every_year[i]['year'] = BLOG_START_YEAR + i
-        posts_every_year[i]['posts'] = list()
-        for p in posts.filter(created_time__year=BLOG_START_YEAR + i):
-            posts_every_year[i]['posts'].append(p)
-
-    return render(request, 'main/archive.html', context={
-        'title': '归档_IT小站_专注技术的小博客',
-        'keyword': 'it,it小站,归档',
-        'description': 'IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。',
-        'posts_evert_year': posts_every_year
-    })
-
-
+# ----------------------------------------------------- #
 # robots.txt
 def robots(request):
     return HttpResponse(r'User-agent: *\nAllow: /')
 
 
+# ----------------------------------------------------- #
 class MessageCard:
     """
     通知卡片类
@@ -256,6 +263,7 @@ class MessageCard:
             self.links.append(link)
 
 
+# ----------------------------------------------------- #
 # 通知页面
 def message(request):
     # 左右两侧的通知卡片
@@ -265,9 +273,11 @@ def message(request):
     if request.session.get('login_state'):
 
         return render(request, 'main/message.html', context={
-            'title': '通知_IT小站_专注技术的小博客',
-            'description': 'IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。',
-            'keywords': 'it,it小站,通知',
+            'header': Header(
+                title='首页_IT小站_专注技术的小博客',
+                keywords='it,it小站,通知',
+                description='IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。'
+            ),
             'left_cards': left_cards,
             'right_cards': right_cards
         })
@@ -288,9 +298,11 @@ def message(request):
             }]
         ))
         return render(request, 'main/message.html', context={
-            'title': '通知_IT小站_专注技术的小博客',
-            'description': 'IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。',
-            'keywords': 'it,it小站,通知',
+            'header': Header(
+                title='首页_IT小站_专注技术的小博客',
+                keywords='it,it小站,通知',
+                description='IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。'
+            ),
             'left_cards': left_cards,
             'right_cards': right_cards
         })

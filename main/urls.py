@@ -15,9 +15,10 @@ sitemaps = {
 app_name = 'main'
 urlpatterns = [
     # 首页
-    url(r'^$', views.index, name='index'),
+    url(r'^$', views.index__normal, name='index__normal'),
     # 首页
-    url(r'^(?P<page>[1-9][0-9]*)$', views.index2, name='index2'),
+    url(r'^(?P<page>[1-9][0-9]*)$', views.index__param, name='index__param'),
+
     # 关于页面
     url(r'^about$', views.about, name='about'),
     # 文章页面
