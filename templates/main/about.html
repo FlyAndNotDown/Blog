@@ -132,5 +132,10 @@
 {% endblock %}
 
 {% block additional-js %}
-    <script src="{% static 'main/js/about.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            // parallax 初始化
+            $('.parallax').parallax();
+        });
+    </script>
 {% endblock %}

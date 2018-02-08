@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Tag, KUser, Comment
+from .models import Post, Tag, LocalUser, KUser, Comment
 
 
 class PostAdmin(admin.ModelAdmin):
@@ -9,14 +9,32 @@ class PostAdmin(admin.ModelAdmin):
 class TagAdmin(admin.ModelAdmin):
     list_display = ['name']
 
+
+class LocalUserAdmin(admin.ModelAdmin):
+    list_display = ['username', 'password', 'salt', 'nickname', 'avatar', 'is_admin']
+
+
 class KUserAdmin(admin.ModelAdmin):
-    list_display = ['user_type', 'nickname', 'uid', 'avatar']
+    list_display = ['user_type', 'nickname', 'uid', 'avatar', 'is_admin']
+
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['sender', 'receiver', 'post', 'level', 'parent', 'time', 'context']
+    list_display = [
+        'sender', 'receiver', 'post', 'is_child',
+        'parent', 'context', 'have_been_read']
+
+
+# class KUserAdmin(admin.ModelAdmin):
+#     list_display = ['user_type', 'nickname', 'uid', 'avatar']
+#
+# class CommentAdmin(admin.ModelAdmin):
+#     list_display = ['sender', 'receiver', 'post', 'level', 'parent', 'time', 'context']
 
 
 admin.site.register(Post, PostAdmin)
 admin.site.register(Tag, TagAdmin)
+admin.site.register(LocalUser, LocalUserAdmin)
 admin.site.register(KUser, KUserAdmin)
 admin.site.register(Comment, CommentAdmin)
+# admin.site.register(KUser, KUserAdmin)
+# admin.site.register(Comment, CommentAdmin)

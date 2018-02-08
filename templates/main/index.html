@@ -11,17 +11,17 @@
             <a href="http://www.kindemh.cn" class="brand-logo">IT小站</a>
             <ul class="right">
                 <li><a href="#"><i class="material-icons">search</i></a></li>
-                <li class="hide-on-med-and-down"><a href="http://www.kindemh.cn/message"><i class="material-icons">person</i></a></li>
+                <li class="hide-on-med-and-down"><a href="/message"><i class="material-icons">person</i></a></li>
             </ul>
             <ul class="left hide-on-large-only">
-                <li><a href="http://www.kindemh.cn/message"><i class="material-icons">person</i></a></li>
+                <li><a href="/message"><i class="material-icons">person</i></a></li>
             </ul>
         </div>
         <div class="nav-content container">
             <ul class="tabs tabs-transparent">
                 <li class="tab"><a class="active">首页</a></li>
-                <li class="tab"><a target="_self" href="http://www.kindemh.cn/archive">归档</a></li>
-                <li class="tab"><a target="_self" href="http://www.kindemh.cn/about">关于</a></li>
+                <li class="tab"><a target="_self" href="/archive">归档</a></li>
+                <li class="tab"><a target="_self" href="/about">关于</a></li>
             </ul>
         </div>
     </nav>
@@ -51,7 +51,7 @@
                                     <p>{{ post.excerpt }}</p>
                                 </div>
                                 <div class="card-action">
-                                    <a href="http://www.kindemh.cn/post/{{ post.pk }}">全文</a>
+                                    <a href="/post/{{ post.pk }}">全文</a>
                                     <!--<a href="#">分享</a>-->
                                     <span class="right">{{ post.created_time }}</span>
                                 </div>
@@ -66,7 +66,7 @@
                                     <p>{{ post.excerpt }}</p>
                                 </div>
                                 <div class="card-action">
-                                    <a href="http://www.kindemh.cn/post/{{ post.pk }}">全文</a>
+                                    <a href="/post/{{ post.pk }}">全文</a>
                                     <!--<a href="#">分享</a>-->
                                     <span class="right">{{ post.created_time }}</span>
                                 </div>
@@ -83,7 +83,7 @@
                                     <p>{{ post.excerpt }}</p>
                                 </div>
                                 <div class="card-action">
-                                    <a href="http://www.kindemh.cn/post/{{ post.pk }}">全文</a>
+                                    <a href="post/{{ post.pk }}">全文</a>
                                     <!--<a href="#">分享</a>-->
                                     <span class="right">{{ post.created_time }}</span>
                                 </div>
@@ -98,13 +98,13 @@
                         {% if is_first_page %}
                             <li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>
                         {% else %}
-                            <li class="waves-effect"><a href="http://www.kindemh.cn/{{ pre_page }}"><i class="material-icons">chevron_left</i></a></li>
+                            <li class="waves-effect"><a href="/{{ pre_page }}"><i class="material-icons">chevron_left</i></a></li>
                         {% endif %}
 
                         {% if is_last_page %}
                             <li class="disabled"><a><i class="material-icons">chevron_right</i></a></li>
                         {% else %}
-                            <li class="waves-effect"><a href="http://www.kindemh.cn/{{ next_page }}"><i class="material-icons">chevron_right</i></a></li>
+                            <li class="waves-effect"><a href="/{{ next_page }}"><i class="material-icons">chevron_right</i></a></li>
                         {% endif %}
                     </ul>
                 </div>
@@ -114,5 +114,10 @@
 {% endblock %}
 
 {% block additional-js %}
-    <script src="{% static 'main/js/index.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            // parallax 初始化
+            $('.parallax').parallax();
+        });
+    </script>
 {% endblock %}

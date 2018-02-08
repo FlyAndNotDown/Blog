@@ -62,13 +62,13 @@ urlpatterns = [
     # 通知页面
     url(r'^message$', views.message, name='message'),
     # github登录
-    url(r'^login/github$', views.login_github, name='login_github'),
+    # url(r'^login/github$', views.login_github, name='login_github'),
     # qq登录
-    url(r'^login/qq$', views.login_qq, name='login_qq'),
+    # url(r'^login/qq$', views.login_qq, name='login_qq'),
     # RSS
     url(r'^rss$', AllPostRssFeed(), name='rss'),
     # 注销
-    url(r'^login/logout$', views.logout, name='logout'),
+    # url(r'^login/logout$', views.logout, name='logout'),
     # 发表评论
-    url(r'^publish_comment$', views.publish_comment, name='publish_comment')
+    # url(r'^publish_comment$', views.publish_comment, name='publish_comment')
 ]

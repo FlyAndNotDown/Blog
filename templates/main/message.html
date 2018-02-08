@@ -63,5 +63,12 @@
 {% endblock %}
 
 {% block additional-js %}
-    <script src="{% static 'main/js/message.js' %}" rel="stylesheet"></script>
+    <script>
+        $(document).ready(function () {
+            // 为返回按键添加响应
+            $('#go-back').click(function () {
+                window.history.back();
+            });
+        });
+    </script>
 {% endblock %}

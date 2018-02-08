@@ -8,20 +8,20 @@
 {% block navbar %}
     <nav class="nav-extended cyan">
         <div class="nav-wrapper container">
-            <a href="http://www.kindemh.cn/" class="brand-logo">IT小站</a>
+            <a href="/" class="brand-logo">IT小站</a>
             <ul class="right">
                 <li><a href="#"><i class="material-icons">search</i></a></li>
-                <li class="hide-on-med-and-down"><a href="http://www.kindemh.cn/message"><i class="material-icons">person</i></a></li>
+                <li class="hide-on-med-and-down"><a href="/message"><i class="material-icons">person</i></a></li>
             </ul>
             <ul class="left hide-on-large-only">
-                <li><a href="http://www.kindemh.cn/message"><i class="material-icons">person</i></a></li>
+                <li><a href="/message"><i class="material-icons">person</i></a></li>
             </ul>
         </div>
         <div class="nav-content container">
             <ul class="tabs tabs-transparent">
-                <li class="tab"><a target="_self" href="http://www.kindemh.cn/">首页</a></li>
+                <li class="tab"><a target="_self" href="/">首页</a></li>
                 <li class="tab"><a class="active">归档</a></li>
-                <li class="tab"><a target="_self" href="http://www.kindemh.cn/about">关于</a></li>
+                <li class="tab"><a target="_self" href="/about">关于</a></li>
             </ul>
         </div>
     </nav>
@@ -49,7 +49,7 @@
                             <h2>{{ dict.year }}</h2>
                             <ul class="collection z-depth-1">
                                 {% for p in dict.posts %}
-                                    <a href="http://www.kindemh.cn/post/{{ p.pk }}" class="collection-item black-text">
+                                    <a href="/post/{{ p.pk }}" class="collection-item black-text">
                                         {{ p.created_time.month }}.{{ p.created_time.day }}&nbsp;{{ p.title }}
                                     </a>
                                 {% endfor %}
@@ -65,6 +65,11 @@
 {% endblock %}
 
 {% block additional-js %}
-    <script src="{% static 'main/js/archive.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            // parallax 插件初始化
+            $('.parallax').parallax();
+        });
+    </script>
 {% endblock %}
 
