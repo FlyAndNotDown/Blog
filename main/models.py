@@ -54,17 +54,14 @@ class LocalUser(models.Model):
     # 1. username char(20) 用户名(只能为英文和数字)
     # 2. password char(64) 用户密码的 SHA256+salt Hash值
     # 3. salt char(16) 盐
-    # 4. nickname char(20) 昵称
-    # 5. avatar char(100) 用户头像
-    # 6. is_admin bool 是否为管理员
+    # 4. avatar char(100) 用户头像
+    # 5. is_admin bool 是否为管理员
     # 用户名
     username = models.CharField(max_length=20)
     # 用户密码的 SHA256+salt Hash值
     password = models.CharField(max_length=64)
     # 盐
     salt = models.CharField(max_length=16)
-    # 昵称
-    nickname = models.CharField(max_length=20)
     # 头像
     avatar = models.CharField(max_length=100)
     # 是否为管理员

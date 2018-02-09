@@ -11,7 +11,7 @@ class TagAdmin(admin.ModelAdmin):
 
 
 class LocalUserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'password', 'salt', 'nickname', 'avatar', 'is_admin']
+    list_display = ['username', 'password', 'salt', 'avatar', 'is_admin']
 
 
 class KUserAdmin(admin.ModelAdmin):

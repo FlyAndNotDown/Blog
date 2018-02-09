@@ -45,6 +45,10 @@ body {
     padding-left: 0;
 }
 
+.section .extend .dropdown-content li {
+    list-style: none;
+}
+
 body .tags {
     margin: 0;
     padding: 0;
