@@ -1,16 +1,12 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-from django.core.paginator import Paginator
-from .models import Post, KUser, Comment
 
 from .view.index import *
 from .view.login import *
 from .view.header import *
 from .view.archive import *
 from .view.about import *
-
-import markdown
-import pytz
+from .view.post import *
 
 
 # ----------------------------------------------------- # check
@@ -59,7 +55,7 @@ def archive(request):
     })
 
 
-# ----------------------------------------------------- #
+# ----------------------------------------------------- # check
 # 关于页面请求
 def about(request):
     return render(request, 'main/about.html', context={
@@ -78,98 +74,115 @@ def about(request):
 # ----------------------------------------------------- #
 # 文章页面
 def post(request, pk):
-    # 获取对象
-    p = get_object_or_404(Post, pk=pk)
-    # 渲染 Markdown
-    p.body = markdown.markdown(
-        p.body,
-        extensions=[
-            'markdown.extensions.sane_lists',
-            'markdown.extensions.extra',
-            'markdown.extensions.codehilite',
-            'markdown.extensions.toc',
-            'markdown.extensions.abbr',
-            'markdown.extensions.attr_list',
-            'markdown.extensions.def_list',
-            'markdown.extensions.fenced_code',
-            'markdown.extensions.footnotes',
-            'markdown.extensions.smart_strong',
-            'markdown.extensions.meta',
-            'markdown.extensions.nl2br',
-            'markdown.extensions.tables'
-        ]
-    )
-
-    # 求时间差
-    phase_created = datetime.utcnow().replace(tzinfo=pytz.timezone('UTC')) - p.created_time
-    phase_modified = datetime.utcnow().replace(tzinfo=pytz.timezone('UTC')) - p.modified_time
-
-    # 保存登录之前的页面
-    request.session['login_from'] = '/post/' + str(p.pk)
-
-    # 获取一篇文章中的所有评论
-    comments_all = Comment.objects.filter(post=p.pk)
-    # 将所有用户的PK替换成实际的用户
-    for comment in comments_all:
-        if comment.sender:
-            comment.sender = KUser.objects.get(pk=comment.sender)
-        if comment.receiver:
-            comment.receiver = KUser.objects.get(pk=comment.receiver)
-    # 取得这些评论中的所有父级评论
-    comments_level_1 = comments_all.filter(level=1)
-    # 新建一个list(dict())表用于存放所有的评论
-    comments = list()
-    i = 0
-    # 遍历所有父级评论
-    for parent in comments_level_1:
-        comments.append(dict())
-        # 为孩子评论预分配空间
-        comments[i]['children'] = list()
-        # 存入父级评论
-        comments[i]['parent'] = parent
-        # 存入孩子评论
-        for child in comments_all.filter(level=2, parent=parent.pk):
-            comments[i]['children'].append(child)
-        # 迭代
-        i += 1
-
-    # 获取用户登录状态
-    if request.session.get('login_state'):
-        login_state = True
-        user_type = request.session.get('user_type')
-        uid = request.session.get('uid')
-        nickname = request.session.get('nickname')
-        avatar = request.session.get('avatar')
+    # 储存登录前的位置
+    request.session['login_from'] = '/post/' + str(pk)
+    post_render = PostRender(pk)
+    if post_render.error_happen():
+        return Http404()
     else:
-        login_state = False
-        user_type = ''
-        uid = ''
-        nickname = ''
-        avatar = ''
+        return render(request, 'main/post.html', context={
+            'header': Header(
+                title=post_render.get_post().title + '_IT小站_专注技术的小博客',
+                description=post_render.get_post().excerpt,
+                keywords=post_render.get_post().keywords
+            ),
+            'post': post_render.get_post(),
+            'phase_time': post_render.get_phase_time()
+        })
 
-    return render(request, 'main/post.html', context={
-        'header': Header(
-            title=p.title + '_IT小站_专注技术的小博客',
-            description=p.excerpt,
-            keywords=p.keywords
-        ),
-        'post': p,
-        'login_state': login_state,
-        'user_type': user_type,
-        'uid': uid,
-        'user_pk': KUser.objects.get(user_type=user_type, uid=uid).pk,
-        'nickname': nickname,
-        'avatar': avatar,
-        'comments': comments,
-        'comments_num': len(comments_all),
-        'github_login_link': 'https://github.com/login/oauth/authorize?client_id=' + github_client_id,
-        'qq_login_link': 'https://graph.qq.com/oauth2.0/authorize?response_type=code&' +
-                        'client_id=' + qq_client_id + '&redirect_uri=http://www.kindemh.cn/login/qq',
-        'phase_days_created': phase_created.days,
-        'phase_hours_created': int(phase_created.seconds / 3600),
-        'phase_days_modified': phase_modified.days,
-        'phase_hours_modified': int(phase_modified.seconds / 3600)
-    })
+# def post(request, pk):
+#     # 获取对象
+#     p = get_object_or_404(Post, pk=pk)
+#     # 渲染 Markdown
+#     p.body = markdown.markdown(
+#         p.body,
+#         extensions=[
+#             'markdown.extensions.sane_lists',
+#             'markdown.extensions.extra',
+#             'markdown.extensions.codehilite',
+#             'markdown.extensions.toc',
+#             'markdown.extensions.abbr',
+#             'markdown.extensions.attr_list',
+#             'markdown.extensions.def_list',
+#             'markdown.extensions.fenced_code',
+#             'markdown.extensions.footnotes',
+#             'markdown.extensions.smart_strong',
+#             'markdown.extensions.meta',
+#             'markdown.extensions.nl2br',
+#             'markdown.extensions.tables'
+#         ]
+#     )
+#
+#     # 求时间差
+#     phase_created = datetime.utcnow().replace(tzinfo=pytz.timezone('UTC')) - p.created_time
+#     phase_modified = datetime.utcnow().replace(tzinfo=pytz.timezone('UTC')) - p.modified_time
+#
+#     # 保存登录之前的页面
+#     request.session['login_from'] = '/post/' + str(p.pk)
+#
+#     # 获取一篇文章中的所有评论
+#     comments_all = Comment.objects.filter(post=p.pk)
+#     # 将所有用户的PK替换成实际的用户
+#     for comment in comments_all:
+#         if comment.sender:
+#             comment.sender = KUser.objects.get(pk=comment.sender)
+#         if comment.receiver:
+#             comment.receiver = KUser.objects.get(pk=comment.receiver)
+#     # 取得这些评论中的所有父级评论
+#     comments_level_1 = comments_all.filter(level=1)
+#     # 新建一个list(dict())表用于存放所有的评论
+#     comments = list()
+#     i = 0
+#     # 遍历所有父级评论
+#     for parent in comments_level_1:
+#         comments.append(dict())
+#         # 为孩子评论预分配空间
+#         comments[i]['children'] = list()
+#         # 存入父级评论
+#         comments[i]['parent'] = parent
+#         # 存入孩子评论
+#         for child in comments_all.filter(level=2, parent=parent.pk):
+#             comments[i]['children'].append(child)
+#         # 迭代
+#         i += 1
+#
+#     # 获取用户登录状态
+#     if request.session.get('login_state'):
+#         login_state = True
+#         user_type = request.session.get('user_type')
+#         uid = request.session.get('uid')
+#         nickname = request.session.get('nickname')
+#         avatar = request.session.get('avatar')
+#     else:
+#         login_state = False
+#         user_type = ''
+#         uid = ''
+#         nickname = ''
+#         avatar = ''
+#
+#     return render(request, 'main/post.html', context={
+#         'header': Header(
+#             title=p.title + '_IT小站_专注技术的小博客',
+#             description=p.excerpt,
+#             keywords=p.keywords
+#         ),
+#         'post': p,
+#         'login_state': login_state,
+#         'user_type': user_type,
+#         'uid': uid,
+#         'user_pk': KUser.objects.get(user_type=user_type, uid=uid).pk,
+#         'nickname': nickname,
+#         'avatar': avatar,
+#         'comments': comments,
+#         'comments_num': len(comments_all),
+#         'github_login_link': 'https://github.com/login/oauth/authorize?client_id=' + github_client_id,
+#         'qq_login_link': 'https://graph.qq.com/oauth2.0/authorize?response_type=code&' +
+#                         'client_id=' + qq_client_id + '&redirect_uri=http://www.kindemh.cn/login/qq',
+#         'phase_days_created': phase_created.days,
+#         'phase_hours_created': int(phase_created.seconds / 3600),
+#         'phase_days_modified': phase_modified.days,
+#         'phase_hours_modified': int(phase_modified.seconds / 3600)
+#     })
 
 
 # ----------------------------------------------------- #
