@@ -110,7 +110,7 @@ def post(request, pk):
 # 登录请求
 # 本站注册请求
 @csrf_exempt
-def login_register_local(request):
+def login_local_register(request):
     # 获取 json 数据
     jsonObj = json.loads(request.body)
     username = jsonObj['username']
@@ -118,7 +118,7 @@ def login_register_local(request):
     salt = jsonObj['salt']
 
     # 处理请求
-    login_register_local_request = LoginRegisterLocalRequest(
+    login_register_local_request = LoginLocalRegisterRequest(
         username, password, salt
     )
     # 如果注册成功
@@ -128,6 +128,47 @@ def login_register_local(request):
         request.session['user_info'] = login_register_local_request.get_user_info()
     # 返回 json 数据
     return HttpResponse(json.dumps(login_register_local_request.get_response()))
+
+
+# 本站登录-获取 salt 请求
+@csrf_exempt
+def login_local_get_salt(request):
+    # 获取 username
+    jsonObj = json.loads(request.body)
+    username = jsonObj['username']
+
+    # 处理请求
+    login_local_get_salt_request = LoginLocalGetSaltRequest(username)
+    return HttpResponse(json.dumps(login_local_get_salt_request.get_response()))
+
+
+# 本站登录-登录验证请求
+@csrf_exempt
+def login_local_login(request):
+    # 解析 json 字符串
+    jsonObj = json.loads(request.body)
+    username = jsonObj['username']
+    password = jsonObj['password']
+
+    # 处理请求
+    login_local_login_request = LoginLocalLoginRequest(
+        username, password
+    )
+    # 如果成功登录了，就将用户信息存入 session
+    if login_local_login_request.get_response()['state']:
+        request.session['login_state'] = True
+        request.session['user_info'] = login_local_login_request.get_user_info()
+    # 返回 json 数据
+    return HttpResponse(json.dumps(login_local_login_request.get_response()))
+
+
+# 注销请求
+def login_logout(request):
+    # 清除 session 信息
+    request.session['login_state'] = False
+    request.session['user_info'] = None
+    # 返回 json 数据
+    return HttpResponse(json.dumps({'state': True}))
 
 
 # ----------------------------------------------------- #

@@ -40,5 +40,11 @@ urlpatterns = [
 
     # 登录请求
     # 本站注册请求
-    url(r'^login/register/local$', views.login_register_local, name='login_register_local')
+    url(r'^login/local/register$', views.login_local_register, name='login_local_register'),
+    # 本站登录-获取盐
+    url(r'^login/local/get_salt$', views.login_local_get_salt, name='login_local_get_salt'),
+    # 本站登录
+    url(r'^login/local/login$', views.login_local_login, name='login_local_login'),
+    # 注销请求
+    url(r'^login/logout$', views.login_logout, name='login_logout')
 ]

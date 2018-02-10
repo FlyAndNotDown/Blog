@@ -247,23 +247,23 @@
                             // 加密密码
                             password_hash = sha256(sha256(password) + salt);
                             // 封装 json 对象
-                            var obj = {
+                            var register_request_obj = {
                                 username: username,
                                 password: password_hash,
-                                salt: salt
+                                salt: salt,
                             };
                             // 发送 Ajax 请求
                             $.ajax({
-                                url: '/login/register/local',
+                                url: '/login/local/register',
                                 type: 'post',
                                 dataType: 'json',
-                                data: JSON.stringify(obj),
+                                data: JSON.stringify(register_request_obj),
                                 async: true,
                                 success: function (jsonObj) {
                                     // 如果注册成功了
                                     if (jsonObj.state) {
                                         // 注册成功
-                                        Materialize.toast('注册成功,两秒后为你自动登录', 4000);
+                                        Materialize.toast('注册成功,两秒后为你自动登录', 2000);
                                         setTimeout(
                                             function () {
                                                 // 刷新页面
@@ -283,6 +283,60 @@
                     // 如果用户名验证失败
                     } else {
                         Materialize.toast('用户名不符合要求(6-16位,可以使用字母数字下划线,必须以字母开头)', 4000);
+                    }
+                });
+            });
+
+            // 本站登录按钮响应
+            $('#login-local-login-btn').click(function () {
+                // 发送 ajax 请求获取 salt
+                var username = $('#login-local-username').val();
+                var password = $('#login-local-password').val();
+                var get_salt_request_obj = {
+                    username: username,
+                };
+                $.ajax({
+                    url: '/login/local/get_salt',
+                    async: true,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify(get_salt_request_obj),
+                    success: function (jsonObj) {
+                        // 如果成功获取到盐
+                        if (jsonObj.state) {
+                            var salt = jsonObj.salt;
+                            // 加盐加密，发送到后端验证
+                            var password_hash = sha256(sha256(password) + salt);
+                            var login_request_obj = {
+                                username: username,
+                                password: password_hash,
+                            };
+                            $.ajax({
+                                url: '/login/local/login',
+                                async: true,
+                                type: 'POST',
+                                dataType: 'json',
+                                data: JSON.stringify(login_request_obj),
+                                success: function (newJsonObj) {
+                                    // 如果验证成功
+                                    if (jsonObj.state) {
+                                        Materialize.toast('登录成功,两秒后为你自动刷新页面', 2000);
+                                        setTimeout(
+                                            function () {
+                                                // 刷新页面
+                                                window.location.reload(true)
+                                            }, 2000
+                                        );
+                                    // 如果验证失败
+                                    } else {
+                                        Materialize.toast(jsonObj.reason, 4000);
+                                    }
+                                }
+                            });
+                        // 否则
+                        } else {
+                            Materialize.toast(jsonObj.reason, 4000);
+                        }
                     }
                 });
             });
