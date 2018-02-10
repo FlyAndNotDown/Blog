@@ -112,7 +112,7 @@ def post(request, pk):
 @csrf_exempt
 def login_local_register(request):
     # 获取 json 数据
-    jsonObj = json.loads(request.body)
+    jsonObj = json.loads(request.body.decode('utf-8'))
     username = jsonObj['username']
     password = jsonObj['password']
     salt = jsonObj['salt']
@@ -134,7 +134,7 @@ def login_local_register(request):
 @csrf_exempt
 def login_local_get_salt(request):
     # 获取 username
-    jsonObj = json.loads(request.body)
+    jsonObj = json.loads(request.body.decode('utf-8'))
     username = jsonObj['username']
 
     # 处理请求
@@ -146,7 +146,7 @@ def login_local_get_salt(request):
 @csrf_exempt
 def login_local_login(request):
     # 解析 json 字符串
-    jsonObj = json.loads(request.body)
+    jsonObj = json.loads(request.body.decode('utf-8'))
     username = jsonObj['username']
     password = jsonObj['password']
 
