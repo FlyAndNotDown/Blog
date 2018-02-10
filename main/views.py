@@ -111,15 +111,11 @@ def post(request, pk):
 # 本站注册请求
 @csrf_exempt
 def login_register_local(request):
-    # 获取注册信息
-    if request.method == 'POST':
-        username = request.POST.get('username', None)
-        password = request.POST.get('password', None)
-        salt = request.POST.get('salt', None)
-    else:
-        username = request.GET.get('username', None)
-        password = request.GEt.get('password', None)
-        salt = request.GET.get('salt', None)
+    # 获取 json 数据
+    jsonObj = json.loads(request.body)
+    username = jsonObj['username']
+    password = jsonObj['password']
+    salt = jsonObj['salt']
 
     # 处理请求
     login_register_local_request = LoginRegisterLocalRequest(
@@ -129,9 +125,9 @@ def login_register_local(request):
     if login_register_local_request.get_response()['state']:
         # 在 session 中保存信息
         request.session['login_state'] = True
-        request.session['user_info'] = login_register_local_request.get_save_obj()
+        request.session['user_info'] = login_register_local_request.get_user_info()
     # 返回 json 数据
-    return json.dumps(login_register_local_request.get_response())
+    return HttpResponse(json.dumps(login_register_local_request.get_response()))
 
 
 # ----------------------------------------------------- #

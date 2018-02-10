@@ -93,3 +93,4 @@ class PostRender:
         获取登录信息
         :return: 登录信息
         """
+        return self.__login_info

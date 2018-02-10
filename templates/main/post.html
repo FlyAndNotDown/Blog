@@ -100,11 +100,15 @@
                                                 {% if login_info.login_state %}
                                                     <!--用户信息chip-->
                                                     <div class="chip hide-on-small-only">
-                                                        <img src="{% static 'main/img/about_bg.png' %}">
-                                                        Admin
+                                                        {% if login_info.user_info.avatar == '' %}
+                                                            <img src="{% static 'main/img/about_bg.png' %}">
+                                                        {% else %}
+                                                            <img src="{{ login_info.user_info.avatar }}"
+                                                        {% endif %}
+                                                        {{ login_info.user_info.nickname }}
                                                     </div>
                                                     <!--发表评论按钮-->
-                                                    <a class="btn waves-effect green lighten-3 right disabled hide" id="comment-publish-btn">
+                                                    <a class="btn waves-effect green lighten-3 right disabled" id="comment-publish-btn">
                                                         发表(评论系统升级中)</a>
                                                 <!--如果还没有登录-->
                                                 {% else %}
@@ -212,7 +216,7 @@
                 alignment: 'left',
                 stopPropagation: false
             });
-s
+
             // Modal 控件初始化
             $('.modal').modal({
                 dismissible: true,
@@ -220,80 +224,8 @@ s
                 inDuration: 300,
                 outDuration: 200,
                 complete: function () {
-                    $('#login-local-register-block').html(
-                        "<br class='hide-on-med-and-up'>" +
-                        "<a class='btn lime lighten-1 waves-effect' id='login-local-register-btn'>" +
-                        "   快速注册" +
-                        "<br class='hide-on-med-and-up'>"
-                    );
-
-                    // 快速注册按钮响应
-                    $('#login-local-register-btn').click(function () {
-                Materialize.toast('设置好用户名和密码后，就点击确认键来完成注册吧!', 4000);
-                $('#login-local-register-block').html(
-                    "<br class='hide-on-med-and-up'>" +
-                    "<a class='btn orange lighten-3 waves-effect' id='login-local-enter-btn'>" +
-                    "   &nbsp;&nbsp;&nbsp;确认&nbsp;&nbsp;&nbsp;" +
-                    "<br class='hide-on-med-and-up'>"
-                );
-                $('#login-local-enter-btn').click(function () {
-                    var username = $('#login-local-username').val();
-                    var password = $('#login-local-password').val();
-                    // 表单验证
-                    if (/^[a-zA-Z][a-zA-Z0-9_]{5,15}$/.test(username)) {
-                        if (/^[a-zA-Z0-9_@#]{8,16}$/.test(password)) {
-                            var salt = get_salt();
-                            // 加密密码
-                            password_hash = sha256(sha256(password) + salt);
-                            // 封装 json 对象
-                            var obj = {
-                                username: username,
-                                password: password_hash,
-                                salt: salt
-                            };
-                            // 发送 Ajax 请求
-                            $.ajax({
-                                url: '/login/register/local',
-                                type: 'post',
-                                data_type: 'json',
-                                data: JSON.stringify(),
-                                async: true,
-                                success: function (jsonObj) {
-                                    // 如果注册成功了
-                                    if (jsonObj.state) {
-                                        // 注册成功
-                                        Materialize.toast('注册成功,两秒后为你刷新页面', 4000);
-                                        setTimeout(
-                                            function () {
-                                                // 刷新页面
-                                                window.location.reload(true)
-                                            }, 2000
-                                        );
-                                    } else {
-                                        // 提示错误信息
-                                        Materialize.toast(jsonObj.reason, 4000);
-                                    }
-                                }
-                            });
-                        // 如果密码验证失败
-                        } else {
-                            Materialize.toast('密码不符合要求(8-16位,可以使用字母数字下划线@#符号)', 4000);
-                        }
-                    // 如果用户名验证失败
-                    } else {
-                        Materialize.toast('用户名不符合要求(6-16位,可以使用字母数字下划线,必须以字母开头)', 4000);
-                    }
-                });
-            });
+                    // nothing
                 }
-                // startingTop: '30%',
-                // endingTop: '70%',
-                // ready: function(modal, trigger) {
-                    // nothing
-                // },
-                // complete: function() {
-                    // nothing
-                // }
             });
 
             // 快速注册按钮响应
@@ -324,14 +256,14 @@ s
                             $.ajax({
                                 url: '/login/register/local',
                                 type: 'post',
-                                data_type: 'json',
-                                data: JSON.stringify(),
+                                dataType: 'json',
+                                data: JSON.stringify(obj),
                                 async: true,
                                 success: function (jsonObj) {
                                     // 如果注册成功了
                                     if (jsonObj.state) {
                                         // 注册成功
-                                        Materialize.toast('注册成功,两秒后为你刷新页面', 4000);
+                                        Materialize.toast('注册成功,两秒后为你自动登录', 4000);
                                         setTimeout(
                                             function () {
                                                 // 刷新页面
