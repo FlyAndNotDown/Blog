@@ -4,11 +4,31 @@ from datetime import datetime
 import pytz
 
 
+class LoginInfo:
+    """
+    登录信息
+    """
+    def __init__(self, login_state, user_info):
+        """
+        构造
+        :param login_state: 用户是否登录
+        :param user_info: 登录用户的信息
+        """
+        self.login_state = login_state
+        self.user_info = user_info
+
+
 class PostRender:
     """
     文章页面渲染器
     """
-    def __init__(self, pk):
+    def __init__(self, pk, login_state, user_info):
+        """
+        构造
+        :param pk: 文章主键
+        :param login_state: 用户是否登录
+        :param user_info: 登录用户的信息
+        """
         self.__error = False
         # 错误判断
         if not Post.objects.filter(pk=pk).exists():
@@ -43,6 +63,10 @@ class PostRender:
                 'modified': datetime.utcnow().replace(tzinfo=pytz.timezone('UTC')) - post.modified_time
             }
 
+            # 封装登录信息
+            self.__login_info = LoginInfo(login_state, user_info)
+
+
     def error_happen(self):
         """
         是否发生错误
@@ -63,3 +87,9 @@ class PostRender:
         :return: phase_time
         """
         return self.__phase_time
+
+    def get_login_info(self):
+        """
+        获取登录信息
+        :return: 登录信息
+        """

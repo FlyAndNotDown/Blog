@@ -21,16 +21,24 @@ urlpatterns = [
 
     # 关于页面
     url(r'^about$', views.about, name='about'),
+
+    # 通知页面
+    url(r'^message$', views.message, name='message'),
+
     # 文章页面
     url(r'^post/(?P<pk>[1-9][0-9]*)$', views.post, name='post'),
+
     # 归档页面
     url(r'^archive$', views.archive, name='archive'),
+
     # sitemap
     url(r'^sitemap.xml$', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
     # robots.txt
     url(r'^robots.txt$', views.robots, name='robots'),
-    # 通知页面
-    url(r'^message$', views.message, name='message'),
     # RSS
     url(r'^rss$', AllPostRssFeed(), name='rss'),
+
+    # 登录请求
+    # 本站注册请求
+    url(r'^login/register/local$', views.login_register_local, name='login_register_local')
 ]

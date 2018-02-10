@@ -96,23 +96,30 @@
                                                 <i class="material-icons prefix">mode_edit</i>
                                                 <textarea class="materialize-textarea" id="comment-input"></textarea>
                                                 <label for="comment-input">发表你的评论</label>
-                                                <!--用户信息chip与登录状态提示-->
-                                                <div class="chip hide">
-                                                    <img src="{% static 'main/img/about_bg.png' %}">
-                                                    Admin
-                                                </div>
-                                                <div class="chip hide-on-small-only">
-                                                    您还未登录，请登录后评论哦!
-                                                </div>
-                                                <!--发表评论与登录按钮-->
-                                                <a class="btn waves-effect green lighten-3 right disabled hide" id="comment-publish-btn">
-                                                    发表(评论系统升级中)</a>
-                                                <a class="dropdown-btn btn waves-effect green lighten-3 right hide-on-small-only" data-activates="login-dropdown">
-                                                    &nbsp;&nbsp;登录&nbsp;&nbsp;
-                                                </a>
-                                                <a class="dropdown-btn btn waves-effect green lighten-3 right hide-on-med-and-up" data-activates="login-dropdown">
-                                                    登录后评论
-                                                </a>
+                                                <!--如果用户已经登录了-->
+                                                {% if login_info.login_state %}
+                                                    <!--用户信息chip-->
+                                                    <div class="chip hide-on-small-only">
+                                                        <img src="{% static 'main/img/about_bg.png' %}">
+                                                        Admin
+                                                    </div>
+                                                    <!--发表评论按钮-->
+                                                    <a class="btn waves-effect green lighten-3 right disabled hide" id="comment-publish-btn">
+                                                        发表(评论系统升级中)</a>
+                                                <!--如果还没有登录-->
+                                                {% else %}
+                                                    <!--未登录提示-->
+                                                    <div class="chip hide-on-small-only">
+                                                        您还未登录，请登录后评论哦!
+                                                    </div>
+                                                    <!--登录按钮-->
+                                                    <a class="dropdown-btn btn waves-effect green lighten-3 right hide-on-small-only" data-activates="login-dropdown">
+                                                        &nbsp;&nbsp;登录&nbsp;&nbsp;
+                                                    </a>
+                                                    <a class="dropdown-btn btn waves-effect green lighten-3 right hide-on-med-and-up" data-activates="login-dropdown">
+                                                        登录后评论
+                                                    </a>
+                                                {% endif %}
                                                 <!--登录 Dropdown-->
                                                 <ul id="login-dropdown" class="dropdown-content">
                                                     <li><a class="waves-effect modal-trigger" href="#login-modal-local">本站账号</a></li>
@@ -178,8 +185,13 @@
 
 {% block additional-js %}
     <script src="{% static 'main/js/post.js' %}" rel="stylesheet"></script>
+    <script src="{% static 'main/lib/tool/secret/salt.js'%}" rel="stylesheet"></script>
+    <script src="{% static 'main/lib/tool/secret/sha256.min.js' %}" rel="stylesheet"></script>
     <script>
         $(document).ready(function () {
+            // sha256 js 插件初始化
+            sha256.create();
+
             // toasts 控件初始化
             $('.tooltipped').tooltip({
                 delay: 50
@@ -226,8 +238,52 @@
                             "<br class='hide-on-med-and-up'>"
                         );
                         $('#login-local-enter-btn').click(function () {
-                            // TODO
-                            Materialize.toast('完成注册!', 4000);
+                            var username = $('#login-local-username').val();
+                            var password = $('#login-local-password').val();
+                            // 表单验证
+                            if (/^[a-zA-Z][a-zA-Z0-9_]{7,15}$/.test(username)) {
+                                if (/^[a-zA-Z0-9_@#]{8,16}$/.test(password)) {
+                                    var salt = get_salt();
+                                    // 加密密码
+                                    password_hash = sha256(sha256(password) + salt);
+                                    // 封装 json 对象
+                                    var obj = {
+                                        username: username,
+                                        password: password_hash,
+                                        salt: salt
+                                    };
+                                    // 发送 Ajax 请求
+                                    $.ajax({
+                                        url: '',
+                                        type: 'post',
+                                        data_type: 'json',
+                                        data: JSON.stringify(),
+                                        async: true,
+                                        success: function (jsonObj) {
+                                            // 如果注册成功了
+                                            if (jsonObj.state) {
+                                                // 注册成功
+                                                Materialize.toast('注册成功,两秒后为你刷新页面', 4000);
+                                                setTimeout(
+                                                    function () {
+                                                        // 刷新页面
+                                                        window.location.reload(true)
+                                                    }, 2000
+                                                );
+                                            } else {
+                                                // 提示错误信息
+                                                Materialize.toast(jsonObj.reason, 4000);
+                                            }
+                                        }
+                                    });
+                                // 如果密码验证失败
+                                } else {
+                                    Materialize.toast('密码不符合要求(8-16位,可以使用字母数字下划线@#符号)', 4000);
+                                }
+                            // 如果用户名验证失败
+                            } else {
+                                Materialize.toast('用户名不符合要求(8-16位,可以使用字母数字下划线,必须以字母开头)', 4000);
+                            }
                         });
                     });
                 }
@@ -251,9 +307,52 @@
                     "<br class='hide-on-med-and-up'>"
                 );
                 $('#login-local-enter-btn').click(function () {
-                    Materialize.toast('完成注册!', 4000);
-                    // TODO
-
+                    var username = $('#login-local-username').val();
+                    var password = $('#login-local-password').val();
+                    // 表单验证
+                    if (/^[a-zA-Z][a-zA-Z0-9_]{7,15}$/.test(username)) {
+                        if (/^[a-zA-Z0-9_@#]{8,16}$/.test(password)) {
+                            var salt = get_salt();
+                            // 加密密码
+                            password_hash = sha256(sha256(password) + salt);
+                            // 封装 json 对象
+                            var obj = {
+                                username: username,
+                                password: password_hash,
+                                salt: salt
+                            };
+                            // 发送 Ajax 请求
+                            $.ajax({
+                                url: '',
+                                type: 'post',
+                                data_type: 'json',
+                                data: JSON.stringify(),
+                                async: true,
+                                success: function (jsonObj) {
+                                    // 如果注册成功了
+                                    if (jsonObj.state) {
+                                        // 注册成功
+                                        Materialize.toast('注册成功,两秒后为你刷新页面', 4000);
+                                        setTimeout(
+                                            function () {
+                                                // 刷新页面
+                                                window.location.reload(true)
+                                            }, 2000
+                                        );
+                                    } else {
+                                        // 提示错误信息
+                                        Materialize.toast(jsonObj.reason, 4000);
+                                    }
+                                }
+                            });
+                        // 如果密码验证失败
+                        } else {
+                            Materialize.toast('密码不符合要求(8-16位,可以使用字母数字下划线@#符号)', 4000);
+                        }
+                    // 如果用户名验证失败
+                    } else {
+                        Materialize.toast('用户名不符合要求(8-16位,可以使用字母数字下划线,必须以字母开头)', 4000);
+                    }
                 });
             });
         });

@@ -63,7 +63,7 @@ class LocalUser(models.Model):
     # 盐
     salt = models.CharField(max_length=16)
     # 头像
-    avatar = models.CharField(max_length=100)
+    avatar = models.CharField(max_length=100, blank=True)
     # 是否为管理员
     is_admin = models.BooleanField()
 
@@ -84,7 +84,7 @@ class KUser(models.Model):
     # 用户唯一 id
     uid = models.CharField(max_length=50)
     # 用户头像
-    avatar = models.CharField(max_length=100)
+    avatar = models.CharField(max_length=100, blank=True)
     # 是否为管理员
     is_admin = models.BooleanField()
 

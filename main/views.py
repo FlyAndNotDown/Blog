@@ -1,5 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.views.decorators.csrf import csrf_exempt
+
+from main.models import KUser
 
 from .view.index import *
 from .view.login import *
@@ -7,6 +10,8 @@ from .view.header import *
 from .view.archive import *
 from .view.about import *
 from .view.post import *
+
+import json
 
 
 # ----------------------------------------------------- # check
@@ -76,7 +81,16 @@ def about(request):
 def post(request, pk):
     # 储存登录前的位置
     request.session['login_from'] = '/post/' + str(pk)
-    post_render = PostRender(pk)
+
+    # 获取登录信息
+    login_state = request.session.get('login_state', False)
+    user_info = None
+    if login_state:
+        user_info = request.session.get('user_info', None)
+
+    # 进行渲染
+    post_render = PostRender(pk, login_state, user_info)
+
     if post_render.error_happen():
         return Http404()
     else:
@@ -87,102 +101,37 @@ def post(request, pk):
                 keywords=post_render.get_post().keywords
             ),
             'post': post_render.get_post(),
-            'phase_time': post_render.get_phase_time()
+            'phase_time': post_render.get_phase_time(),
+            'login_info': post_render.get_login_info()
         })
 
-# def post(request, pk):
-#     # 获取对象
-#     p = get_object_or_404(Post, pk=pk)
-#     # 渲染 Markdown
-#     p.body = markdown.markdown(
-#         p.body,
-#         extensions=[
-#             'markdown.extensions.sane_lists',
-#             'markdown.extensions.extra',
-#             'markdown.extensions.codehilite',
-#             'markdown.extensions.toc',
-#             'markdown.extensions.abbr',
-#             'markdown.extensions.attr_list',
-#             'markdown.extensions.def_list',
-#             'markdown.extensions.fenced_code',
-#             'markdown.extensions.footnotes',
-#             'markdown.extensions.smart_strong',
-#             'markdown.extensions.meta',
-#             'markdown.extensions.nl2br',
-#             'markdown.extensions.tables'
-#         ]
-#     )
-#
-#     # 求时间差
-#     phase_created = datetime.utcnow().replace(tzinfo=pytz.timezone('UTC')) - p.created_time
-#     phase_modified = datetime.utcnow().replace(tzinfo=pytz.timezone('UTC')) - p.modified_time
-#
-#     # 保存登录之前的页面
-#     request.session['login_from'] = '/post/' + str(p.pk)
-#
-#     # 获取一篇文章中的所有评论
-#     comments_all = Comment.objects.filter(post=p.pk)
-#     # 将所有用户的PK替换成实际的用户
-#     for comment in comments_all:
-#         if comment.sender:
-#             comment.sender = KUser.objects.get(pk=comment.sender)
-#         if comment.receiver:
-#             comment.receiver = KUser.objects.get(pk=comment.receiver)
-#     # 取得这些评论中的所有父级评论
-#     comments_level_1 = comments_all.filter(level=1)
-#     # 新建一个list(dict())表用于存放所有的评论
-#     comments = list()
-#     i = 0
-#     # 遍历所有父级评论
-#     for parent in comments_level_1:
-#         comments.append(dict())
-#         # 为孩子评论预分配空间
-#         comments[i]['children'] = list()
-#         # 存入父级评论
-#         comments[i]['parent'] = parent
-#         # 存入孩子评论
-#         for child in comments_all.filter(level=2, parent=parent.pk):
-#             comments[i]['children'].append(child)
-#         # 迭代
-#         i += 1
-#
-#     # 获取用户登录状态
-#     if request.session.get('login_state'):
-#         login_state = True
-#         user_type = request.session.get('user_type')
-#         uid = request.session.get('uid')
-#         nickname = request.session.get('nickname')
-#         avatar = request.session.get('avatar')
-#     else:
-#         login_state = False
-#         user_type = ''
-#         uid = ''
-#         nickname = ''
-#         avatar = ''
-#
-#     return render(request, 'main/post.html', context={
-#         'header': Header(
-#             title=p.title + '_IT小站_专注技术的小博客',
-#             description=p.excerpt,
-#             keywords=p.keywords
-#         ),
-#         'post': p,
-#         'login_state': login_state,
-#         'user_type': user_type,
-#         'uid': uid,
-#         'user_pk': KUser.objects.get(user_type=user_type, uid=uid).pk,
-#         'nickname': nickname,
-#         'avatar': avatar,
-#         'comments': comments,
-#         'comments_num': len(comments_all),
-#         'github_login_link': 'https://github.com/login/oauth/authorize?client_id=' + github_client_id,
-#         'qq_login_link': 'https://graph.qq.com/oauth2.0/authorize?response_type=code&' +
-#                         'client_id=' + qq_client_id + '&redirect_uri=http://www.kindemh.cn/login/qq',
-#         'phase_days_created': phase_created.days,
-#         'phase_hours_created': int(phase_created.seconds / 3600),
-#         'phase_days_modified': phase_modified.days,
-#         'phase_hours_modified': int(phase_modified.seconds / 3600)
-#     })
+
+# ----------------------------------------------------- #
+# 登录请求
+# 本站注册请求
+@csrf_exempt
+def login_register_local(request):
+    # 获取注册信息
+    if request.method == 'POST':
+        username = request.POST.get('username', None)
+        password = request.POST.get('password', None)
+        salt = request.POST.get('salt', None)
+    else:
+        username = request.GET.get('username', None)
+        password = request.GEt.get('password', None)
+        salt = request.GET.get('salt', None)
+
+    # 处理请求
+    login_register_local_request = LoginRegisterLocalRequest(
+        username, password, salt
+    )
+    # 如果注册成功
+    if login_register_local_request.get_response()['state']:
+        # 在 session 中保存信息
+        request.session['login_state'] = True
+        request.session['user_info'] = login_register_local_request.get_save_obj()
+    # 返回 json 数据
+    return json.dumps(login_register_local_request.get_response())
 
 
 # ----------------------------------------------------- #
@@ -192,67 +141,49 @@ def robots(request):
 
 
 # ----------------------------------------------------- #
-class MessageCard:
-    """
-    通知卡片类
-    """
-    def __init__(self, title, text, links):
-        """
-        构造
-        :param title: 标题
-        :param text: 内容
-        :param links: 链接字典列表
-        """
-        self.title = title
-        self.text = text
-        self.links = list()
-        for link in links:
-            self.links.append(link)
-
-
-# ----------------------------------------------------- #
 # 通知页面
 def message(request):
-    # 左右两侧的通知卡片
-    left_cards = list()
-    right_cards = list()
-    # 如果用户已经登录了
-    if request.session.get('login_state'):
-
-        return render(request, 'main/message.html', context={
-            'header': Header(
-                title='首页_IT小站_专注技术的小博客',
-                keywords='it,it小站,通知',
-                description='IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。'
-            ),
-            'left_cards': left_cards,
-            'right_cards': right_cards
-        })
-
-    else:
-        # 保存登录之前的页面
-        request.session['login_from'] = '/message'
-
-        left_cards.append(MessageCard(
-            '你还没登录哦!',
-            '使用下面给出的第三方认证登录本站来参与评论', [{
-                'name': 'GitHub',
-                'href': 'https://github.com/login/oauth/authorize?client_id=' + github_client_id
-            }, {
-                'name': 'QQ',
-                'href': 'https://graph.qq.com/oauth2.0/authorize?response_type=code&' +
-                        'client_id=' + qq_client_id + '&redirect_uri=http://www.kindemh.cn/login/qq'
-            }]
-        ))
-        return render(request, 'main/message.html', context={
-            'header': Header(
-                title='首页_IT小站_专注技术的小博客',
-                keywords='it,it小站,通知',
-                description='IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。'
-            ),
-            'left_cards': left_cards,
-            'right_cards': right_cards
-        })
+    pass
+    # # 左右两侧的通知卡片
+    # left_cards = list()
+    # right_cards = list()
+    # # 如果用户已经登录了
+    # if request.session.get('login_state'):
+    #
+    #     return render(request, 'main/message.html', context={
+    #         'header': Header(
+    #             title='首页_IT小站_专注技术的小博客',
+    #             keywords='it,it小站,通知',
+    #             description='IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。'
+    #         ),
+    #         'left_cards': left_cards,
+    #         'right_cards': right_cards
+    #     })
+    #
+    # else:
+    #     # 保存登录之前的页面
+    #     request.session['login_from'] = '/message'
+    #
+    #     left_cards.append(MessageCard(
+    #         '你还没登录哦!',
+    #         '使用下面给出的第三方认证登录本站来参与评论', [{
+    #             'name': 'GitHub',
+    #             'href': 'https://github.com/login/oauth/authorize?client_id=' + github_client_id
+    #         }, {
+    #             'name': 'QQ',
+    #             'href': 'https://graph.qq.com/oauth2.0/authorize?response_type=code&' +
+    #                     'client_id=' + qq_client_id + '&redirect_uri=http://www.kindemh.cn/login/qq'
+    #         }]
+    #     ))
+    #     return render(request, 'main/message.html', context={
+    #         'header': Header(
+    #             title='首页_IT小站_专注技术的小博客',
+    #             keywords='it,it小站,通知',
+    #             description='IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。'
+    #         ),
+    #         'left_cards': left_cards,
+    #         'right_cards': right_cards
+    #     })
 
 
 # # github登录回调
