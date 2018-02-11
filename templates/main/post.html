@@ -103,7 +103,7 @@
                                                         {% if login_info.user_info.avatar == '' %}
                                                             <img src="{% static 'main/img/about_bg.png' %}">
                                                         {% else %}
-                                                            <img src="{{ login_info.user_info.avatar }}"
+                                                            <img src="{{ login_info.user_info.avatar }}">
                                                         {% endif %}
                                                         {{ login_info.user_info.nickname }}
                                                     </div>
