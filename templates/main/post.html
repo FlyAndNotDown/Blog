@@ -145,7 +145,7 @@
                                     {% for comment_level_1 in comments %}
                                         <div class="divider"></div>
                                         <br>
-                                        <div class="row">
+                                        <div class="row comment-level-1-block">
                                             <div class="col s12 m12 l12 xl12">
                                                 <div class="chip">
                                                     {% if comment_level_1.parent.sender.avatar == '' %}
@@ -169,13 +169,13 @@
                                                 <a class="grey-text right hide-on-med-and-up"><i class="material-icons">reply</i></a>
                                                 {% if comment_level_1.children %}
                                                     <!--子评论-->
-                                                    <div class="row">
-                                                    <div class="col s10 m10 l10 xl10 offset-s2 offset-m2 offset-l2 offset-xl2">
+                                                    <div class="row comment-level-2-model">
+                                                        <div class="col s10 m10 l10 xl10 offset-s2 offset-m2 offset-l2 offset-xl2">
                                                         <br>
                                                         {% for comment_level_2 in comment_level_1.children %}
                                                             <div class="divider"></div>
                                                             <br>
-                                                            <div class="row">
+                                                            <div class="row comment-level-2-block">
                                                                 <div class="col s12 m12 l12 xl12">
                                                                     <div class="chip">
                                                                         {% if comment_level_2.sender.avatar == '' %}
