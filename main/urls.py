@@ -50,5 +50,8 @@ urlpatterns = [
     # GitHub登录回调
     url(r'^login/github/callback$', views.login_github_callback, name='login_github_callback'),
     # QQ 登录回调
-    url(r'^login/qq/callback$', views.login_qq_callback, name='login_qq_callback')
+    url(r'^login/qq/callback$', views.login_qq_callback, name='login_qq_callback'),
+
+    # 评论系统
+    url(r'^comment/publish$', views.comment_publish, name='comment_publish')
 ]

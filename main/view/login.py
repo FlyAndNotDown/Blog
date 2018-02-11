@@ -51,7 +51,8 @@ class LoginLocalRegisterRequest:
                 'nickname': k_user.nickname,
                 'uid': k_user.uid,
                 'avatar': k_user.avatar,
-                'is_admin': k_user.is_admin
+                'is_admin': k_user.is_admin,
+                'pk': k_user.pk
             }
             # 返回注册成功信息
             self.__response = {
@@ -118,7 +119,8 @@ class LoginLocalLoginRequest:
                 'nickname': local_user.username,
                 'uid': local_user.pk,
                 'avatar': local_user.avatar,
-                'is_admin': local_user.is_admin
+                'is_admin': local_user.is_admin,
+                'pk': local_user.pk
             }
         else:
             self.__response = {
@@ -182,7 +184,8 @@ class LoginGitHubCallbackRequest:
                     'uid': k_user.uid,
                     'nickname': k_user.nickname,
                     'avatar': k_user.avatar,
-                    'is_admin': k_user.is_admin
+                    'is_admin': k_user.is_admin,
+                    'pk': k_user.pk
                 }
             else:
                 self.__response['success'] = False
@@ -262,7 +265,8 @@ class LoginQQCallbackRequest:
                     'uid': k_user.uid,
                     'nickname': k_user.nickname,
                     'avatar': k_user.avatar,
-                    'is_admin': k_user.is_admin
+                    'is_admin': k_user.is_admin,
+                    'pk': k_user.pk
                 }
             else:
                 self.__response['success'] = False

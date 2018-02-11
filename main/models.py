@@ -100,7 +100,7 @@ class Comment(models.Model):
     # 4. is_child bool 是否为二级评论
     # 5. parent integer 父级评论 pk
     # 6. context text 评论内容
-    # 7. have_been_read bool 是否已经被接受者阅读
+    # 7. 发表时间
     # 发送者 pk
     sender = models.IntegerField()
     # 接受者 pk
@@ -113,8 +113,8 @@ class Comment(models.Model):
     parent = models.IntegerField(blank=True, null=True)
     # 评论内容
     context = models.TextField()
-    # 是否已经被接受者阅读
-    have_been_read = models.BooleanField(default=False)
+    # 发表时间
+    time = models.DateTimeField(auto_now_add=True)
 
 
 # class KUser(models.Model):

@@ -1,4 +1,4 @@
-from main.models import Post
+from main.models import Post, Comment, KUser
 from markdown import markdown
 from datetime import datetime
 import pytz
@@ -66,6 +66,83 @@ class PostRender:
             # 封装登录信息
             self.__login_info = LoginInfo(login_state, user_info)
 
+            # 获取评论信息
+            # 先获取所有该文章下的评论
+            comments = Comment.objects.filter(post=pk)
+            # # 将用户 pk 信息全部替换成 dict 对象信息
+            # for comment in comments:
+            #     obj = KUser.objects.get(pk=comment.sender)
+            #     comment.sender = {
+            #         'user_type': obj.user_type,
+            #         'nickname': obj.nickname,
+            #         'uid': obj.uid,
+            #         'avatar': obj.avatar,
+            #         'is_admin': obj.is_admin
+            #     }
+            #     if comment.receiver:
+            #         obj = KUser.objects.get(pk=comment.receiver)
+            #         comment.receiver = {
+            #             'user_type': obj.user_type,
+            #             'nickname': obj.nickname,
+            #             'uid': obj.uid,
+            #             'avatar': obj.avatar,
+            #             'is_admin': obj.is_admin
+            #         }
+            # 筛选出所有的一级评论
+            comments_level_1 = comments.filter(is_child=False).order_by('-time')
+            # 建立评论表数据结构
+            self.__comments = []
+            # 遍历所有一级评论，找到他们下的二级评论，并且按照数据结构存入
+            for comment in comments_level_1:
+                self.__comments.append({})
+                self.__comments[-1]['parent'] = comment
+                self.__comments[-1]['children'] = []
+                # 寻找他们下面的二级评论
+                children = Comment.objects.filter(is_child=True, parent=comment.pk)
+                # 将二级评论全部存入数据结构中
+                for child in children:
+                    self.__comments[-1]['children'].append(child)
+            # 处理数据，过滤掉不需要的数据
+            for comment_dict in self.__comments:
+                # 先处理一级评论
+                obj1 = KUser.objects.get(pk=comment_dict['parent'].sender)
+                new_parent = {
+                    'sender': {
+                        'user_type': obj1.user_type,
+                        'nickname': obj1.nickname,
+                        'uid': obj1.uid,
+                        'avatar': obj1.avatar,
+                        'is_admin': obj1.is_admin
+                    },
+                    'is_child': False,
+                    'context': comment_dict['parent'].context,
+                    'time': comment_dict['parent'].time
+                }
+                comment_dict['parent'] = new_parent
+                # 再处理二级评论
+                for child in comment_dict['children']:
+                    obj1 = KUser.objects.get(pk=child.sender)
+                    obj2 = KUser.objects.get(pk=child.receiver)
+                    new_child = {
+                        'sender': {
+                            'user_type': obj1.user_type,
+                            'nickname': obj1.nickname,
+                            'uid': obj1.uid,
+                            'avatar': obj1.avatar,
+                            'is_admin': obj1.is_admin
+                        },
+                        'receiver': {
+                            'user_type': obj2.user_type,
+                            'nickname': obj2.nickname,
+                            'uid': obj2.uid,
+                            'avatar': obj2.avatar,
+                            'is_admin': obj2.is_admin
+                        },
+                        'is_child': True,
+                        'context': child.context,
+                        'time': child.time
+                    }
+                    child = new_child
 
     def error_happen(self):
         """
@@ -94,3 +171,10 @@ class PostRender:
         :return: 登录信息
         """
         return self.__login_info
+
+    def get_comments(self):
+        """
+        获取评论信息
+        :return: 评论信息
+        """
+        return self.__comments

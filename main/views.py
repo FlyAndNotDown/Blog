@@ -10,6 +10,7 @@ from .view.header import *
 from .view.archive import *
 from .view.about import *
 from .view.post import *
+from .view.comment import *
 
 import json
 
@@ -106,7 +107,8 @@ def post(request, pk):
             'login_param': {
                 'github': github_param,
                 'qq': qq_param
-            }
+            },
+            'comments': post_render.get_comments()
         })
 
 
@@ -208,6 +210,26 @@ def login_qq_callback(request):
 
 
 # ----------------------------------------------------- #
+# 评论系统
+# 发表评论
+@csrf_exempt
+def comment_publish(request):
+    # 解析 json 字符串
+    jsonObj = json.loads(request.body.decode('utf-8'))
+    sender_pk = jsonObj['sender']
+    post_pk = jsonObj['post']
+    context = jsonObj['context']
+    # 执行请求
+    comment_publish_request = CommentPublishRequest(
+        sender=sender_pk,
+        post=post_pk,
+        context=context
+    )
+    # 返回数据
+    return HttpResponse(json.dumps({'state': True}))
+
+
+# ----------------------------------------------------- #
 # robots.txt
 def robots(request):
     return HttpResponse(r'User-agent: *\nAllow: /')
@@ -257,143 +279,3 @@ def message(request):
     #         'left_cards': left_cards,
     #         'right_cards': right_cards
     #     })
-
-
-# # github登录回调
-# def login_github(request):
-#     # 获取 code
-#     code = request.GET.get('code')
-#     # 准备POST参数用于交换 access_token
-#     data = bytes(urllib.parse.urlencode({
-#         'client_id': github_client_id,
-#         'client_secret': github_client_secret,
-#         'code': code
-#     }), encoding='utf8')
-#     # 发送Http请求用于交换 access_token
-#     response = urllib.request.urlopen('https://github.com/login/oauth/access_token', data=data)
-#     # 提取 access_token
-#     access_token = str(response.read(), encoding='utf-8').split('&')[0].split('=')[1]
-#     # 使用 access_token 获取用户信息
-#     response = urllib.request.urlopen('https://api.github.com/user?access_token=' + access_token)
-#     # 解码成Python对象
-#     user_info = json.loads(response.read().decode('utf-8'))
-#     user_info['id'] = str(user_info['id'])
-#
-#     # 查询数据库，看用户是否已经在数据库中
-#     # 如果已经有了
-#     if KUser.objects.filter(user_type='github', uid=user_info['id']).exists():
-#         # 将登陆信息存入 session
-#         request.session['login_state'] = True
-#         request.session['user_type'] = 'github'
-#         request.session['uid'] = user_info['id']
-#         request.session['nickname'] = user_info['login']
-#         request.session['avatar'] = user_info['avatar_url']
-#     # 如果没有
-#     else:
-#         # 将信息存入 session 和数据库
-#         request.session['login_state'] = True
-#         request.session['user_type'] = 'github'
-#         request.session['uid'] = user_info['id']
-#         request.session['nickname'] = user_info['login']
-#         request.session['avatar'] = user_info['avatar_url']
-#         k_user = KUser(
-#             user_type='github',
-#             uid=user_info['id'],
-#             nickname=user_info['login'],
-#             avatar=user_info['avatar_url'])
-#         k_user.save()
-#
-#     # 返回，并且重定向到登录前的网站
-#     return HttpResponseRedirect(request.session['login_from'])
-#
-#
-# # qq登录回调
-# def login_qq(request):
-#     # 获取 code
-#     code = request.GET.get('code')
-#     # 通过 code 获取Access Token
-#     response = urllib.request.urlopen(
-#         'https://graph.qq.com/oauth2.0/token?' +
-#             'grant_type=authorization_code' +
-#             '&client_id=' + qq_client_id +
-#             '&client_secret=' + qq_client_secret +
-#             '&code=' + code +
-#             '&redirect_uri=' + 'http://www.kindemh.cn/login/qq')
-#     # 提取 access_token
-#     access_token = response.read().decode('utf-8').split('&')[0].split('=')[1]
-#     # 使用 access_token 获取用户的 openid
-#     response = urllib.request.urlopen(
-#         'https://graph.qq.com/oauth2.0/me?' +
-#             'access_token=' + access_token
-#     )
-#
-#     # 解码成Python对象
-#     json_obj = json.loads(response.read().decode('utf-8').replace('callback( ', '').replace(' );', ''))
-#     openid = json_obj['openid']
-#
-#     # 使用 openid 用户的信息
-#     response = urllib.request.urlopen(
-#         'https://graph.qq.com/user/get_user_info?' +
-#             'access_token=' + access_token +
-#             '&oauth_consumer_key=' + qq_client_id +
-#             '&openid=' + openid)
-#     # 解析成Python对象
-#     user_info = json.loads(response.read().decode('utf-8'))
-#
-#     # 查询数据库，看用户是否已经在数据库之中了
-#     # 如果已经有了
-#     if KUser.objects.filter(user_type='qq', uid=openid).exists():
-#         # 将登录信息存入 session
-#         request.session['login_state'] = True
-#         request.session['user_type'] = 'qq'
-#         request.session['uid'] = openid
-#         request.session['nickname'] = user_info['nickname']
-#         request.session['avatar'] = user_info['figureurl_qq_1']
-#     # 如果有没
-#     else:
-#         # 将信息存入 session 和数据库
-#         request.session['login_state'] = True
-#         request.session['user_type'] = 'qq'
-#         request.session['uid'] = openid
-#         request.session['nickname'] = user_info['nickname']
-#         request.session['avatar'] = user_info['figureurl_qq_1']
-#         k_user = KUser(
-#             user_type='qq',
-#             uid=openid,
-#             nickname=user_info['nickname'],
-#             avatar=user_info['figureurl_qq_1'])
-#         k_user.save()
-#
-#     # 返回，并重定向到登录前的网站
-#     return HttpResponseRedirect(request.session['login_from'])
-
-
-# 注销
-# def logout(request):
-#     request.session['login_state'] = False
-#     request.session['user_type'] = None
-#     request.session['uid'] = None
-#     request.session['nickname'] = None
-#     request.session['avatar'] = None
-#     return HttpResponse(json.dumps({
-#         'state': True
-#     }))
-
-
-
-# @csrf_exempt
-# # 发表评论
-# def publish_comment(request):
-#     if request.method == 'POST':
-#         obj = json.loads(request.POST['json'])
-#         comment = Comment(
-#             sender=int(obj['sender']),
-#             post=int(obj['post']),
-#             level=int(obj['level']),
-#             context=str(obj['context'])
-#         )
-#         # return HttpResponse(str(obj['sender']))
-#         comment.save()
-#         return HttpResponse(json.dumps({'state': True}))
-#     else:
-#         return Http404()
