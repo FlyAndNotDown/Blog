@@ -177,7 +177,13 @@ class LoginGitHubCallbackRequest:
                     k_user.save()
                 else:
                     k_user = KUser.objects.get(user_type='github', uid=user_info['id'])
-                self.__response['user_info'] = k_user
+                self.__response['user_info'] = {
+                    'user_type': k_user.user_type,
+                    'uid': k_user.uid,
+                    'nickname': k_user.nickname,
+                    'avatar': k_user.avatar,
+                    'is_admin': k_user.is_admin
+                }
             else:
                 self.__response['success'] = False
         except Exception:
@@ -251,7 +257,13 @@ class LoginQQCallbackRequest:
                         is_admin=False
                     )
                     k_user.save()
-                self.__response['user_info'] = k_user
+                self.__response['user_info'] = {
+                    'user_type': k_user.user_type,
+                    'uid': k_user.uid,
+                    'nickname': k_user.nickname,
+                    'avatar': k_user.avatar,
+                    'is_admin': k_user.is_admin
+                }
             else:
                 self.__response['success'] = False
         except Exception:
