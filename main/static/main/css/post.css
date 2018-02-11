@@ -54,7 +54,7 @@ body .tags {
     padding: 0;
 }
 
-body .main {
+body .main, body .extend {
     /*自动换行*/
     white-space: pre-wrap;
     word-break: break-all;
