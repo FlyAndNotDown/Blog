@@ -21,7 +21,7 @@ class KUserAdmin(admin.ModelAdmin):
 class CommentAdmin(admin.ModelAdmin):
     list_display = [
         'sender', 'receiver', 'post', 'is_child',
-        'parent', 'context']
+        'parent', 'context', 'time']
 
 
 # class KUserAdmin(admin.ModelAdmin):
