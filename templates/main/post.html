@@ -105,7 +105,11 @@
                                                         {% else %}
                                                             <img src="{{ login_info.user_info.avatar }}">
                                                         {% endif %}
-                                                        {{ login_info.user_info.nickname }}
+                                                        {% if login_info.user_info.is_admin %}
+                                                            {{ login_info.user_info.nickname }}(Admin)
+                                                        {% else %}
+                                                            {{ login_info.user_info.nickname }}
+                                                        {% endif %}
                                                     </div>
                                                     <!--发表评论按钮-->
                                                     <a class="btn waves-effect green lighten-3 right" id="comment-publish-btn">
@@ -149,7 +153,11 @@
                                                     {% else %}
                                                         <img src="{{ comment_level_1.parent.sender.avatar }}">
                                                     {% endif %}
-                                                    {{ comment_level_1.parent.sender.nickname }}
+                                                    {% if comment_level_1.parent.sender.is_admin %}
+                                                        {{ comment_level_1.parent.sender.nickname }}(Admin)
+                                                    {% else %}
+                                                        {{ comment_level_1.parent.sender.nickname }}
+                                                    {% endif %}
                                                 </div>
                                                 <a class="grey-text right hide-on-small-only"><i class="material-icons">reply</i></a>
                                                 <a class="grey-text right hide-on-small-only">
@@ -175,7 +183,11 @@
                                                                         {% else %}
                                                                             <img src="{{ comment_level_2.sender.avatar }}">
                                                                         {% endif %}
-                                                                        {{ comment_level_2.sender.nickname }}
+                                                                        {% if comment_level_2.sender.is_admin %}
+                                                                            {{ comment_level_2.sender.nickname }}(Admin)
+                                                                        {% else %}
+                                                                            {{ comment_level_2.sender.nickname }}
+                                                                        {% endif %}
                                                                     </div>
                                                                     <a class="grey-text right hide-on-small-only"><i class="material-icons">reply</i></a>
                                                                     <a class="grey-text right hide-on-small-only">
