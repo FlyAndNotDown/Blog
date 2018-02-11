@@ -1,7 +1,11 @@
 from main.models import Post, Comment, KUser
 from markdown import markdown
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 import pytz
+
+
+# 中国时区信息
+timezone_delta_hour = 8
 
 
 class LoginInfo:
@@ -91,6 +95,9 @@ class PostRender:
                 # 将二级评论全部存入数据结构中
                 for child in children:
                     self.__comments[-1]['children'].append(child)
+
+            # 获取中国时区信息
+            timezone_china = timezone(timedelta(hours=timezone_delta_hour))
             # 处理数据，过滤掉不需要的数据
             for comment_dict in self.__comments:
                 # 先处理一级评论
@@ -105,7 +112,7 @@ class PostRender:
                     },
                     'is_child': False,
                     'context': comment_dict['parent'].context,
-                    'time': comment_dict['parent'].time
+                    'time': comment_dict['parent'].time.astimezone(timezone_china)
                 }
                 comment_dict['parent'] = new_parent
                 # 再处理二级评论
@@ -129,7 +136,7 @@ class PostRender:
                         },
                         'is_child': True,
                         'context': child.context,
-                        'time': child.time
+                        'time': child.time.astimezone(timezone_china)
                     }
                     child = new_child
 
