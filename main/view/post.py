@@ -57,10 +57,18 @@ class PostRender:
             )
             self.__post = post
 
+            phase_created = datetime.utcnow().replace(tzinfo=pytz.timezone('UTC')) - post.created_time
+            phase_modified = datetime.utcnow().replace(tzinfo=pytz.timezone('UTC')) - post.modified_time
             # 求时间差
             self.__phase_time = {
-                'created': datetime.utcnow().replace(tzinfo=pytz.timezone('UTC')) - post.created_time,
-                'modified': datetime.utcnow().replace(tzinfo=pytz.timezone('UTC')) - post.modified_time
+                'created': {
+                    'days': phase_created.days,
+                    'hours': phase_created.seconds / 3600
+                },
+                'modified': {
+                    'days': phase_modified.days,
+                    'hours': phase_modified.seconds / 3600
+                }
             }
 
             # 封装登录信息
@@ -69,25 +77,6 @@ class PostRender:
             # 获取评论信息
             # 先获取所有该文章下的评论
             comments = Comment.objects.filter(post=pk)
-            # # 将用户 pk 信息全部替换成 dict 对象信息
-            # for comment in comments:
-            #     obj = KUser.objects.get(pk=comment.sender)
-            #     comment.sender = {
-            #         'user_type': obj.user_type,
-            #         'nickname': obj.nickname,
-            #         'uid': obj.uid,
-            #         'avatar': obj.avatar,
-            #         'is_admin': obj.is_admin
-            #     }
-            #     if comment.receiver:
-            #         obj = KUser.objects.get(pk=comment.receiver)
-            #         comment.receiver = {
-            #             'user_type': obj.user_type,
-            #             'nickname': obj.nickname,
-            #             'uid': obj.uid,
-            #             'avatar': obj.avatar,
-            #             'is_admin': obj.is_admin
-            #         }
             # 筛选出所有的一级评论
             comments_level_1 = comments.filter(is_child=False).order_by('-time')
             # 建立评论表数据结构

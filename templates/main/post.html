@@ -429,7 +429,7 @@
                         var comment_publish_request = {
                             sender: {{ login_info.user_info.pk }},
                             post: {{ post.pk }},
-                            context: $('#comment-input').val()
+                            context: context
                         };
                         // 发送请求来发表评论
                         $.ajax({
