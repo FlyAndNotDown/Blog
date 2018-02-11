@@ -55,8 +55,8 @@ body .tags {
 }
 
 body .main,
-body .section .extend .comment-model .comment-level-1-block,
-body .section .extend .comment-model .comment-level-1-block .comment-level-2-model .comment-level-2-block {
+body .section .extend .comment-model .comment-level-1-block .comment-text,
+body .section .extend .comment-model .comment-level-1-block .comment-level-2-model .comment-level-2-block .comment-text {
     /*自动换行*/
     white-space: pre-wrap;
     word-break: break-all;
