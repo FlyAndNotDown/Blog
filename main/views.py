@@ -105,7 +105,7 @@ def post(request, pk):
             'login_info': post_render.get_login_info(),
             'login_param': {
                 'github': github_param,
-                'qq': github_param
+                'qq': qq_param
             }
         })
 
