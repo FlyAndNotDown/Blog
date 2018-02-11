@@ -102,7 +102,11 @@ def post(request, pk):
             ),
             'post': post_render.get_post(),
             'phase_time': post_render.get_phase_time(),
-            'login_info': post_render.get_login_info()
+            'login_info': post_render.get_login_info(),
+            'login_param': {
+                'github': github_param,
+                'qq': github_param
+            }
         })
 
 
@@ -169,6 +173,38 @@ def login_logout(request):
     request.session['user_info'] = None
     # 返回 json 数据
     return HttpResponse(json.dumps({'state': True}))
+
+
+# GitHub 登录回调
+def login_github_callback(request):
+    # 获取 code
+    code = request.GET.get('code')
+    if code:
+        # 执行请求
+        login_github_callback_request = LoginGitHubCallbackRequest(code)
+        # 如果登录成功了，就将用户信息存入 session
+        if login_github_callback_request.get_response()['success']:
+            request.session['login_state'] = True
+            request.session['user_info'] = login_github_callback_request.get_response()['user_info']
+
+    # 返回，并且重定向到登录前的 url
+    return HttpResponseRedirect(request.session['login_from'])
+
+
+# QQ 登录回调
+def login_qq_callback(request):
+    # 获取 code
+    code = request.GET.get('code')
+    if code:
+        # 执行请求
+        login_qq_callback_request = LoginQQCallbackRequest(code)
+        # 如果登录成功了，就将用户信息存入 session
+        if login_qq_callback_request.get_response()['success']:
+            request.session['login_state'] = True
+            request.session['user_info'] = login_qq_callback_request.get_response()['user_info']
+
+    # 返回，并且重定向到登录前的 url
+    return HttpResponseRedirect(request.session['login_from'])
 
 
 # ----------------------------------------------------- #

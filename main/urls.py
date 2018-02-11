@@ -46,5 +46,9 @@ urlpatterns = [
     # 本站登录
     url(r'^login/local/login$', views.login_local_login, name='login_local_login'),
     # 注销请求
-    url(r'^login/logout$', views.login_logout, name='login_logout')
+    url(r'^login/logout$', views.login_logout, name='login_logout'),
+    # GitHub登录回调
+    url(r'^login/github/callback$', views.login_github_callback, name='login_github_callback'),
+    # QQ 登录回调
+    url(r'^login/qq/callback$', views.login_qq_callback, name='login_qq_callback')
 ]

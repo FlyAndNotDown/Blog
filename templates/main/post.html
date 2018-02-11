@@ -127,8 +127,10 @@
                                                 <!--登录 Dropdown-->
                                                 <ul id="login-dropdown" class="dropdown-content">
                                                     <li><a class="waves-effect modal-trigger" href="#login-modal-local">本站账号</a></li>
-                                                    <li><a class="waves-effect">GitHub</a></li>
-                                                    <li><a class="waves-effect">QQ</a></li>
+                                                    <li><a class="waves-effect"
+                                                           href="https://github.com/login/oauth/authorize?client_id={{ login_param.github.client_id }}">GitHub</a></li>
+                                                    <li><a class="waves-effect"
+                                                           href="https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id={{ login_param.qq.client_id }}&redirect_uri={{ login_param.qq.callback }}&state=true">QQ</a></li>
                                                 </ul>
                                             </div>
                                         </div>
