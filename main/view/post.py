@@ -63,11 +63,11 @@ class PostRender:
             self.__phase_time = {
                 'created': {
                     'days': phase_created.days,
-                    'hours': phase_created.seconds / 3600
+                    'hours': phase_created.seconds // 3600
                 },
                 'modified': {
                     'days': phase_modified.days,
-                    'hours': phase_modified.seconds / 3600
+                    'hours': phase_modified.seconds // 3600
                 }
             }
 
