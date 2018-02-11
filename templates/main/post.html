@@ -421,29 +421,35 @@
             {% if login_info.login_state %}
                 // 发表评论按钮响应
                 $('#comment-publish-btn').click(function () {
-                var comment_publish_request = {
-                    sender: {{ login_info.user_info.pk }},
-                    post: {{ post.pk }},
-                    context: $('#comment-input').val()
-                };
-                // 发送请求来发表评论
-                $.ajax({
-                    url: '/comment/publish',
-                    type: 'POST',
-                    async: true,
-                    dataType: 'json',
-                    data: JSON.stringify(comment_publish_request),
-                    success: function (jsonObj) {
-                        // 查看是否成功
-                        if (jsonObj.state) {
-                            Materialize.toast('发表成功!两秒后为你刷新页面!', 2000);
-                            setTimeout(function () {
-                                window.location.reload();
-                            }, 2000);
-                        }
+                    var context = $('#comment-input').val();
+                    // 输入验证
+                    if (context.length === 0) {
+                        Materialize.toast('不能发表空气哦!请输入有意义的评论后重试!', 4000);
+                    } else {
+                        var comment_publish_request = {
+                            sender: {{ login_info.user_info.pk }},
+                            post: {{ post.pk }},
+                            context: $('#comment-input').val()
+                        };
+                        // 发送请求来发表评论
+                        $.ajax({
+                            url: '/comment/publish',
+                            type: 'POST',
+                            async: true,
+                            dataType: 'json',
+                            data: JSON.stringify(comment_publish_request),
+                            success: function (jsonObj) {
+                                // 查看是否成功
+                                if (jsonObj.state) {
+                                    Materialize.toast('发表成功!两秒后为你刷新页面!', 2000);
+                                    setTimeout(function () {
+                                        window.location.reload();
+                                    }, 2000);
+                                }
+                            }
+                        })
                     }
-                })
-            });
+                });
             {% endif %}
         });
     </script>
