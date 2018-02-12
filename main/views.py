@@ -108,7 +108,10 @@ def post(request, pk):
                 'github': github_param,
                 'qq': qq_param
             },
-            'comments': post_render.get_comments()
+            'comments_info': {
+                'comments': post_render.get_comments(),
+                'length': post_render.get_comments_length()
+            }
         })
 
 

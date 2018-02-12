@@ -81,6 +81,8 @@ class PostRender:
             # 获取评论信息
             # 先获取所有该文章下的评论
             comments = Comment.objects.filter(post=pk)
+            # 求出评论总数量
+            self.__comments_length = len(comments)
             # 筛选出所有的一级评论
             comments_level_1 = comments.filter(is_child=False).order_by('-time')
             # 建立评论表数据结构
@@ -174,3 +176,10 @@ class PostRender:
         :return: 评论信息
         """
         return self.__comments
+
+    def get_comments_length(self):
+        """
+        获取评论总量
+        :return: 求评论总量
+        """
+        return self.__comments_length
