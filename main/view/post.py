@@ -110,11 +110,13 @@ class PostRender:
                         'nickname': obj1.nickname,
                         'uid': obj1.uid,
                         'avatar': obj1.avatar,
-                        'is_admin': obj1.is_admin
+                        'is_admin': obj1.is_admin,
+                        'pk': obj1.pk
                     },
                     'is_child': False,
                     'context': comment_dict['parent'].context,
-                    'time': comment_dict['parent'].time.astimezone(timezone_china)
+                    'time': comment_dict['parent'].time.astimezone(timezone_china),
+                    'pk': comment_dict['parent'].pk
                 }
                 comment_dict['parent'] = new_parent
                 # 再处理二级评论
@@ -127,18 +129,22 @@ class PostRender:
                             'nickname': obj1.nickname,
                             'uid': obj1.uid,
                             'avatar': obj1.avatar,
-                            'is_admin': obj1.is_admin
+                            'is_admin': obj1.is_admin,
+                            'pk': obj1.pk
                         },
                         'receiver': {
                             'user_type': obj2.user_type,
                             'nickname': obj2.nickname,
                             'uid': obj2.uid,
                             'avatar': obj2.avatar,
-                            'is_admin': obj2.is_admin
+                            'is_admin': obj2.is_admin,
+                            'pk': obj2.pk
                         },
                         'is_child': True,
                         'context': child.context,
-                        'time': child.time.astimezone(timezone_china)
+                        'parent': child.parent,
+                        'time': child.time.astimezone(timezone_china),
+                        'pk': child.pk
                     }
                     child = new_child
 

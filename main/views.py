@@ -217,19 +217,48 @@ def login_qq_callback(request):
 # 发表评论
 @csrf_exempt
 def comment_publish(request):
-    # 解析 json 字符串
-    jsonObj = json.loads(request.body.decode('utf-8'))
-    sender_pk = jsonObj['sender']
-    post_pk = jsonObj['post']
-    context = jsonObj['context']
-    # 执行请求
-    comment_publish_request = CommentPublishRequest(
-        sender=sender_pk,
-        post=post_pk,
-        context=context
-    )
-    # 返回数据
-    return HttpResponse(json.dumps({'state': True}))
+    # 验证是否登录
+    if request.session.get('login_state'):
+        # 解析 json 字符串
+        json_obj = json.loads(request.body.decode('utf-8'))
+        sender_pk = request.session.get('user_info').get('pk')
+        post_pk = json_obj['post']
+        context = json_obj['context']
+        # 执行请求
+        comment_publish_request = CommentPublishRequest(
+            sender=sender_pk,
+            post=post_pk,
+            context=context
+        )
+        # 返回数据
+        return HttpResponse(json.dumps({'state': True}))
+    else:
+        return HttpResponse(json.dumps({'state': False}))
+
+
+@csrf_exempt
+def comment_reply(request):
+    # 验证是否登录
+    if request.session.get('login_state'):
+        # 解析 json 字符串
+        json_obj = json.loads(request.body.decode('utf-8'))
+        sender_pk = request.session.get('user_info').get('pk')
+        receiver_pk = json_obj['receiver']
+        post_pk = json_obj['post']
+        parent_pk = json_obj['parent']
+        context = json_obj['context']
+        # 执行请求
+        comment_reply_request = CommentReplyRequest(
+            sender=sender_pk,
+            receiver=receiver_pk,
+            post=post_pk,
+            parent=parent_pk,
+            context=context
+        )
+        # 返回数据
+        return HttpResponse(json.dumps({'state': True}))
+    else:
+        return HttpResponse(json.dumps({'state': False}))
 
 
 # ----------------------------------------------------- #

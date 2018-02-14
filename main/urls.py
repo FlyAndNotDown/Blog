@@ -53,5 +53,8 @@ urlpatterns = [
     url(r'^login/qq/callback$', views.login_qq_callback, name='login_qq_callback'),
 
     # 评论系统
-    url(r'^comment/publish$', views.comment_publish, name='comment_publish')
+    # 发表评论
+    url(r'^comment/publish$', views.comment_publish, name='comment_publish'),
+    # 发表回复
+    url(r'^comment/reply$', views.comment_reply, name='comment_reply')
 ]

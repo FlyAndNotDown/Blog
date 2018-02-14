@@ -24,6 +24,7 @@
 {% endblock %}
 
 {% block main %}
+    <!--主容器-->
     <div class="section teal lighten-5">
         <div class="container" id="post-container">
             <br>
@@ -147,6 +148,7 @@
                                         <br>
                                         <div class="row comment-level-1-block">
                                             <div class="col s12 m12 l12 xl12">
+                                                <!--头像和昵称-->
                                                 <div class="chip">
                                                     {% if comment_level_1.parent.sender.avatar == '' %}
                                                         <img src="{% static 'main/img/about_bg.png' %}">
@@ -159,14 +161,18 @@
                                                         {{ comment_level_1.parent.sender.nickname }}
                                                     {% endif %}
                                                 </div>
-                                                <a class="grey-text right hide-on-small-only"><i class="material-icons">reply</i></a>
+                                                <!--回复-large-->
+                                                <a class="grey-text right hide-on-small-only reply-link-large-level1 modal-trigger" href="#reply-modal"
+                                                    id="reply-link-large-level1_{{ comment_level_1.parent.pk }}"><i class="material-icons">reply</i></a>
                                                 <a class="grey-text right hide-on-small-only">
                                                     {{ comment_level_1.parent.time.year }}·{{ comment_level_1.parent.time.month }}·{{ comment_level_1.parent.time.day }}&nbsp;{{ comment_level_1.parent.time.hour }}:{{ comment_level_1.parent.time.minute }}&nbsp;</a>
                                                 <p class="comment-text">{{ comment_level_1.parent.context }}</p>
                                                 <a class="grey-text left hide-on-med-and-up">
                                                     {{ comment_level_1.parent.time.year }}·{{ comment_level_1.parent.time.month }}·{{ comment_level_1.parent.time.day }}&nbsp;{{ comment_level_1.parent.time.hour }}:{{ comment_level_1.parent.time.minute }}
                                                 </a>
-                                                <a class="grey-text right hide-on-med-and-up"><i class="material-icons">reply</i></a>
+                                                <!--回复small-->
+                                                <a class="grey-text right hide-on-med-and-up reply-link-small-level1 modal-trigger" href="#reply-modal"
+                                                    id="reply-link-small-level1_{{ comment_level_1.parent.pk }}"><i class="material-icons">reply</i></a>
                                                 {% if comment_level_1.children %}
                                                     <!--子评论-->
                                                     <div class="row comment-level-2-model">
@@ -177,6 +183,7 @@
                                                             <br>
                                                             <div class="row comment-level-2-block">
                                                                 <div class="col s12 m12 l12 xl12">
+                                                                    <!--头像和昵称-->
                                                                     <div class="chip">
                                                                         {% if comment_level_2.sender.avatar == '' %}
                                                                             <img src="{% static 'main/img/about_bg.png' %}">
@@ -189,7 +196,9 @@
                                                                             {{ comment_level_2.sender.nickname }}
                                                                         {% endif %}
                                                                     </div>
-                                                                    <a class="grey-text right hide-on-small-only"><i class="material-icons">reply</i></a>
+                                                                    <!--回复large-->
+                                                                    <a class="grey-text right hide-on-small-only reply-link-large-level2 modal-trigger" href="#reply-modal"
+                                                                        id="reply-link-large-level1_{{ comment_level_1.parent.pk }}-level2_{{ comment_level_2.pk }}"><i class="material-icons">reply</i></a>
                                                                     <a class="grey-text right hide-on-small-only">
                                                                         {{ comment_level_2.time.year }}·{{ comment_level_2.time.month }}·{{ comment_level_2.time.day }}&nbsp;{{ comment_level_2.time.hour }}:{{ comment_level_2.time.minute }}&nbsp;
                                                                     </a>
@@ -197,7 +206,9 @@
                                                                     <a class="grey-text left hide-on-med-and-up">
                                                                         {{ comment_level_2.time.year }}·{{ comment_level_2.time.month }}·{{ comment_level_2.time.day }}&nbsp;{{ comment_level_2.time.hour }}:{{ comment_level_2.time.minute }}
                                                                     </a>
-                                                                    <a class="grey-text right hide-on-med-and-up"><i class="material-icons">reply</i></a>
+                                                                    <!--回复small-->
+                                                                    <a class="grey-text right hide-on-med-and-up reply-link-small-level2 modal-trigger" href="#reply-modal"
+                                                                        id="reply-link-small-level1_{{ comment_level_1.parent.pk }}-level2_{{ comment_level_2.pk }}"><i class="material-icons">reply</i></a>
                                                                 </div>
                                                             </div>
                                                         {% endfor %}
@@ -262,12 +273,68 @@
             </div>
         </div>
     </div>
+
+    <!--回复 Modal-->
+    <div id="reply-modal" class="modal">
+        <div class="modal-content">
+            <br>
+            <br>
+            <h4 class="center">回复</h4>
+            <br>
+            <div class="row">
+                <div class="input-field col s12 m12 l10 xl8 offset-l1 offset-xl2">
+                    <i class="material-icons prefix">mode_edit</i>
+                    <textarea id="reply-input" class="materialize-textarea"></textarea>
+                    <label for="reply-input">回复Ta点什么吧!</label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a class="waves-effect waves-green btn-flat" id="reply-publish-btn">发表</a>
+            <a class="waves-effect waves-green btn-flat" id="reply-exit-btn">放弃</a>
+        </div>
+    </div>
 {% endblock %}
 
 {% block additional-js %}
     <script src="{% static 'main/lib/tool/secret/salt.js'%}" rel="stylesheet"></script>
     <script src="{% static 'main/lib/tool/secret/sha256.min.js' %}" rel="stylesheet"></script>
     <script>
+        // 按照评论显示的结构获取 pk 数据
+        var comments_info = [];
+        {% for comment_level_1 in comments_info.comments %}
+            comments_info.push({
+                parent: {
+                    sender: {
+                        pk: {{ comment_level_1.parent.sender.pk }}
+                    },
+                    pk: {{ comment_level_1.parent.pk }}
+                },
+                children: []
+            });
+            {% for comment_level_2 in comment_level_1.children %}
+                comments_info.children.push({
+                    sender: {
+                        pk: {{ comment_level_2.sender.pk }}
+                    },
+                    pk: {{ comment_level_2.pk }}
+                });
+            {% endfor %}
+        {% endfor %}
+
+        // 储存文章 pk
+        var post = {
+            pk: {{ post.pk }}
+        };
+
+        // 回复功能使用的临时变量
+        var replyObj = {
+            receiver: 0,
+            post: 0,
+            parent: 0,
+            context: ''
+        };
+
         $(document).ready(function () {
             // sha256 js 插件初始化
             sha256.create();
@@ -322,12 +389,12 @@
                         if (/^[a-zA-Z0-9_@#]{8,16}$/.test(password)) {
                             var salt = get_salt();
                             // 加密密码
-                            password_hash = sha256(sha256(password) + salt);
+                            var password_hash = sha256(sha256(password) + salt);
                             // 封装 json 对象
                             var register_request_obj = {
                                 username: username,
                                 password: password_hash,
-                                salt: salt,
+                                salt: salt
                             };
                             // 发送 Ajax 请求
                             $.ajax({
@@ -370,7 +437,7 @@
                 var username = $('#login-local-username').val();
                 var password = $('#login-local-password').val();
                 var get_salt_request_obj = {
-                    username: username,
+                    username: username
                 };
                 $.ajax({
                     url: '/login/local/get_salt',
@@ -386,7 +453,7 @@
                             var password_hash = sha256(sha256(password) + salt);
                             var login_request_obj = {
                                 username: username,
-                                password: password_hash,
+                                password: password_hash
                             };
                             $.ajax({
                                 url: '/login/local/login',
@@ -427,8 +494,7 @@
                         Materialize.toast('不能发表空气哦!请输入有意义的评论后重试!', 4000);
                     } else {
                         var comment_publish_request = {
-                            sender: {{ login_info.user_info.pk }},
-                            post: {{ post.pk }},
+                            post: post.pk,
                             context: context
                         };
                         // 发送请求来发表评论
@@ -451,6 +517,83 @@
                     }
                 });
             {% endif %}
+
+            // level1 回复按钮响应
+            $('.reply-link-large-level1, .reply-link-small-level1').click(function () {
+                var parent;
+                // 将 id 分片
+                var replyBtnIdArray = $(this).attr('id').split('-');
+
+                // 寻找 parent 评论
+                for (var comment in comments_info) {
+                    if (comment.parent.pk === parseInt(replyBtnIdArray[3].split('_')[1])) {
+                        parent = comment.parent;
+                        break;
+                    }
+                }
+
+                // 将信息存入临时变量
+                replyObj.receiver = parent.sender.pk;
+                replyObj.post = post.pk;
+                replyObj.parent = parent.pk;
+            });
+
+            // level2 回复按钮响应
+            $('.reply-link-large-level2, .reply-link-small-level2').click(function () {
+                var parent;
+                var child;
+                // 将 id 切片
+                var replyBtnIdArray = $(this).attr('id').split('-');
+                var complete = false;
+
+                // 寻找 parent 和 child
+                for (var comment in comments_info) {
+                    if (comment.parent.pk === parseInt(replyBtnIdArray[3].split('_')[1])) {
+                        parent = comment.parent;
+                        for (var comment2 in parent.children) {
+                            if (comment2.pk === parseInt(replyBtnIdArray[4].split(_)[1])) {
+                                child = comment2;
+                                complete = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (complete) {
+                        break;
+                    }
+                }
+
+                // 将信息存入临时变量
+                replyObj.receiver = child.sender.pk;
+                replyObj.post = post.pk;
+                replyObj.parent = parent.pk;
+            });
+
+            // 响应发表回复按钮
+            $('#reply-publish-btn').click(function () {
+                replyObj.context = $('#reply-input').val();
+                $.ajax({
+                    url: '/comment/reply',
+                    type: 'POST',
+                    async: true,
+                    dataType: 'json',
+                    data: JSON.stringify(replyObj),
+                    success: function (jsonObj) {
+                        // 看是否成功
+                        if (jsonObj.state) {
+                            Materialize.toast('回复成功!两秒后为你刷新页面!', 2000);
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 2000);
+                        }
+                    }
+                });
+            });
+
+            // 放弃回复按钮
+            $('#reply-exit-btn').click(function () {
+                $('#reply-modal').modal('close');
+            });
         });
     </script>
 {% endblock %}
