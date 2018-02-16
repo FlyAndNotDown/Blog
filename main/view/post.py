@@ -120,10 +120,11 @@ class PostRender:
                 }
                 comment_dict['parent'] = new_parent
                 # 再处理二级评论
+                new_children = []
                 for child in comment_dict['children']:
                     obj1 = KUser.objects.get(pk=child.sender)
                     obj2 = KUser.objects.get(pk=child.receiver)
-                    new_child = {
+                    new_children.append({
                         'sender': {
                             'user_type': obj1.user_type,
                             'nickname': obj1.nickname,
@@ -145,8 +146,8 @@ class PostRender:
                         'parent': child.parent,
                         'time': child.time.astimezone(timezone_china),
                         'pk': child.pk
-                    }
-                    child = new_child
+                    })
+                comment_dict['children'] = new_children
 
     def error_happen(self):
         """
