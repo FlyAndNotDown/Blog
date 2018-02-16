@@ -561,12 +561,12 @@
                     var complete = false;
 
                     // 寻找 parent 和 child
-                    for (var comment in comments_info) {
-                        if (comment.parent.pk === parseInt(replyBtnIdArray[3].split('_')[1])) {
-                            parent = comment.parent;
-                            for (var comment2 in parent.children) {
-                                if (comment2.pk === parseInt(replyBtnIdArray[4].split(_)[1])) {
-                                    child = comment2;
+                    for (var i = 0; i < comments_info.length; i++) {
+                        if (comments_info[i].parent.pk === parseInt(replyBtnIdArray[3].split('_')[1])) {
+                            parent = comments_info[i].parent;
+                            for (var j = 0; j < comments_info[i].children.length; j++) {
+                                if (comments_info[i].children[j].pk === parseInt(replyBtnIdArray[4].split('_')[1])) {
+                                    child = comments_info[i].children[j];
                                     complete = true;
                                     break;
                                 }
