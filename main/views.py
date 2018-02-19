@@ -11,6 +11,7 @@ from .view.archive import *
 from .view.about import *
 from .view.post import *
 from .view.comment import *
+from .view.message import *
 
 import json
 
@@ -171,6 +172,7 @@ def login_local_login(request):
     return HttpResponse(json.dumps(login_local_login_request.get_response()))
 
 
+@csrf_exempt
 # 注销请求
 def login_logout(request):
     # 清除 session 信息
@@ -270,44 +272,34 @@ def robots(request):
 # ----------------------------------------------------- #
 # 通知页面
 def message(request):
-    pass
-    # # 左右两侧的通知卡片
-    # left_cards = list()
-    # right_cards = list()
-    # # 如果用户已经登录了
-    # if request.session.get('login_state'):
-    #
-    #     return render(request, 'main/message.html', context={
-    #         'header': Header(
-    #             title='首页_IT小站_专注技术的小博客',
-    #             keywords='it,it小站,通知',
-    #             description='IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。'
-    #         ),
-    #         'left_cards': left_cards,
-    #         'right_cards': right_cards
-    #     })
-    #
-    # else:
-    #     # 保存登录之前的页面
-    #     request.session['login_from'] = '/message'
-    #
-    #     left_cards.append(MessageCard(
-    #         '你还没登录哦!',
-    #         '使用下面给出的第三方认证登录本站来参与评论', [{
-    #             'name': 'GitHub',
-    #             'href': 'https://github.com/login/oauth/authorize?client_id=' + github_client_id
-    #         }, {
-    #             'name': 'QQ',
-    #             'href': 'https://graph.qq.com/oauth2.0/authorize?response_type=code&' +
-    #                     'client_id=' + qq_client_id + '&redirect_uri=http://www.kindemh.cn/login/qq'
-    #         }]
-    #     ))
-    #     return render(request, 'main/message.html', context={
-    #         'header': Header(
-    #             title='首页_IT小站_专注技术的小博客',
-    #             keywords='it,it小站,通知',
-    #             description='IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。'
-    #         ),
-    #         'left_cards': left_cards,
-    #         'right_cards': right_cards
-    #     })
+    # 获取登录状态
+    login_state = request.session.get('login_state')
+    # 获取登录用户信息
+    user_info = request.session.get('user_info')
+
+    # 执行请求
+    message_render = MessageRender(
+        login_state=login_state,
+        user_info=user_info
+    )
+
+    # 保存登录前位置
+    request.session['login_from'] = '/message'
+
+    # 返回渲染结果
+    return render(request, 'main/message.html', context={
+        'header': Header(
+            title='通知_IT小站_专注技术的小博客',
+            keywords='通知',
+            description='登录用户通知'
+        ),
+        'login_info': {
+            'login_state': login_state,
+            'user_info': user_info
+        },
+        'card_info': message_render.get_card_info(),
+        'login_param': {
+            'qq': qq_param,
+            'github': github_param
+        }
+    })

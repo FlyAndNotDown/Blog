@@ -468,7 +468,7 @@
                                 data: JSON.stringify(login_request_obj),
                                 success: function (newJsonObj) {
                                     // 如果验证成功
-                                    if (jsonObj.state) {
+                                    if (newJsonObj.state) {
                                         Materialize.toast('登录成功,两秒后为你自动刷新页面', 2000);
                                         setTimeout(
                                             function () {
@@ -478,7 +478,7 @@
                                         );
                                     // 如果验证失败
                                     } else {
-                                        Materialize.toast(jsonObj.reason, 4000);
+                                        Materialize.toast(newJsonObj.reason, 4000);
                                     }
                                 }
                             });
