@@ -1,0 +1,58 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="{{ header.description }}">
+    <meta name="keywords" content="{{ header.keywords }}">
+
+    <title>{{ header.title }}</title>
+
+    <!--Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!--Materialize-->
+    <link href="{% static 'main/lib/materialize/css/materialize.min.css' %}" rel="stylesheet" media="screen,projection">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    {# 附加css块 #}
+    {% block additional-css %}
+    {% endblock %}
+</head>
+<body>
+    {# 导航栏块 #}
+    {% block navbar %}
+    {% endblock %}
+
+    {# parallax块(如果有) #}
+    {% block parallax %}
+    {% endblock %}
+
+    {# 主容器 #}
+    {% block main %}
+    {% endblock %}
+
+    <!--页脚-->
+    <footer class="page-footer cyan">
+        <div class="footer-copyright">
+            <div class="container">@ 2017 Copyright kindemh.cn<br>
+                Frontend Framework By <a href="http://materializecss.com/about.html" class="white-text">MaterializeCSS</a></div>
+        </div>
+    </footer>
+
+    <!--jQuery-->
+    <script src="{% static 'main/lib/jQuery/jquery-3.2.1.min.js' %}"></script>
+    <!--Materialize-->
+    <script src="{% static 'main/lib/materialize/js/materialize.min.js' %}"></script>
+    <!--百度自动推送工具-->
+    <script src="{% static 'main/lib/baidu/auto-submit.js' %}"></script>
+    <!--360自动推送工具-->
+    <script src="{% static 'main/lib/360/auto-submit.js' %}"></script>
+
+    {# 额外js块 #}
+    {% block additional-js %}
+    {% endblock %}
+</body>

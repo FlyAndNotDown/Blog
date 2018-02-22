@@ -276,3 +276,45 @@ class LoginQQCallbackRequest:
 
     def get_response(self):
         return self.__response
+
+
+class LoginLocalAdminLoginRequest:
+    def __init__(self, username, password):
+        """
+        构造
+        :param username: 用户名
+        :param password: 密码
+        """
+        # 查询数据库，看用户名和密码是否匹配
+        if LocalUser.objects.filter(username=username, password=password).exists():
+            local_user = LocalUser.objects.get(username=username, password=password)
+            # 看该用户是否为管理员
+            if local_user.is_admin:
+                # 返回数据
+                self.__response = {
+                    'state': True
+                }
+                self.__admin_info = {
+                    'user_type': 'local',
+                    'nickname': local_user.username,
+                    'uid': local_user.pk,
+                    'avatar': local_user.avatar,
+                    'is_admin': local_user.is_admin,
+                    'pk': local_user.pk
+                }
+            else:
+                self.__response = {
+                    'state': False,
+                    'reason': '您不是管理员，不要误闯禁地哦!'
+                }
+        else:
+            self.__response = {
+                'state': False,
+                'reason': '用户名或密码错误!'
+            }
+
+    def get_response(self):
+        return self.__response
+
+    def get_admin_info(self):
+        return self.__admin_info

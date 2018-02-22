@@ -156,9 +156,9 @@ def login_local_get_salt(request):
 @csrf_exempt
 def login_local_login(request):
     # 解析 json 字符串
-    jsonObj = json.loads(request.body.decode('utf-8'))
-    username = jsonObj['username']
-    password = jsonObj['password']
+    json_obj = json.loads(request.body.decode('utf-8'))
+    username = json_obj['username']
+    password = json_obj['password']
 
     # 处理请求
     login_local_login_request = LoginLocalLoginRequest(
@@ -170,6 +170,27 @@ def login_local_login(request):
         request.session['user_info'] = login_local_login_request.get_user_info()
     # 返回 json 数据
     return HttpResponse(json.dumps(login_local_login_request.get_response()))
+
+
+# 本站登录-管理员登录
+@csrf_exempt
+def login_local_admin__login(request):
+    # 解析 json 字符串
+    json_obj = json.loads(request.body.decode('utf-8'))
+    username = json_obj['username']
+    password = json_obj['password']
+
+    # 处理请求
+    login_local_admin__login_request = LoginLocalAdminLoginRequest(
+        username=username,
+        password=password
+    )
+    # 如果成功登录了，就将管理员信息存入 session
+    if login_local_admin__login_request.get_response()['state']:
+        request.session['admin_login_state'] = True
+        request.session['admin_info'] = login_local_admin__login_request.get_admin_info()
+    # 返回 json 数据
+    return HttpResponse(json.dumps(login_local_admin__login_request.get_response()))
 
 
 @csrf_exempt
@@ -302,4 +323,13 @@ def message(request):
             'qq': qq_param,
             'github': github_param
         }
+    })
+
+
+# ----------------------------------------------------- #
+# 管理员系统
+# 管理员登录
+def kadmin(request):
+    return render(request, 'main/kadmin/index.html', {
+
     })

@@ -45,6 +45,8 @@ urlpatterns = [
     url(r'^login/local/get_salt$', views.login_local_get_salt, name='login_local_get_salt'),
     # 本站登录
     url(r'^login/local/login$', views.login_local_login, name='login_local_login'),
+    # 本站管理员登录
+    url(r'^login/local/admin_login', views.login_local_admin__login, name='login_local_admin__login'),
     # 注销请求
     url(r'^login/logout$', views.login_logout, name='login_logout'),
     # GitHub登录回调
@@ -56,5 +58,9 @@ urlpatterns = [
     # 发表评论
     url(r'^comment/publish$', views.comment_publish, name='comment_publish'),
     # 发表回复
-    url(r'^comment/reply$', views.comment_reply, name='comment_reply')
+    url(r'^comment/reply$', views.comment_reply, name='comment_reply'),
+
+    # 管理员系统
+    # 管理员登录
+    url(r'^kadmin$', views.kadmin, name='kadmin')
 ]

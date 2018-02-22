@@ -1,0 +1,9 @@
+body {
+    font-family: "Microsoft YaHei UI Light", monospace;
+    font-weight: 100;
+}
+
+.login-prefix, .login-postfix {
+    position: relative;
+    height: 90px;
+}
