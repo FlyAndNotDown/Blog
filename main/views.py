@@ -22,9 +22,9 @@ def index__normal(request):
     index_render = IndexRender(1)
     return render(request, 'main/index.html', context={
         'header': Header(
-            title='首页_IT小站_专注技术的小博客',
-            description='IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。',
-            keywords='it,it小站'
+            title='首页_Kindem的博客_专注技术的小博客',
+            description='Kindem的博客，专注技术的小博客，这里有你想学的技术，有众多干货分享。',
+            keywords='kindem,kindem的博客'
         ),
         'page_info': index_render.get_page_info(),
         'post_list': index_render.get_post_list(),
@@ -37,9 +37,9 @@ def index__param(request, page):
     index_render = IndexRender(page)
     return render(request, 'main/index.html', context={
         'header': Header(
-            title='首页_IT小站_专注技术的小博客',
-            description='IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。',
-            keywords='it,it小站'
+            title='首页_Kindem的博客_专注技术的小博客',
+            description='Kindem的博客，专注技术的小博客，这里有你想学的技术，有众多干货分享。',
+            keywords='kindem,kindem的博客'
         ),
         'page_info': index_render.get_page_info(),
         'post_list': index_render.get_post_list(),
@@ -53,9 +53,9 @@ def archive(request):
     archive_render = ArchiveRender()
     return render(request, 'main/archive.html', context={
         'header': Header(
-            title='首页_IT小站_专注技术的小博客',
-            keywords='it,it小站',
-            description='IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。'
+            title='归档_Kindem的博客_专注技术的小博客',
+            description='Kindem的博客，专注技术的小博客，这里有你想学的技术，有众多干货分享。',
+            keywords='kindem,kindem的博客,归档'
         ),
         'posts_evert_year': archive_render.get_posts_every_year(),
         'slogan_box': ArchiveSloganBox()
@@ -67,9 +67,9 @@ def archive(request):
 def about(request):
     return render(request, 'main/about.html', context={
         'header': Header(
-            title='首页_IT小站_专注技术的小博客',
-            keywords='it,it小站',
-            description='IT小站，专注技术的小博客，这里有你想学的技术，有众多干货分享。'
+            title='关于_Kindem的博客_专注技术的小博客',
+            description='Kindem的博客，专注技术的小博客，这里有你想学的技术，有众多干货分享。',
+            keywords='kindem,kindem的博客,关于'
         ),
         'slogan_box': AboutSloganBox(),
         'introduction_box': AboutIntroductionBox(),
@@ -98,7 +98,7 @@ def post(request, pk):
     else:
         return render(request, 'main/post.html', context={
             'header': Header(
-                title=post_render.get_post().title + '_IT小站_专注技术的小博客',
+                title=post_render.get_post().title + '_Kindem的博客_专注技术的小博客',
                 description=post_render.get_post().excerpt,
                 keywords=post_render.get_post().keywords
             ),
