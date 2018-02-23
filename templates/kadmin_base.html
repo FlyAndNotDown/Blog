@@ -22,7 +22,7 @@
     {% block additional-css %}
     {% endblock %}
 </head>
-<body>
+<body class="teal lighten-5">
     {# 导航栏块 #}
     {% block navbar %}
     {% endblock %}
@@ -35,13 +35,13 @@
     {% block main %}
     {% endblock %}
 
-    <!--页脚-->
-    <footer class="page-footer cyan">
-        <div class="footer-copyright">
-            <div class="container">@ 2017 Copyright kindemh.cn<br>
-                Frontend Framework By <a href="http://materializecss.com/about.html" class="white-text">MaterializeCSS</a></div>
-        </div>
-    </footer>
+{#    <!--页脚-->#}
+{#    <footer class="page-footer cyan">#}
+{#        <div class="footer-copyright">#}
+{#            <div class="container">@ 2017 Copyright kindemh.cn<br>#}
+{#                Frontend Framework By <a href="http://materializecss.com/about.html" class="white-text">MaterializeCSS</a></div>#}
+{#        </div>#}
+{#    </footer>#}
 
     <!--jQuery-->
     <script src="{% static 'main/lib/jQuery/jquery-3.2.1.min.js' %}"></script>

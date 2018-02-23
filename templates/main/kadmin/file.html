@@ -1,0 +1,92 @@
+{% extends 'kadmin_base.html' %}
+{% load staticfiles %}
+
+{% block additional-css %}
+    <link href="{% static 'main/css/kadmin/file.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block navbar %}
+    <nav class="nav-extended cyan">
+        <div class="nav-wrapper container">
+            <a class="brand-logo">KAdmin</a>
+            <ul class="right">
+                <li><a><i class="material-icons">exit_to_app</i></a></li>
+            </ul>
+        </div>
+        <div class="nav-content container">
+            <ul class="tabs tabs-transparent">
+                <li class="tab"><a href="/kadmin" target="_self">概要</a></li>
+                <li class="tab disabled"><a href="#" target="_self">数据库管理</a></li>
+                <li class="tab"><a class="active">文件管理</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m12 l10 xl10 offset-l1 offset-xl1">
+                    <br>
+                    <h4>文件上传</h4>
+                    <div class="switch">
+                        <div class="btn cyan" id="file-upload-submit">提交</div>
+                        &nbsp;&nbsp;
+                        <label>
+                            picture
+                            <input type="checkbox" id="file-type">
+                            <span class="lever"></span>
+                            file
+                        </label>
+                    </div>
+                    <div class="file-field input-field">
+                        <div class="btn cyan">
+                            <span>file</span>
+                            <input type="file" id="file">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text">
+                        </div>
+                    </div>
+                    <div class="input-field">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block parallax %}
+{% endblock %}
+
+{% block main %}
+{% endblock %}
+
+{% block additional-js %}
+    <script>
+        $(document).ready(function () {
+            // 提交按钮响应
+            $('#file-upload-submit').click(function () {
+                var formData = new FormData();
+                formData.append('file', $('#file').files[0]);
+                formData.append('type', $('#file-type').val());
+                $.ajax({
+                    url: '/file/upload',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    async: true,
+                    success: function (jsonObj) {
+                        if (jsonObj.state) {
+                            Materialize.toast('上传文件成功!文件url已经保存到剪切板!', 2000);
+                            window.clipboardData.setData('Text', jsonObj.url);
+                        } else {
+                            Materialize.toast(jsonObj.reason, 2000);
+                        }
+                    }
+                })
+            });
+        });
+    </script>
+{% endblock %}

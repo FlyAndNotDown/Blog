@@ -12,6 +12,7 @@ from .view.about import *
 from .view.post import *
 from .view.comment import *
 from .view.message import *
+from .view.file import *
 
 import json
 
@@ -188,7 +189,7 @@ def login_local_admin__login(request):
     # 如果成功登录了，就将管理员信息存入 session
     if login_local_admin__login_request.get_response()['state']:
         request.session['admin_login_state'] = True
-        request.session['admin_info'] = login_local_admin__login_request.get_admin_info()
+        request.session['admin_user_info'] = login_local_admin__login_request.get_admin_info()
     # 返回 json 数据
     return HttpResponse(json.dumps(login_local_admin__login_request.get_response()))
 
@@ -199,6 +200,8 @@ def login_logout(request):
     # 清除 session 信息
     request.session['login_state'] = False
     request.session['user_info'] = None
+    request.session['admin_login_state'] = False
+    request.session['admin_user_info'] = None
     # 返回 json 数据
     return HttpResponse(json.dumps({'state': True}))
 
@@ -330,6 +333,43 @@ def message(request):
 # 管理员系统
 # 管理员登录
 def kadmin(request):
-    return render(request, 'main/kadmin/index.html', {
+    # 根据管理员是否登录
+    # 如果已经登录则显示管理员主页
+    if request.session.get('admin_login_state'):
+        return render(request, 'main/kadmin/index.html', {
+            'header': Header(
+                title='管理员主页_Kindem的博客_专注技术的小博客',
+                keywords='',
+                description=''
+            )
+        })
+    # 否则显示登录页面
+    else:
+        return render(request, 'main/kadmin/login.html', {
+            'header': Header(
+                title='管理员登录_Kindem的博客_专注技术的小博客',
+                keywords='',
+                description=''
+            )
+        })
 
+
+# 文件管理页面
+def kadmin_file(request):
+    return render(request, 'main/kadmin/file.html', {
+        'header': Header(
+            title='文件管理_Kindem的博客_专注技术的小博客',
+            keywords='',
+            description=''
+        )
     })
+
+
+# ----------------------------------------------------- #
+# 文件管理系统
+# 文件上传
+def file_upload(request):
+    # 获取文件内容
+    file = request.FILES.get('file')
+    # 获取文件类型
+    file_type = request.POST.get('type')

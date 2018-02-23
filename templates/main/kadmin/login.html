@@ -1,0 +1,115 @@
+{% extends 'kadmin_base.html' %}
+{% load staticfiles %}
+
+{% block additional-css %}
+    <link href="{% static 'main/css/kadmin/login.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block navbar %}
+    <nav class="nav-extended cyan">
+        <div class="nav-wrapper container">
+            <a class="brand-logo">Administrator</a>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block parallax %}
+{% endblock %}
+
+{% block main %}
+    <div class="section">
+        <div class="login-prefix"></div>
+        <div class="container login-container">
+            <div class="row">
+                <div class="col s12 m12 l6 xl6 offset-l3 offset-xl3">
+                    <div class="row login-row">
+                        <div class="col s12 m12 l12 xl12">
+                            <h4 class="center">管理员登录</h4>
+                            <br>
+                            <div class="row">
+                                <div class="input-field">
+                                    <a class="material-icons prefix black-text">account_circle</a>
+                                    <input id="username" type="text" class="validate">
+                                    <label for="username">用户名</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field">
+                                    <a class="material-icons prefix black-text">vpn_key</a>
+                                    <input id="password" type="password" class="validate">
+                                    <label for="password">密码</label>
+                                </div>
+                            </div>
+                            <div class="row center">
+                                <a class="btn green lighten-2" id="login-btn">登录</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="login-postfix"></div>
+    </div>
+{% endblock %}
+
+{% block additional-js %}
+    <script src="{% static 'main/lib/tool/secret/salt.js' %}"></script>
+    <script src="{% static 'main/lib/tool/secret/sha256.min.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            // 为登录按钮添加响应
+            $('#login-btn').click(function () {
+                // 发送 ajax 请求获取 salt
+                var username = $('#username').val();
+                var password = $('#password').val();
+                var get_salt_request_obj = {
+                    username: username
+                };
+                $.ajax({
+                    url: '/login/local/get_salt',
+                    async: true,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify(get_salt_request_obj),
+                    success: function(jsonObj) {
+                        // 如果成功获取到盐
+                        if (jsonObj.state) {
+                            var salt = jsonObj.salt;
+                            // 加盐加密，发送到后端验证
+                            var password_hash = sha256(sha256(password) + salt);
+                            var login_request_obj = {
+                                username: username,
+                                password: password_hash
+                            };
+                            $.ajax({
+                                url: '/login/local/admin_login',
+                                async: true,
+                                type: 'POST',
+                                dataType: 'json',
+                                data: JSON.stringify(login_request_obj),
+                                success: function (newJsonObj) {
+                                    // 如果验证成功
+                                    if (newJsonObj.state) {
+                                        Materialize.toast('登录成功,两秒后为你跳转到管理员页面', 2000);
+                                        setTimeout(
+                                            function () {
+                                                // 刷新页面
+                                                window.location.reload(true)
+                                            }, 2000
+                                        );
+                                    // 如果验证失败
+                                    } else {
+                                        Materialize.toast(newJsonObj.reason, 4000);
+                                    }
+                                }
+                            });
+                        // 否则
+                        } else {
+                            Materialize.toast(jsonObj.reason, 4000);
+                        }
+                    }
+                })
+            });
+        })
+    </script>
+{% endblock %}

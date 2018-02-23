@@ -61,6 +61,12 @@ urlpatterns = [
     url(r'^comment/reply$', views.comment_reply, name='comment_reply'),
 
     # 管理员系统
-    # 管理员登录
-    url(r'^kadmin$', views.kadmin, name='kadmin')
+    # 管理员主页
+    url(r'^kadmin$', views.kadmin, name='kadmin'),
+    # 文件管理页面
+    url(r'^kadmin/file$', views.kadmin_file, name='kadmin_file'),
+
+    # 文件管理系统
+    # 文件上传
+    url(r'^file/upload$', views.file_upload, name='file_upload')
 ]
