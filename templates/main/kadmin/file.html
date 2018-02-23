@@ -27,28 +27,29 @@
             <div class="row">
                 <div class="col s12 m12 l10 xl10 offset-l1 offset-xl1">
                     <br>
-                    <h4>文件上传</h4>
-                    <div class="switch">
-                        <div class="btn cyan" id="file-upload-submit">提交</div>
-                        &nbsp;&nbsp;
-                        <label>
-                            picture
-                            <input type="checkbox" id="file-type">
-                            <span class="lever"></span>
-                            file
-                        </label>
-                    </div>
-                    <div class="file-field input-field">
-                        <div class="btn cyan">
-                            <span>file</span>
-                            <input type="file" id="file">
+                    <div class="row">
+                        <div class="col s12 m12 l12 xl12">
+                            <h3>图片上传</h3>
+                            <br>
+                            <div class="file-field input-field">
+                                <div class="btn cyan">
+                                    <span>picture</span>
+                                    <input type="file" id="picture">
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" type="text">
+                                </div>
+                            </div>
+                            <div class="input-field">
+                                <i class="material-icons prefix">flip</i>
+                                <input id="picture-url" type="text">
+                                <label for="picture-url">已上传图片的URL</label>
+                            </div>
+                            <a class="btn cyan" id="picture-upload-submit">提交并且获取图片URL</a>
                         </div>
-                        <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text">
-                        </div>
                     </div>
-                    <div class="input-field">
-                    </div>
+                    <br>
+                    <div class="divider"></div>
                 </div>
             </div>
         </div>
@@ -65,12 +66,11 @@
     <script>
         $(document).ready(function () {
             // 提交按钮响应
-            $('#file-upload-submit').click(function () {
+            $('#picture-upload-submit').click(function () {
                 var formData = new FormData();
-                formData.append('file', $('#file').files[0]);
-                formData.append('type', $('#file-type').val());
+                formData.append('picture', $('#picture')[0].files[0]);
                 $.ajax({
-                    url: '/file/upload',
+                    url: '/picture/upload',
                     type: 'POST',
                     data: formData,
                     processData: false,
@@ -79,8 +79,9 @@
                     async: true,
                     success: function (jsonObj) {
                         if (jsonObj.state) {
-                            Materialize.toast('上传文件成功!文件url已经保存到剪切板!', 2000);
-                            window.clipboardData.setData('Text', jsonObj.url);
+                            Materialize.toast('上传图片成功!图片url已经保存到剪切板!', 2000);
+                            var tmp = $('#picture-url');
+                            tmp.val(jsonObj.url);
                         } else {
                             Materialize.toast(jsonObj.reason, 2000);
                         }

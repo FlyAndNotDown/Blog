@@ -366,10 +366,14 @@ def kadmin_file(request):
 
 
 # ----------------------------------------------------- #
-# 文件管理系统
-# 文件上传
-def file_upload(request):
-    # 获取文件内容
-    file = request.FILES.get('file')
-    # 获取文件类型
-    file_type = request.POST.get('type')
+# 图片管理系统
+# 图片上传
+@csrf_exempt
+def picture_upload(request):
+    # 获取图片内容
+    picture = request.FILES.get('picture')
+    # 执行请求
+    file_upload_request = PictureUploadRequest(picture)
+
+    # response
+    return HttpResponse(json.dumps(file_upload_request.get_response()))

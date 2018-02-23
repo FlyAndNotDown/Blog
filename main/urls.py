@@ -66,7 +66,7 @@ urlpatterns = [
     # 文件管理页面
     url(r'^kadmin/file$', views.kadmin_file, name='kadmin_file'),
 
-    # 文件管理系统
-    # 文件上传
-    url(r'^file/upload$', views.file_upload, name='file_upload')
+    # 图片管理系统
+    # 图片上传
+    url(r'^picture/upload$', views.picture_upload, name='file_upload')
 ]
