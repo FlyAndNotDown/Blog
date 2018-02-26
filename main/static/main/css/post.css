@@ -69,6 +69,12 @@ body .section .extend .comment-model .comment-level-1-block .comment-level-2-mod
     font-family: Consolas, Roboto, "Microsoft YaHei UI Light", monospace;
 }
 
+body .h1, body .h2, body .h3, body .h4, body .h5, body .h6 {
+    /*自动换行*/
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
 body .main p {
     margin: 0;
     padding: 0;
