@@ -31,6 +31,12 @@ img {
     font-weight: bold;
 }
 
+.section h1, .section h2, .section h3, .section h4, .section h5, .section h6 {
+    /*自动换行*/
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
 body {
     font-family: "Microsoft YaHei UI Light", monospace;
 }
@@ -69,18 +75,12 @@ body .section .extend .comment-model .comment-level-1-block .comment-level-2-mod
     font-family: Consolas, Roboto, "Microsoft YaHei UI Light", monospace;
 }
 
-body .h1, body .h2, body .h3, body .h4, body .h5, body .h6 {
-    /*自动换行*/
-    white-space: pre-wrap;
-    word-break: break-all;
-}
-
 body .main p {
     margin: 0;
     padding: 0;
 }
 
-body .main h1, h2, h3, h4, h5, h6 {
+body .main h1, body .main h2, body .main h3, body .main h4, body .main h5, body .main h6 {
     margin-bottom: 0;
     margin-top: 40px;
     padding: 0;
