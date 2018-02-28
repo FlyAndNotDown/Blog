@@ -67,17 +67,19 @@ class IndexRender:
         self.__request_page = request_page
         self.__error = False
 
+        request_page = int(request_page)
+
         # 获取所有文章
         posts = Post.objects.all().order_by('-created_time')
         # 获取总页数
-        page_total = len(posts) // INDEX_POST_PER_PAGE + 1
+        page_total = (len(posts) - 1)// INDEX_POST_PER_PAGE + 1
         # 错误检测
         if not (0 < request_page <= page_total):
             self.__error = True
         else:
             # 用分页器取得请求页的文章
             paginator = Paginator(posts, INDEX_POST_PER_PAGE)
-            posts_this_page = paginator.page(page_total)
+            posts_this_page = paginator.page(request_page)
 
             # 判断是否为第一页或者最后一页
             is_first_page = request_page == 1
