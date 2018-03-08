@@ -13,10 +13,10 @@ admin_info = {
     'skills': {
         'languages': [
             'C', 'C++', 'C#', 'Java', 'Kotlin', 'Python', 'HTML', 'CSS',
-            'JavaScript', 'Markdown', 'SQL', 'Arduino', 'Assembly'
+            'JavaScript', 'Markdown', 'SQL', 'Arduino', 'Assembly', 'JSX'
         ],
         'libs': [
-            'jQuery', 'Bootstrap', 'Materialize', 'Django', 'OpenCV'
+            'jQuery', 'Bootstrap', 'Materialize', 'Django', 'OpenCV', 'React', 'Webpack'
         ],
         'tools': [
             'IDEA', 'WebStorm', 'PyCharm', 'Android Studio', 'Visual Studio',
