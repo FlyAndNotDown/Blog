@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from Blog.view import *
 
 urlpatterns = [
     # 管理员页面
@@ -22,3 +23,7 @@ urlpatterns = [
     # 主站的页面
     url(r'', include('main.urls')),
 ]
+
+handler403 = permission_denied
+handler404 = page_not_found
+handler500 = page_error

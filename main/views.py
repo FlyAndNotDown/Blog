@@ -2,17 +2,15 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 
-from main.models import KUser
-
-from .view.index import *
-from .view.login import *
-from .view.header import *
-from .view.archive import *
-from .view.about import *
-from .view.post import *
-from .view.comment import *
-from .view.message import *
-from .view.file import *
+from main.view.index import *
+from main.view.login import *
+from main.view.header import *
+from main.view.archive import *
+from main.view.about import *
+from main.view.post import *
+from main.view.comment import *
+from main.view.message import *
+from main.view.file import *
 
 import json
 

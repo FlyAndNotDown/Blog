@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from . import views
+from main import views
 from django.contrib.sitemaps.views import sitemap
 from main.tool.feeds import AllPostRssFeed
 from main.tool.sitemap import MainSitemap, PostSitemap
