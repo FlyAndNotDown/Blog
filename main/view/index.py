@@ -8,7 +8,7 @@ INDEX_POST_PER_PAGE = 8
 BLOG_START_YEAR = 2018
 
 # 主页标语
-SLOGAN = 'A geek want to be a geek!'
+SLOGAN = 'A geek who wanna to be a geek!'
 
 class IndexSloganBox:
     """
