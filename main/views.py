@@ -21,8 +21,8 @@ def index__normal(request):
     index_render = IndexRender(1)
     return render(request, 'main/index.html', context={
         'header': Header(
-            title='首页_Kindem的博客_专注技术的小博客',
-            description='Kindem的博客，专注技术的小博客，这里有你想学的技术，有众多干货分享。',
+            title='首页_Kindem的博客',
+            description='Kindem的博客，这里有你想学的技术，有众多干货分享。',
             keywords='kindem,kindem的博客'
         ),
         'page_info': index_render.get_page_info(),
@@ -36,8 +36,8 @@ def index__param(request, page):
     index_render = IndexRender(page)
     return render(request, 'main/index.html', context={
         'header': Header(
-            title='首页_Kindem的博客_专注技术的小博客',
-            description='Kindem的博客，专注技术的小博客，这里有你想学的技术，有众多干货分享。',
+            title='首页_Kindem的博客',
+            description='Kindem的博客，这里有你想学的技术，有众多干货分享。',
             keywords='kindem,kindem的博客'
         ),
         'page_info': index_render.get_page_info(),
@@ -52,8 +52,8 @@ def archive(request):
     archive_render = ArchiveRender()
     return render(request, 'main/archive.html', context={
         'header': Header(
-            title='归档_Kindem的博客_专注技术的小博客',
-            description='Kindem的博客，专注技术的小博客，这里有你想学的技术，有众多干货分享。',
+            title='归档_Kindem的博客',
+            description='Kindem的博客，这里有你想学的技术，有众多干货分享。',
             keywords='kindem,kindem的博客,归档'
         ),
         'posts_evert_year': archive_render.get_posts_every_year(),
@@ -66,8 +66,8 @@ def archive(request):
 def about(request):
     return render(request, 'main/about.html', context={
         'header': Header(
-            title='关于_Kindem的博客_专注技术的小博客',
-            description='Kindem的博客，专注技术的小博客，这里有你想学的技术，有众多干货分享。',
+            title='关于_Kindem的博客',
+            description='Kindem的博客，这里有你想学的技术，有众多干货分享。',
             keywords='kindem,kindem的博客,关于'
         ),
         'slogan_box': AboutSloganBox(),
@@ -97,7 +97,7 @@ def post(request, pk):
     else:
         return render(request, 'main/post.html', context={
             'header': Header(
-                title=post_render.get_post().title + '_Kindem的博客_专注技术的小博客',
+                title=post_render.get_post().title + '_Kindem的博客',
                 description=post_render.get_post().excerpt,
                 keywords=post_render.get_post().keywords
             ),
@@ -311,7 +311,7 @@ def message(request):
     # 返回渲染结果
     return render(request, 'main/message.html', context={
         'header': Header(
-            title='通知_IT小站_专注技术的小博客',
+            title='通知_IT小站',
             keywords='通知',
             description='登录用户通知'
         ),
@@ -336,7 +336,7 @@ def kadmin(request):
     if request.session.get('admin_login_state'):
         return render(request, 'main/kadmin/index.html', {
             'header': Header(
-                title='管理员主页_Kindem的博客_专注技术的小博客',
+                title='管理员主页_Kindem的博客',
                 keywords='',
                 description=''
             )
@@ -345,7 +345,7 @@ def kadmin(request):
     else:
         return render(request, 'main/kadmin/login.html', {
             'header': Header(
-                title='管理员登录_Kindem的博客_专注技术的小博客',
+                title='管理员登录_Kindem的博客',
                 keywords='',
                 description=''
             )
@@ -356,7 +356,7 @@ def kadmin(request):
 def kadmin_file(request):
     return render(request, 'main/kadmin/file.html', {
         'header': Header(
-            title='文件管理_Kindem的博客_专注技术的小博客',
+            title='文件管理_Kindem的博客',
             keywords='',
             description=''
         )
