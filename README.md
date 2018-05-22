@@ -33,6 +33,11 @@ python manage.py createsuperuser
 // ...按照提示输入信息
 ```
 
+收集静态文件
+```
+python manage.py collectstatic
+```
+
 开启调试服务器
 ```
 python manage.py runserver 8000
