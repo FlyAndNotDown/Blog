@@ -1,11 +1,11 @@
 admin_info = {
     'name': '站主:Kindem',
     'slogan': '一只想做全栈开发者的野生程序猿',
-    'introduction': '男，21岁，南京航空航天大学计算机学院在校本科生，目前大三，热爱生活，热爱编程，热爱ACG。喜欢学习新技术，'
+    'introduction': '男，22岁，南京航空航天大学计算机学院在校本科生，目前大四，热爱生活，热爱编程，热爱ACG。喜欢学习新技术，'
                     '自己捣鼓项目，学习过很多门编程语言，接触过很多技术。最喜欢的技术是Web开发和游戏开发。最大的梦想是能够成为'
                     '一名全栈开发或是一名游戏开发者。审美上对Material Design没有抵抗力。',
     'experiences': [{
-        'start_year': 2018,
+        'start_year': 2015,
         'long': 4,
         'location': '南京航空航天大学',
         'do': '大学本科'
@@ -13,14 +13,14 @@ admin_info = {
     'skills': {
         'languages': [
             'C', 'C++', 'C#', 'Java', 'Kotlin', 'Python', 'HTML', 'CSS',
-            'JavaScript', 'Markdown', 'SQL', 'Arduino', 'Assembly', 'JSX'
+            'JavaScript', 'Markdown', 'SQL', 'Assembly'
         ],
         'libs': [
             'jQuery', 'Bootstrap', 'Materialize', 'Django', 'OpenCV', 'React', 'Webpack', 'Ant-Design', 'node.js'
         ],
         'tools': [
             'IDEA', 'WebStorm', 'PyCharm', 'Android Studio', 'Visual Studio',
-            'Visual Studio Code', 'Unity3D', 'Vim'
+            'Visual Studio Code', 'Unity3D', 'Vim', 'Clion'
         ]
     }
 }
